@@ -7,10 +7,10 @@
         250
       ]
     },
-    "usage_count": 310,
-    "total_bytes_saved": 76260,
-    "last_used": 1762875446,
-    "recent_gain": 125.2919477367339
+    "usage_count": 397,
+    "total_bytes_saved": 97662,
+    "last_used": 1762885982,
+    "recent_gain": 14.751154603174175
   },
   {
     "id": 11,
@@ -20,10 +20,10 @@
         210
       ]
     },
-    "usage_count": 650,
-    "total_bytes_saved": 133900,
-    "last_used": 1762875449,
-    "recent_gain": 122.09018502992251
+    "usage_count": 876,
+    "total_bytes_saved": 180456,
+    "last_used": 1762885982,
+    "recent_gain": 14.099284495763975
   },
   {
     "id": 424,
@@ -33,10 +33,10 @@
         255
       ]
     },
-    "usage_count": 380,
-    "total_bytes_saved": 95380,
-    "last_used": 1762875449,
-    "recent_gain": 145.60985042654838
+    "usage_count": 622,
+    "total_bytes_saved": 156122,
+    "last_used": 1762885980,
+    "recent_gain": 15.754164206278967
   },
   {
     "id": 790,
@@ -46,607 +46,1907 @@
         168
       ]
     },
-    "usage_count": 639,
-    "total_bytes_saved": 104796,
-    "last_used": 1762875449,
-    "recent_gain": 96.43820408546719
+    "usage_count": 937,
+    "total_bytes_saved": 153668,
+    "last_used": 1762885982,
+    "recent_gain": 11.422538825195995
   },
   {
-    "id": 3311,
+    "id": 4776,
     "operator": {
       "BackRef": [
-        380,
-        255
+        100,
+        19
+      ]
+    },
+    "usage_count": 2,
+    "total_bytes_saved": 30,
+    "last_used": 1762886699,
+    "recent_gain": 8.697815846556225
+  },
+  {
+    "id": 4794,
+    "operator": {
+      "BackRef": [
+        62,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875440,
-    "recent_gain": 85.4809681983168
+    "total_bytes_saved": 16,
+    "last_used": 1762886682,
+    "recent_gain": 9.100801476423353
   },
   {
-    "id": 3312,
+    "id": 4795,
     "operator": {
       "BackRef": [
-        629,
-        255
+        81,
+        20
+      ]
+    },
+    "usage_count": 2,
+    "total_bytes_saved": 32,
+    "last_used": 1762886717,
+    "recent_gain": 10.435601107317515
+  },
+  {
+    "id": 4797,
+    "operator": {
+      "BackRef": [
+        228,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875440,
-    "recent_gain": 85.4809681983168
+    "total_bytes_saved": 16,
+    "last_used": 1762886682,
+    "recent_gain": 9.100801476423353
   },
   {
-    "id": 3313,
+    "id": 4842,
     "operator": {
       "BackRef": [
-        768,
-        255
+        3415,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875440,
-    "recent_gain": 85.4809681983168
+    "total_bytes_saved": 16,
+    "last_used": 1762886686,
+    "recent_gain": 9.579791027814057
   },
   {
-    "id": 3330,
+    "id": 4895,
     "operator": {
       "BackRef": [
-        1022,
-        255
+        2329,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 94.71575423636212
+    "total_bytes_saved": 16,
+    "last_used": 1762886690,
+    "recent_gain": 10.083990555593745
   },
   {
-    "id": 3331,
+    "id": 4901,
     "operator": {
       "BackRef": [
-        2041,
-        255
+        535,
+        18
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 94.71575423636212
+    "total_bytes_saved": 14,
+    "last_used": 1762886690,
+    "recent_gain": 8.823491736144529
   },
   {
-    "id": 3332,
+    "id": 4902,
     "operator": {
       "BackRef": [
-        3070,
-        255
+        761,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 94.71575423636212
+    "total_bytes_saved": 16,
+    "last_used": 1762886690,
+    "recent_gain": 10.083990555593745
   },
   {
-    "id": 3334,
+    "id": 4903,
     "operator": {
       "BackRef": [
-        1019,
-        255
+        374,
+        18
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 94.71575423636212
+    "total_bytes_saved": 14,
+    "last_used": 1762886690,
+    "recent_gain": 8.823491736144529
   },
   {
-    "id": 3335,
+    "id": 4904,
     "operator": {
       "BackRef": [
-        1997,
-        255
+        463,
+        18
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 94.71575423636212
+    "total_bytes_saved": 14,
+    "last_used": 1762886690,
+    "recent_gain": 8.823491736144529
   },
   {
-    "id": 3336,
+    "id": 4925,
     "operator": {
       "BackRef": [
-        2806,
-        255
+        1265,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 94.71575423636212
+    "total_bytes_saved": 16,
+    "last_used": 1762886693,
+    "recent_gain": 10.614726900624996
   },
   {
-    "id": 3337,
+    "id": 4934,
     "operator": {
       "BackRef": [
-        1747,
-        251
+        3319,
+        18
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 247,
-    "last_used": 1762875441,
-    "recent_gain": 93.20633982622088
+    "total_bytes_saved": 14,
+    "last_used": 1762886697,
+    "recent_gain": 9.776722145312498
   },
   {
-    "id": 3340,
+    "id": 4938,
     "operator": {
       "BackRef": [
-        1018,
-        255
+        50,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 99.70079393301276
+    "total_bytes_saved": 16,
+    "last_used": 1762886698,
+    "recent_gain": 11.173396737499996
   },
   {
-    "id": 3341,
+    "id": 4939,
     "operator": {
       "BackRef": [
-        2048,
-        255
+        632,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 99.70079393301276
+    "total_bytes_saved": 16,
+    "last_used": 1762886698,
+    "recent_gain": 11.173396737499996
   },
   {
-    "id": 3342,
+    "id": 4940,
     "operator": {
       "BackRef": [
-        3067,
-        255
+        710,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 99.70079393301276
+    "total_bytes_saved": 16,
+    "last_used": 1762886698,
+    "recent_gain": 11.173396737499996
   },
   {
-    "id": 3343,
+    "id": 4941,
     "operator": {
       "BackRef": [
-        3070,
-        255
+        72,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 99.70079393301276
+    "total_bytes_saved": 16,
+    "last_used": 1762886698,
+    "recent_gain": 11.173396737499996
   },
   {
-    "id": 3344,
+    "id": 4942,
     "operator": {
       "BackRef": [
-        2011,
-        255
+        1233,
+        19
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875441,
-    "recent_gain": 99.70079393301276
+    "total_bytes_saved": 15,
+    "last_used": 1762886698,
+    "recent_gain": 10.475059441406248
   },
   {
-    "id": 3345,
+    "id": 4943,
     "operator": {
       "BackRef": [
-        1303,
-        248
+        71,
+        18
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 244,
-    "last_used": 1762875441,
-    "recent_gain": 96.92029370380521
+    "total_bytes_saved": 14,
+    "last_used": 1762886698,
+    "recent_gain": 9.776722145312498
   },
   {
-    "id": 3346,
+    "id": 4944,
     "operator": {
       "BackRef": [
-        821,
-        252
+        88,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 248,
-    "last_used": 1762875441,
-    "recent_gain": 98.50915097763813
+    "total_bytes_saved": 16,
+    "last_used": 1762886699,
+    "recent_gain": 11.173396737499996
   },
   {
-    "id": 3358,
+    "id": 4945,
     "operator": {
       "BackRef": [
-        200,
-        255
+        186,
+        19
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875442,
-    "recent_gain": 104.94820414001343
+    "total_bytes_saved": 15,
+    "last_used": 1762886699,
+    "recent_gain": 10.475059441406248
   },
   {
-    "id": 3361,
+    "id": 4946,
     "operator": {
       "BackRef": [
-        40,
-        255
+        199,
+        19
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875442,
-    "recent_gain": 104.94820414001343
+    "total_bytes_saved": 15,
+    "last_used": 1762886699,
+    "recent_gain": 10.475059441406248
   },
   {
-    "id": 3362,
+    "id": 4947,
     "operator": {
       "BackRef": [
-        1014,
-        255
+        567,
+        16
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875442,
-    "recent_gain": 104.94820414001343
+    "total_bytes_saved": 12,
+    "last_used": 1762886699,
+    "recent_gain": 8.380047553124994
   },
   {
-    "id": 3366,
+    "id": 4948,
     "operator": {
       "BackRef": [
-        110,
-        255
+        1897,
+        16
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875443,
-    "recent_gain": 116.286098770098
+    "total_bytes_saved": 12,
+    "last_used": 1762886699,
+    "recent_gain": 8.380047553124994
   },
   {
-    "id": 3370,
+    "id": 4949,
+    "operator": {
+      "BackRef": [
+        78,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886699,
+    "recent_gain": 8.380047553124994
+  },
+  {
+    "id": 4950,
+    "operator": {
+      "BackRef": [
+        82,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886699,
+    "recent_gain": 8.380047553124994
+  },
+  {
+    "id": 5000,
+    "operator": {
+      "BackRef": [
+        60,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886704,
+    "recent_gain": 11.761470249999997
+  },
+  {
+    "id": 5003,
+    "operator": {
+      "BackRef": [
+        2730,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886704,
+    "recent_gain": 11.761470249999997
+  },
+  {
+    "id": 5004,
+    "operator": {
+      "BackRef": [
+        1005,
+        19
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 15,
+    "last_used": 1762886704,
+    "recent_gain": 11.026378359374998
+  },
+  {
+    "id": 5025,
+    "operator": {
+      "BackRef": [
+        138,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886705,
+    "recent_gain": 12.380494999999998
+  },
+  {
+    "id": 5026,
+    "operator": {
+      "BackRef": [
+        80,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886705,
+    "recent_gain": 12.380494999999998
+  },
+  {
+    "id": 5033,
+    "operator": {
+      "BackRef": [
+        149,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886705,
+    "recent_gain": 12.380494999999998
+  },
+  {
+    "id": 5034,
+    "operator": {
+      "BackRef": [
+        68,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886705,
+    "recent_gain": 12.380494999999998
+  },
+  {
+    "id": 5035,
+    "operator": {
+      "BackRef": [
+        295,
+        18
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 14,
+    "last_used": 1762886705,
+    "recent_gain": 10.832933124999998
+  },
+  {
+    "id": 5036,
+    "operator": {
+      "BackRef": [
+        155,
+        18
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 14,
+    "last_used": 1762886705,
+    "recent_gain": 10.832933124999998
+  },
+  {
+    "id": 5037,
+    "operator": {
+      "BackRef": [
+        591,
+        17
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 13,
+    "last_used": 1762886705,
+    "recent_gain": 10.059152187499999
+  },
+  {
+    "id": 5038,
+    "operator": {
+      "BackRef": [
+        217,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886705,
+    "recent_gain": 9.285371249999995
+  },
+  {
+    "id": 5039,
+    "operator": {
+      "BackRef": [
+        133,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886705,
+    "recent_gain": 9.285371249999995
+  },
+  {
+    "id": 5040,
+    "operator": {
+      "BackRef": [
+        169,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886705,
+    "recent_gain": 8.511590312499997
+  },
+  {
+    "id": 5041,
+    "operator": {
+      "BackRef": [
+        38,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886705,
+    "recent_gain": 8.511590312499997
+  },
+  {
+    "id": 5042,
+    "operator": {
+      "BackRef": [
+        160,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886705,
+    "recent_gain": 7.737809374999999
+  },
+  {
+    "id": 5043,
+    "operator": {
+      "BackRef": [
+        108,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886705,
+    "recent_gain": 7.737809374999999
+  },
+  {
+    "id": 5044,
+    "operator": {
+      "BackRef": [
+        250,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886706,
+    "recent_gain": 7.737809374999999
+  },
+  {
+    "id": 5045,
+    "operator": {
+      "BackRef": [
+        2677,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886706,
+    "recent_gain": 7.737809374999999
+  },
+  {
+    "id": 5058,
+    "operator": {
+      "BackRef": [
+        27,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886706,
+    "recent_gain": 12.380494999999998
+  },
+  {
+    "id": 5059,
+    "operator": {
+      "BackRef": [
+        942,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886706,
+    "recent_gain": 12.380494999999998
+  },
+  {
+    "id": 5060,
+    "operator": {
+      "BackRef": [
+        1357,
+        18
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 14,
+    "last_used": 1762886706,
+    "recent_gain": 10.832933124999998
+  },
+  {
+    "id": 5061,
+    "operator": {
+      "BackRef": [
+        199,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886706,
+    "recent_gain": 8.511590312499997
+  },
+  {
+    "id": 5062,
+    "operator": {
+      "BackRef": [
+        1345,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886706,
+    "recent_gain": 8.511590312499997
+  },
+  {
+    "id": 5077,
+    "operator": {
+      "BackRef": [
+        222,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886709,
+    "recent_gain": 13.032099999999998
+  },
+  {
+    "id": 5078,
+    "operator": {
+      "BackRef": [
+        245,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886709,
+    "recent_gain": 13.032099999999998
+  },
+  {
+    "id": 5079,
+    "operator": {
+      "BackRef": [
+        60,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886709,
+    "recent_gain": 13.032099999999998
+  },
+  {
+    "id": 5080,
+    "operator": {
+      "BackRef": [
+        1401,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886709,
+    "recent_gain": 13.032099999999998
+  },
+  {
+    "id": 5081,
+    "operator": {
+      "BackRef": [
+        2869,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886709,
+    "recent_gain": 13.032099999999998
+  },
+  {
+    "id": 5082,
+    "operator": {
+      "BackRef": [
+        257,
+        19
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 15,
+    "last_used": 1762886709,
+    "recent_gain": 12.217593749999999
+  },
+  {
+    "id": 5083,
+    "operator": {
+      "BackRef": [
+        72,
+        19
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 15,
+    "last_used": 1762886709,
+    "recent_gain": 12.217593749999999
+  },
+  {
+    "id": 5084,
+    "operator": {
+      "BackRef": [
+        340,
+        19
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 15,
+    "last_used": 1762886709,
+    "recent_gain": 12.217593749999999
+  },
+  {
+    "id": 5085,
+    "operator": {
+      "BackRef": [
+        1851,
+        18
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 14,
+    "last_used": 1762886709,
+    "recent_gain": 11.403087499999998
+  },
+  {
+    "id": 5086,
+    "operator": {
+      "BackRef": [
+        2810,
+        17
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 13,
+    "last_used": 1762886709,
+    "recent_gain": 10.588581249999999
+  },
+  {
+    "id": 5087,
+    "operator": {
+      "BackRef": [
+        97,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886709,
+    "recent_gain": 9.774074999999996
+  },
+  {
+    "id": 5091,
+    "operator": {
+      "BackRef": [
+        3188,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886710,
+    "recent_gain": 13.032099999999998
+  },
+  {
+    "id": 5092,
+    "operator": {
+      "BackRef": [
+        3191,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886710,
+    "recent_gain": 7.330556249999998
+  },
+  {
+    "id": 5105,
+    "operator": {
+      "BackRef": [
+        1188,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886712,
+    "recent_gain": 10.288499999999997
+  },
+  {
+    "id": 5106,
+    "operator": {
+      "BackRef": [
+        2773,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886712,
+    "recent_gain": 10.288499999999997
+  },
+  {
+    "id": 5113,
+    "operator": {
+      "BackRef": [
+        956,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886714,
+    "recent_gain": 13.717999999999998
+  },
+  {
+    "id": 5114,
+    "operator": {
+      "BackRef": [
+        1841,
+        19
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 15,
+    "last_used": 1762886714,
+    "recent_gain": 12.860624999999999
+  },
+  {
+    "id": 5115,
+    "operator": {
+      "BackRef": [
+        34,
+        19
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 15,
+    "last_used": 1762886717,
+    "recent_gain": 13.5375
+  },
+  {
+    "id": 5116,
+    "operator": {
+      "BackRef": [
+        2295,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886717,
+    "recent_gain": 10.829999999999998
+  },
+  {
+    "id": 5117,
+    "operator": {
+      "BackRef": [
+        2464,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886717,
+    "recent_gain": 9.025
+  },
+  {
+    "id": 5118,
+    "operator": {
+      "BackRef": [
+        3572,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886717,
+    "recent_gain": 8.122499999999999
+  },
+  {
+    "id": 5119,
+    "operator": {
+      "BackRef": [
+        463,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886718,
+    "recent_gain": 7.22
+  },
+  {
+    "id": 5120,
+    "operator": {
+      "BackRef": [
+        1499,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886718,
+    "recent_gain": 7.22
+  },
+  {
+    "id": 5127,
+    "operator": {
+      "BackRef": [
+        151,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886718,
+    "recent_gain": 9.927499999999998
+  },
+  {
+    "id": 5128,
+    "operator": {
+      "BackRef": [
+        71,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886718,
+    "recent_gain": 9.927499999999998
+  },
+  {
+    "id": 5129,
+    "operator": {
+      "BackRef": [
+        52,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886718,
+    "recent_gain": 9.025
+  },
+  {
+    "id": 5130,
+    "operator": {
+      "BackRef": [
+        978,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886718,
+    "recent_gain": 9.025
+  },
+  {
+    "id": 5131,
+    "operator": {
+      "BackRef": [
+        727,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886718,
+    "recent_gain": 9.025
+  },
+  {
+    "id": 5132,
+    "operator": {
+      "BackRef": [
+        291,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886718,
+    "recent_gain": 8.122499999999999
+  },
+  {
+    "id": 5133,
+    "operator": {
+      "BackRef": [
+        2092,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886718,
+    "recent_gain": 8.122499999999999
+  },
+  {
+    "id": 5134,
+    "operator": {
+      "BackRef": [
+        16,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886719,
+    "recent_gain": 8.122499999999999
+  },
+  {
+    "id": 5135,
+    "operator": {
+      "BackRef": [
+        45,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886719,
+    "recent_gain": 8.122499999999999
+  },
+  {
+    "id": 5136,
+    "operator": {
+      "BackRef": [
+        135,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886719,
+    "recent_gain": 7.22
+  },
+  {
+    "id": 5137,
+    "operator": {
+      "BackRef": [
+        84,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886719,
+    "recent_gain": 7.22
+  },
+  {
+    "id": 5138,
+    "operator": {
+      "BackRef": [
+        45,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886719,
+    "recent_gain": 7.22
+  },
+  {
+    "id": 5143,
+    "operator": {
+      "BackRef": [
+        930,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886719,
+    "recent_gain": 14.44
+  },
+  {
+    "id": 5144,
+    "operator": {
+      "BackRef": [
+        3381,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886719,
+    "recent_gain": 14.44
+  },
+  {
+    "id": 5152,
+    "operator": {
+      "BackRef": [
+        1716,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886720,
+    "recent_gain": 15.2
+  },
+  {
+    "id": 5153,
+    "operator": {
+      "BackRef": [
+        123,
+        17
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 13,
+    "last_used": 1762886720,
+    "recent_gain": 12.35
+  },
+  {
+    "id": 5154,
+    "operator": {
+      "BackRef": [
+        175,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886720,
+    "recent_gain": 11.399999999999999
+  },
+  {
+    "id": 5155,
+    "operator": {
+      "BackRef": [
+        198,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886720,
+    "recent_gain": 11.399999999999999
+  },
+  {
+    "id": 5156,
+    "operator": {
+      "BackRef": [
+        82,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886720,
+    "recent_gain": 10.45
+  },
+  {
+    "id": 5157,
+    "operator": {
+      "BackRef": [
+        1926,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886721,
+    "recent_gain": 10.45
+  },
+  {
+    "id": 5158,
+    "operator": {
+      "BackRef": [
+        644,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886721,
+    "recent_gain": 9.5
+  },
+  {
+    "id": 5159,
+    "operator": {
+      "BackRef": [
+        774,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886721,
+    "recent_gain": 9.5
+  },
+  {
+    "id": 5160,
     "operator": {
       "BackRef": [
         140,
-        255
+        14
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875443,
-    "recent_gain": 116.286098770098
+    "total_bytes_saved": 10,
+    "last_used": 1762886721,
+    "recent_gain": 9.5
   },
   {
-    "id": 3375,
+    "id": 5161,
     "operator": {
       "BackRef": [
-        854,
-        255
+        1332,
+        14
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875444,
-    "recent_gain": 122.4064197579979
+    "total_bytes_saved": 10,
+    "last_used": 1762886721,
+    "recent_gain": 9.5
   },
   {
-    "id": 3376,
+    "id": 5162,
     "operator": {
       "BackRef": [
-        1583,
-        255
+        129,
+        14
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875444,
-    "recent_gain": 122.4064197579979
+    "total_bytes_saved": 10,
+    "last_used": 1762886721,
+    "recent_gain": 9.5
   },
   {
-    "id": 3377,
+    "id": 5163,
     "operator": {
       "BackRef": [
-        2182,
-        255
+        2292,
+        14
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875444,
-    "recent_gain": 122.4064197579979
+    "total_bytes_saved": 10,
+    "last_used": 1762886721,
+    "recent_gain": 9.5
   },
   {
-    "id": 3378,
+    "id": 5164,
     "operator": {
       "BackRef": [
-        729,
-        252
+        41,
+        13
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 248,
-    "last_used": 1762875444,
-    "recent_gain": 120.94339482065135
+    "total_bytes_saved": 9,
+    "last_used": 1762886721,
+    "recent_gain": 8.549999999999999
   },
   {
-    "id": 3379,
+    "id": 5165,
     "operator": {
       "BackRef": [
-        604,
-        250
+        352,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 246,
-    "last_used": 1762875444,
-    "recent_gain": 119.96804486242027
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3384,
+    "id": 5166,
     "operator": {
       "BackRef": [
-        890,
-        255
+        477,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875444,
-    "recent_gain": 122.4064197579979
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3387,
+    "id": 5167,
     "operator": {
       "BackRef": [
-        1020,
-        255
+        1012,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875445,
-    "recent_gain": 128.8488629031557
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3388,
+    "id": 5168,
     "operator": {
       "BackRef": [
-        2039,
-        255
+        2702,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875445,
-    "recent_gain": 128.8488629031557
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3391,
+    "id": 5169,
     "operator": {
       "BackRef": [
-        1019,
-        255
+        1968,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 128.8488629031557
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3392,
+    "id": 5170,
     "operator": {
       "BackRef": [
-        2048,
-        255
+        408,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 128.8488629031557
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3393,
+    "id": 5171,
     "operator": {
       "BackRef": [
-        3067,
-        255
+        2601,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 128.8488629031557
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3394,
+    "id": 5172,
     "operator": {
       "BackRef": [
-        729,
-        255
+        2644,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 135.63038200332178
+    "total_bytes_saved": 8,
+    "last_used": 1762886721,
+    "recent_gain": 7.6
   },
   {
-    "id": 3395,
+    "id": 5175,
     "operator": {
       "BackRef": [
-        2035,
-        168
+        418,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 164,
-    "last_used": 1762875446,
-    "recent_gain": 88.61905437667244
+    "total_bytes_saved": 16,
+    "last_used": 1762886721,
+    "recent_gain": 15.2
   },
   {
-    "id": 3396,
+    "id": 5176,
     "operator": {
       "BackRef": [
-        2198,
-        255
+        556,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 135.63038200332178
+    "total_bytes_saved": 16,
+    "last_used": 1762886721,
+    "recent_gain": 15.2
   },
   {
-    "id": 3398,
+    "id": 5177,
     "operator": {
       "BackRef": [
-        2038,
-        171
+        1369,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 167,
-    "last_used": 1762875446,
-    "recent_gain": 90.24013463966031
+    "total_bytes_saved": 16,
+    "last_used": 1762886721,
+    "recent_gain": 15.2
   },
   {
-    "id": 3399,
+    "id": 5178,
     "operator": {
       "BackRef": [
-        2731,
-        247
+        867,
+        13
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 243,
-    "last_used": 1762875446,
-    "recent_gain": 131.3075013020207
+    "total_bytes_saved": 9,
+    "last_used": 1762886722,
+    "recent_gain": 8.549999999999999
   },
   {
-    "id": 3401,
+    "id": 5179,
     "operator": {
       "BackRef": [
-        368,
-        255
+        71,
+        13
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 135.63038200332178
+    "total_bytes_saved": 9,
+    "last_used": 1762886722,
+    "recent_gain": 8.549999999999999
   },
   {
-    "id": 3403,
+    "id": 5180,
     "operator": {
       "BackRef": [
-        513,
-        255
+        70,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875446,
-    "recent_gain": 135.63038200332178
+    "total_bytes_saved": 8,
+    "last_used": 1762886722,
+    "recent_gain": 7.6
   },
   {
-    "id": 3408,
+    "id": 5182,
     "operator": {
       "BackRef": [
-        658,
-        255
+        567,
+        11
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875447,
-    "recent_gain": 142.76882316139137
+    "total_bytes_saved": 7,
+    "last_used": 1762886722,
+    "recent_gain": 6.6499999999999995
   },
   {
-    "id": 3410,
+    "id": 5183,
     "operator": {
       "BackRef": [
-        140,
-        255
+        1010,
+        11
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 251,
-    "last_used": 1762875447,
-    "recent_gain": 142.76882316139137
+    "total_bytes_saved": 7,
+    "last_used": 1762886722,
+    "recent_gain": 6.6499999999999995
   },
   {
-    "id": 3419,
+    "id": 5187,
     "operator": {
       "BackRef": [
-        2489,
-        170
+        76,
+        20
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 166,
-    "last_used": 1762875449,
-    "recent_gain": 99.39033191357083
+    "total_bytes_saved": 16,
+    "last_used": 1762886723,
+    "recent_gain": 15.2
   },
   {
-    "id": 3422,
+    "id": 5188,
     "operator": {
       "BackRef": [
-        184,
-        193
+        109,
+        14
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 189,
-    "last_used": 1762875449,
-    "recent_gain": 113.16128151605353
+    "total_bytes_saved": 10,
+    "last_used": 1762886723,
+    "recent_gain": 9.5
   },
   {
-    "id": 3442,
+    "id": 5189,
     "operator": {
       "BackRef": [
-        10,
-        130
-      ]
-    },
-    "usage_count": 4,
-    "total_bytes_saved": 504,
-    "last_used": 1762875459,
-    "recent_gain": 98.40641795947265
-  },
-  {
-    "id": 3445,
-    "operator": {
-      "BackRef": [
-        10,
-        119
+        20,
+        12
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 115,
-    "last_used": 1762875455,
-    "recent_gain": 84.53556742187499
+    "total_bytes_saved": 8,
+    "last_used": 1762886723,
+    "recent_gain": 7.6
+  },
+  {
+    "id": 5190,
+    "operator": {
+      "BackRef": [
+        160,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886723,
+    "recent_gain": 7.6
+  },
+  {
+    "id": 5191,
+    "operator": {
+      "BackRef": [
+        398,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886723,
+    "recent_gain": 7.6
+  },
+  {
+    "id": 5192,
+    "operator": {
+      "BackRef": [
+        931,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886723,
+    "recent_gain": 7.6
+  },
+  {
+    "id": 5193,
+    "operator": {
+      "BackRef": [
+        385,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886723,
+    "recent_gain": 6.6499999999999995
+  },
+  {
+    "id": 5194,
+    "operator": {
+      "BackRef": [
+        2747,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886723,
+    "recent_gain": 15.2
+  },
+  {
+    "id": 5195,
+    "operator": {
+      "BackRef": [
+        2727,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886723,
+    "recent_gain": 11.399999999999999
+  },
+  {
+    "id": 5196,
+    "operator": {
+      "BackRef": [
+        2,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886723,
+    "recent_gain": 6.6499999999999995
+  },
+  {
+    "id": 5197,
+    "operator": {
+      "BackRef": [
+        1673,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886723,
+    "recent_gain": 6.6499999999999995
+  },
+  {
+    "id": 5198,
+    "operator": {
+      "BackRef": [
+        3025,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886723,
+    "recent_gain": 6.6499999999999995
+  },
+  {
+    "id": 5204,
+    "operator": {
+      "BackRef": [
+        1525,
+        18
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 14,
+    "last_used": 1762886725,
+    "recent_gain": 14.0
+  },
+  {
+    "id": 5205,
+    "operator": {
+      "BackRef": [
+        3010,
+        20
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 16,
+    "last_used": 1762886725,
+    "recent_gain": 16.0
+  },
+  {
+    "id": 5206,
+    "operator": {
+      "BackRef": [
+        1213,
+        17
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 13,
+    "last_used": 1762886725,
+    "recent_gain": 13.0
+  },
+  {
+    "id": 5207,
+    "operator": {
+      "BackRef": [
+        1315,
+        15
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 11,
+    "last_used": 1762886725,
+    "recent_gain": 11.0
+  },
+  {
+    "id": 5208,
+    "operator": {
+      "BackRef": [
+        215,
+        14
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 10,
+    "last_used": 1762886725,
+    "recent_gain": 10.0
+  },
+  {
+    "id": 5209,
+    "operator": {
+      "BackRef": [
+        1197,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886725,
+    "recent_gain": 9.0
+  },
+  {
+    "id": 5210,
+    "operator": {
+      "BackRef": [
+        1787,
+        13
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 9,
+    "last_used": 1762886725,
+    "recent_gain": 9.0
+  },
+  {
+    "id": 5211,
+    "operator": {
+      "BackRef": [
+        262,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886725,
+    "recent_gain": 8.0
+  },
+  {
+    "id": 5212,
+    "operator": {
+      "BackRef": [
+        153,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886725,
+    "recent_gain": 8.0
+  },
+  {
+    "id": 5213,
+    "operator": {
+      "BackRef": [
+        2511,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886725,
+    "recent_gain": 8.0
+  },
+  {
+    "id": 5214,
+    "operator": {
+      "BackRef": [
+        913,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886725,
+    "recent_gain": 8.0
+  },
+  {
+    "id": 5215,
+    "operator": {
+      "BackRef": [
+        656,
+        12
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 8,
+    "last_used": 1762886725,
+    "recent_gain": 8.0
+  },
+  {
+    "id": 5216,
+    "operator": {
+      "BackRef": [
+        325,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886725,
+    "recent_gain": 7.0
+  },
+  {
+    "id": 5217,
+    "operator": {
+      "BackRef": [
+        1143,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886725,
+    "recent_gain": 7.0
+  },
+  {
+    "id": 5218,
+    "operator": {
+      "BackRef": [
+        407,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886725,
+    "recent_gain": 7.0
+  },
+  {
+    "id": 5226,
+    "operator": {
+      "BackRef": [
+        2938,
+        16
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 12,
+    "last_used": 1762886726,
+    "recent_gain": 12.0
+  },
+  {
+    "id": 5227,
+    "operator": {
+      "BackRef": [
+        2692,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886726,
+    "recent_gain": 7.0
+  },
+  {
+    "id": 5228,
+    "operator": {
+      "BackRef": [
+        2646,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886726,
+    "recent_gain": 7.0
+  },
+  {
+    "id": 5229,
+    "operator": {
+      "BackRef": [
+        3945,
+        11
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 7,
+    "last_used": 1762886726,
+    "recent_gain": 7.0
+  },
+  {
+    "id": 5233,
+    "operator": {
+      "BackRef": [
+        3283,
+        18
+      ]
+    },
+    "usage_count": 1,
+    "total_bytes_saved": 14,
+    "last_used": 1762886727,
+    "recent_gain": 14.0
   }
 ]

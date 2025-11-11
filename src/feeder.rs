@@ -1,50 +1,124 @@
+// src/feeder.rs
 use crate::world::World;
-use rand::Rng;
+use std::fs::{self, File};
+use std::io::{self, Read};
+use std::io::BufReader;
+use std::path::PathBuf;
 
-/// Feeder: generaattori, joka tuottaa datavirtaa loputtomasti (testiympäristöä varten)
+/// Feeder: "Striimaa" dataa kaikista .txt-tiedostoista annetussa kansiossa.
 pub struct Feeder {
     pub feed_rate: usize,
-    cycle: u64,
+    file_paths: Vec<PathBuf>, // Lista kaikista .txt-tiedostoista
+    current_file_index: usize, // Monesko tiedosto menossa
+    current_file: Option<BufReader<File>>, // Kahva auki olevaan tiedostoon
+    is_depleted: bool, // Onko kaikki tiedostot luettu?
 }
 
 impl Feeder {
-    pub fn new(feed_rate: usize) -> Self {
-        Feeder { feed_rate, cycle: 0 }
-    }
+    /// Luo uuden Feederin, joka etsii kaikki .txt-tiedostot data_dir_path-kansiosta
+    pub fn new(feed_rate: usize, data_dir_path: &str) -> io::Result<Self> {
+        println!("  📥 Feeder: Etsitään datatiedostoja kansiosta '{}'...", data_dir_path);
 
-    /// Syötä uutta dataa Worldiin
-    pub fn feed(&mut self, world: &mut World) -> Result<usize, &'static str> {
-        self.cycle += 1;
-        let new_data = self.generate_data(self.feed_rate, self.cycle);
-
-        if world.data.len() + new_data.len() > world.memory_limit {
-            return Err("OVERFLOW: World täynnä! Feeder nopeampi kuin Solver.");
-        }
-
-        world.data.extend_from_slice(&new_data);
-        Ok(new_data.len())
-    }
-
-    /// Proseduraalinen datan generointi
-    fn generate_data(&self, amount: usize, cycle: u64) -> Vec<u8> {
-        let mut data = Vec::with_capacity(amount);
-        let mut rng = rand::thread_rng();
-
-        match (cycle / 100) % 3 {
-            0 => { // Tyyppi A: Toistoja
-                for i in 0..amount { data.push((i % 10) as u8); }
-            }
-            1 => { // Tyyppi B: Korkea entropia (kohinaa)
-                for _ in 0..amount { data.push(rng.gen_range(0..=255) as u8); }
-            }
-            _ => { // Tyyppi C: Harvat kuviot
-                for _ in 0..amount { data.push(b'X'); }
-                if data.len() > 10 { data[10] = b'Y'; }
+        let mut file_paths = Vec::new();
+        // Lue kansion sisältö
+        for entry in fs::read_dir(data_dir_path)? {
+            let entry = entry?;
+            let path = entry.path();
+            // Hyväksy vain tiedostot, joiden pääte on .txt
+            if path.is_file() {
+                if let Some(ext) = path.extension() {
+                    if ext == "txt" {
+                        file_paths.push(path);
+                    }
+                }
             }
         }
 
-        data
+        file_paths.sort(); // Varmistetaan johdonmukainen lukujärjestys
+
+        println!("  📥 Feeder: Löydettiin {} .txt-tiedostoa.", file_paths.len());
+        for (i, path) in file_paths.iter().enumerate() {
+            println!("     {}: {}", i + 1, path.display());
+        }
+
+        Ok(Feeder {
+            feed_rate,
+            file_paths,
+            current_file_index: 0,
+            current_file: None, // Avataan tiedosto vasta kun 'feed' kutsutaan
+            is_depleted: false,
+        })
     }
 
-    pub fn is_depleted(&self) -> bool { false }
+    /// Apufunktio, joka avaa seuraavan tiedoston listalta
+    fn open_next_file(&mut self) -> io::Result<()> {
+        if let Some(path) = self.file_paths.get(self.current_file_index) {
+            println!("  📥 Feeder: Avataan tiedosto '{}'...", path.display());
+            let file = File::open(path)?;
+            self.current_file = Some(BufReader::new(file));
+            self.current_file_index += 1;
+        } else {
+            // Ei enää tiedostoja. Kaikki data on syötetty.
+            println!("  📥 Feeder: Kaikki datatiedostot käsitelty.");
+            self.is_depleted = true;
+            self.current_file = None;
+        }
+        Ok(())
+    }
+
+    /// Syötä seuraava pala dataa Worldiin
+    pub fn feed(&mut self, world: &mut World) -> Result<usize, String> {
+        if self.is_depleted {
+            return Ok(0);
+        }
+
+        // Jos tiedosto ei ole auki (tai edellinen loppui), yritä avata seuraava
+        if self.current_file.is_none() {
+            self.open_next_file().map_err(|e| e.to_string())?;
+            // Jos se on edelleen 'None', kaikki tiedostot on luettu
+            if self.is_depleted {
+                return Ok(0);
+            }
+        }
+
+        // Nyt meillä pitäisi olla tiedosto auki. Luetaan siitä.
+        if let Some(ref mut file) = self.current_file {
+            // Luodaan puskuri *vain* tarvittavalle määrälle
+            let mut buffer = vec![0u8; self.feed_rate];
+            
+            match file.read(&mut buffer) {
+                Ok(0) => {
+                    // 0 tavua luettu = tiedosto loppui.
+                    println!("  📥 Feeder: Tiedosto '{}' luettu loppuun.", self.file_paths[self.current_file_index - 1].display());
+                    self.current_file = None; // Sulje tiedosto
+                    // Kutsu feed() uudestaan *tämän saman syklin aikana*
+                    // avataksesi seuraavan tiedoston heti.
+                    self.feed(world)
+                }
+                Ok(bytes_read) => {
+                    // Dataa luettu. Tarkista World-rajoitus.
+                    if world.data.len() + bytes_read > world.memory_limit {
+                        return Err("OVERFLOW: World täynnä! Feeder nopeampi kuin Solver.".to_string());
+                    }
+                    
+                    // HUOM: buffer on 'feed_rate' kokoinen, mutta luimme vain 'bytes_read'
+                    world.data.extend_from_slice(&buffer[..bytes_read]);
+                    Ok(bytes_read)
+                }
+                Err(e) => {
+                    // Jokin meni pieleen tiedostoa lukiessa
+                    Err(e.to_string())
+                }
+            }
+        } else {
+            // Tänne ei pitäisi päätyä, mutta varmuuden vuoksi
+            self.is_depleted = true;
+            Ok(0)
+        }
+    }
+
+    /// Tarkista, onko kaikki data syötetty
+    pub fn is_depleted(&self) -> bool {
+        self.is_depleted
+    }
 }

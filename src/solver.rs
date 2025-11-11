@@ -21,7 +21,7 @@ pub struct Solver {
 }
 
 impl Solver {
-    const MIN_ACCEPT_GAIN: i32 = 12; // hylkää mikromallit joista nettohyöty pieni
+    const MIN_ACCEPT_GAIN: i32 = 6; // hylkää mikromallit joista nettohyöty pieni
     const PATTERN_BANK_FILE: &'static str = "pattern_bank.json";
 
     pub fn new(processing_quota: u32, pattern_bank_capacity: usize) -> Self {
@@ -392,34 +392,30 @@ impl Solver {
     /// Exploit: Käytä tunnettuja malleja
     /// Palauttaa: (Patch, pattern_id) jos löytyi sovellettava malli
     /// HUOM: Patch.range on paikallinen ikkunan suhteen!
+    /// UUSI: Etsii parhaan mallin kaikista, ei pysähdy ensimmäiseen
     fn exploit(&self, data_slice: &[u8]) -> Option<(Patch, u32)> {
-        // Käy läpi kaikki tunnetut mallit
+        let mut best_match: Option<(Patch, u32, usize)> = None; // (patch, pattern_id, saved_bytes)
+
+        // Käy läpi KAIKKI tunnetut mallit ja löydä paras
         for pattern in &self.known_patterns {
-            match &pattern.operator {
+            let candidate = match &pattern.operator {
                 Operator::RunLength(byte, min_count) => {
-                    // Etsi tämän mallin mukaisia toistoja
-                    if let Some(patch) = self.find_run_length(data_slice, *byte, *min_count) {
-                        return Some((patch, pattern.id));
-                    }
+                    self.find_run_length(data_slice, *byte, *min_count)
+                        .map(|p| (p, pattern.id))
                 }
                 Operator::GeneralizedRunLength { min_len } => {
-                    if let Some(patch) = self.find_any_run_length(data_slice, *min_len) {
-                        return Some((patch, pattern.id));
-                    }
+                    self.find_any_run_length(data_slice, *min_len)
+                        .map(|p| (p, pattern.id))
                 }
                 Operator::BackRef(distance, length) => {
-                    // Hyödynnä LZ-tyylistä viittausta jos sekä lähde- että kohdeikkuna ovat
-                    // näkyvissä tässä ikkunassa.
                     let dist = *distance;
                     let len = (*length).min(255);
+                    let mut result = None;
                     if data_slice.len() >= len && dist > 0 {
-                        // Skannaa kaikki mahdolliset kohde-alkiot ikkunassa
                         let max_start = data_slice.len().saturating_sub(len);
                         for i in 0..=max_start {
-                            // Lähdealueen täytyy osua ikkunaan
                             if i < dist { continue; }
                             let src = i - dist;
-                            // Varmista, että myös lähde-alue mahtuu viipaleeseen
                             if src + len > data_slice.len() { continue; }
                             if &data_slice[i..i+len] == &data_slice[src..src+len] {
                                 let new_data = vec![
@@ -429,41 +425,66 @@ impl Solver {
                                     len as u8,
                                 ];
                                 let patch = Patch { range: i..(i + len), new_data };
-                                return Some((patch, pattern.id));
+                                result = Some((patch, pattern.id));
+                                break;
                             }
                         }
                     }
+                    result
                 }
                 Operator::DeltaSequence { start, delta, len } => {
-                    if let Some(patch) = self.find_delta_sequence_exact(data_slice, *start, *delta, *len) {
-                        return Some((patch, pattern.id));
-                    }
+                    self.find_delta_sequence_exact(data_slice, *start, *delta, *len)
+                        .map(|p| (p, pattern.id))
                 }
                 Operator::XorMask { key, base, len } => {
-                    if let Some(patch) = self.find_xor_mask_exact(data_slice, key, *base, *len) {
-                        return Some((patch, pattern.id));
+                    self.find_xor_mask_exact(data_slice, key, *base, *len)
+                        .map(|p| (p, pattern.id))
+                }
+            };
+
+            if let Some((patch, pid)) = candidate {
+                let original_len = patch.range.len();
+                let encoded_len = patch.new_data.len();
+                let saved = original_len.saturating_sub(encoded_len);
+                
+                match &best_match {
+                    None => best_match = Some((patch, pid, saved)),
+                    Some((_, _, best_saved)) if saved > *best_saved => {
+                        best_match = Some((patch, pid, saved));
                     }
+                    _ => {}
                 }
             }
         }
-        None
+
+        best_match.map(|(patch, pid, _)| (patch, pid))
     }
 
-    /// Explore: yritä ensin BackRef (LZ), sitten run-length fallback
+    /// Explore: yritä ensin BackRef (LZ), sitten n-grammit (sanat), sitten muut
     fn explore(&self, world: &World) -> Option<Patch> {
-        if let Some(p) = self.find_backref(world, 5, 16384) { // min len 5, max distance 16KB
-            return Some(p);
-        }
         let slice = world.get_window_data();
-        if let Some(p) = self.find_ngram_reference(slice, 3, 8) {
+        
+        // 1. Etsi pidempiä n-grammeja (sanat, lauseet) - PRIORISOITU
+        if let Some(p) = self.find_ngram_reference(slice, 4, 20) { // 4-20 tavua (sanat)
             return Some(p);
         }
+        
+        // 2. Backref (LZ-viittaukset)
+        if let Some(p) = self.find_backref(world, 4, 16384) { // min len 4, max distance 16KB
+            return Some(p);
+        }
+        
+        // 3. Delta-sekvenssit
         if let Some(p) = self.find_delta_sequence(slice, 6) {
             return Some(p);
         }
+        
+        // 4. XOR-naamiot
         if let Some(p) = self.find_xor_mask(slice, 2, 8, 3) {
             return Some(p);
         }
+        
+        // 5. Run-length (viimeisenä)
         self.find_any_run_length(slice, 3)
     }
 
@@ -574,6 +595,7 @@ impl Solver {
     }
 
     /// Etsi ikkunan sisällä toistuvia n-grammeja ja koodaa ne LZ-viittauksena
+    /// PARANNETTU: Priorisoi pidempiä osumia (sanoja) lyhyiden yli
     fn find_ngram_reference(&self, data: &[u8], min_len: usize, max_len: usize) -> Option<Patch> {
         if data.len() < min_len * 2 {
             return None;
@@ -584,13 +606,13 @@ impl Solver {
         let mut first_occurrence: HashMap<Vec<u8>, usize> = HashMap::new();
         let mut best: Option<(usize, usize, usize)> = None; // (target, source, len)
 
-        for i in 0..data.len() {
-            let remaining = data.len() - i;
-            for len in min_len..=max_len {
-                if len > remaining || len > 255 {
-                    break;
-                }
-
+        // Etsi pidemmistä osumista lyhyempiin (priorisointi)
+        for len in (min_len..=max_len).rev() {
+            if len > 255 {
+                continue;
+            }
+            
+            for i in 0..data.len().saturating_sub(len) {
                 let key = data[i..i + len].to_vec();
                 match first_occurrence.entry(key) {
                     Entry::Vacant(v) => {
@@ -611,13 +633,21 @@ impl Solver {
                         }
                         match best {
                             None => best = Some((i, first, len)),
-                            Some((best_target, _, best_len)) => {
-                                if len > best_len || (len == best_len && i < best_target) {
+                            Some((_, _, best_len)) => {
+                                // Priorisoi pidempiä osumia
+                                if len > best_len {
                                     best = Some((i, first, len));
                                 }
                             }
                         }
                     }
+                }
+            }
+            
+            // Jos löytyi hyvä pitkä osuma, käytä sitä
+            if let Some((_, _, found_len)) = best {
+                if found_len >= len {
+                    break;
                 }
             }
         }

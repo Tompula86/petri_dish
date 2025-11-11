@@ -1,1 +1,6 @@
 /target
+# Do not commit dataset text files
+data/*.txt
+
+# Pattern bank persistence (may be large / generated)
+pattern_bank.json

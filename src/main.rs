@@ -16,22 +16,22 @@ use std::fs::File;
 use std::io::Write;
 
 fn main() {
-    println!("=== Petrimalja Älykkyyelle: VAIHE 5 - Sopeutumisnopeus ===\n");
+    println!("=== Petrimalja Älykkyyelle: VAIHE 6 - Striimaava Data ===\n");
 
     // Luo World (rajoitettu 50 kB, paine kovenee!)
     let mut world = World::new(50_000);
     
-    // Vaihdetaan loputtomaan generaattorifeederiin
-    let mut feeder = Feeder::new(3_000); // 3 kB per sykli
+    // Luo Feeder, joka lukee "./data"-kansiosta
+    let mut feeder = Feeder::new(3_000, "./data")
+        .expect("Datakansion lukeminen epäonnistui. Varmista, että kansio './data' on olemassa.");
 
     // Luo Evaluator ja Solver
     let evaluator = Evaluator::new();
-    let mut solver = Solver::load_or_new(1000, 50); // 50 patternin kapasiteetti
+    let mut solver = Solver::load_or_new(1000, 150); // 150 patternin kapasiteetti (kasvuvaraa teksteille)
 
-    println!("Aloitustilanne:");
+    println!("\nAloitustilanne:");
     println!("  World kapasiteetti: {} tavua", world.memory_limit);
     println!("  Feeder nopeus: {} tavua/sykli", feeder.feed_rate);
-    println!("  Feeder virta: (generaattori, ei rajallista dataa)");
     println!("  Solver: {} mallia ladattu muistista", solver.known_patterns.len());
     
     // Avaa CSV-tiedosto
