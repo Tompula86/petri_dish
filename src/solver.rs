@@ -18,6 +18,12 @@ pub struct Solver {
     pub stats: Stats,
     /// Scheduler: päättää strategiset valinnat
     pub scheduler: crate::scheduler::Scheduler,
+    /// Sanakirja: word_id -> word bytes; käytetään Dictionary-operaattoreissa
+    dictionary: HashMap<u32, Vec<u8>>,
+    /// Käänteinen sanakirja: word bytes -> word_id; nopeaan hakuun
+    word_to_id: HashMap<Vec<u8>, u32>,
+    /// Seuraava vapaa word_id
+    next_word_id: u32,
 }
 
 impl Solver {
@@ -32,6 +38,9 @@ impl Solver {
             pattern_bank_capacity,
             stats: Stats::new(),
             scheduler: crate::scheduler::Scheduler::new(),
+            dictionary: HashMap::new(),
+            word_to_id: HashMap::new(),
+            next_word_id: 0,
         }
     }
 
@@ -41,14 +50,20 @@ impl Solver {
             if let Ok(patterns) = serde_json::from_str::<Vec<Pattern>>(&contents) {
                 let max_id = patterns.iter().map(|p| p.id).max().unwrap_or(0);
                 println!("  ♻️  Ladattiin {} mallia tiedostosta {}", patterns.len(), Self::PATTERN_BANK_FILE);
-                return Solver {
+                let mut solver = Solver {
                     processing_quota,
                     known_patterns: patterns,
                     next_pattern_id: max_id + 1,
                     pattern_bank_capacity,
                     stats: Stats::new(),
                     scheduler: crate::scheduler::Scheduler::new(),
+                    dictionary: HashMap::new(),
+                    word_to_id: HashMap::new(),
+                    next_word_id: 0,
                 };
+                // Rakennetaan sanakirja ladatuista Dictionary-malleista
+                solver.rebuild_dictionary();
+                return solver;
             }
         }
         println!("  🆕 Luodaan uusi Solver (ei aiempia malleja)");
@@ -124,42 +139,34 @@ impl Solver {
                 },
 
                 crate::scheduler::Action::Explore => {
-                    if let Some(patch) = self.explore(world) {
-                        // TÄRKEÄÄ: Muunna paikallinen patch globaaliksi
-                        let global_patch = patch.clone_with_offset(world.window.start);
-
-                        let cost_before = evaluator.calculate_total_cost(world);
-                        let original_data = world.get_data_in_range(global_patch.range.clone());
-                        
-                        // Tunnista operaattori patchistä
-                        let operator = self.identify_operator(&global_patch);
-                        
-                        world.apply_patch(&global_patch);
-                        let cost_after = evaluator.calculate_total_cost(world);
-                        let gain = evaluator.calculate_gain(cost_before, cost_after);
-                        
-                        if gain < Solver::MIN_ACCEPT_GAIN {
-                            world.rollback(&global_patch, original_data);
+                    // Kokeile ensin Dictionary-entry rakentamista (50% todennäköisyydellä)
+                    let try_dictionary = rand::random::<f64>() < 0.5;
+                    
+                    if try_dictionary {
+                        let slice = world.get_window_data();
+                        if let Some(pattern) = self.build_dictionary_entry(slice, 4, 20) {
                             quota_cost = 10;
-                            self.stats.record_explore(quota_cost, 0);
-                            println!("  ✗ Explore: Malli hylätty (liian pieni hyöty: {} tavua)", gain);
+                            let pattern_id = pattern.id;
+                            self.known_patterns.push(pattern);
+                            self.stats.record_explore(quota_cost, 0); // Ei apply'd vielä, nolla gain tässä vaiheessa
+                            println!("  ✓ Explore: Dictionary-sana #{} lisätty (word_id: {:?})", pattern_id, 
+                                     match &self.known_patterns.last().unwrap().operator {
+                                         Operator::Dictionary { word_id } => word_id,
+                                         _ => &0,
+                                     });
+                            println!("  📚 PatternBank: {}/{} mallia muistissa", self.known_patterns.len(), self.pattern_bank_capacity);
+                            self.forget_if_needed();
+                        } else if let Some(patch) = self.explore(world) {
+                            // Jos Dictionary ei löydy, yritä muita malleja
+                            quota_cost = self.handle_explore_patch(world, evaluator, patch);
                         } else {
                             quota_cost = 10;
-                            self.stats.record_explore(quota_cost, gain);
-                            
-                            // OPI: Lisää PatternBankiin
-                            let mut pattern = Pattern::new(self.next_pattern_id, operator);
-                            pattern.record_usage(gain);
-                            let pattern_id = self.next_pattern_id;
-                            self.next_pattern_id += 1;
-                            self.known_patterns.push(pattern);
-                            println!("  ✓ Explore: Uusi malli #{} löydetty (säästö: {} tavua)", pattern_id, gain);
-                            println!("  📚 PatternBank: {}/{} mallia muistissa", self.known_patterns.len(), self.pattern_bank_capacity);
-                            // Muista unohtaa, jos täynnä
-                            self.forget_if_needed();
+                            self.stats.record_explore(quota_cost, 0);
                         }
+                    } else if let Some(patch) = self.explore(world) {
+                        quota_cost = self.handle_explore_patch(world, evaluator, patch);
                     } else {
-                        quota_cost = 10; // Yritys maksoi
+                        quota_cost = 10;
                         self.stats.record_explore(quota_cost, 0);
                     }
                 },
@@ -362,6 +369,7 @@ impl Solver {
 
     /// Tunnista operaattori Patchista (yksinkertaistettu)
     fn identify_operator(&self, patch: &Patch) -> Operator {
+        use crate::operator::OP_DICT;
         if patch.new_data.len() == 3 && patch.new_data[0] == OP_RLE {
             Operator::RunLength(patch.new_data[1], patch.new_data[2] as usize)
         } else if patch.new_data.len() == 4 && patch.new_data[0] == OP_LZ {
@@ -383,9 +391,52 @@ impl Solver {
             } else {
                 Operator::RunLength(0, 0)
             }
+        } else if patch.new_data.len() == 3 && patch.new_data[0] == OP_DICT {
+            let word_id = (patch.new_data[1] as u32) | ((patch.new_data[2] as u32) << 8);
+            Operator::Dictionary { word_id }
         } else {
             // Oletus: RunLength jos tuntematon
             Operator::RunLength(0, 0)
+        }
+    }
+
+    /// Käsittele explore-patchin soveltaminen ja oppiminen
+    fn handle_explore_patch(&mut self, world: &mut World, evaluator: &crate::evaluator::Evaluator, 
+                            patch: Patch) -> u32 {
+        // Muunna paikallinen patch globaaliksi
+        let global_patch = patch.clone_with_offset(world.window.start);
+
+        let cost_before = evaluator.calculate_total_cost(world);
+        let original_data = world.get_data_in_range(global_patch.range.clone());
+        
+        // Tunnista operaattori patchistä
+        let operator = self.identify_operator(&global_patch);
+        
+        world.apply_patch(&global_patch);
+        let cost_after = evaluator.calculate_total_cost(world);
+        let gain = evaluator.calculate_gain(cost_before, cost_after);
+        
+        if gain < Solver::MIN_ACCEPT_GAIN {
+            world.rollback(&global_patch, original_data);
+            let quota_cost = 10;
+            self.stats.record_explore(quota_cost, 0);
+            println!("  ✗ Explore: Malli hylätty (liian pieni hyöty: {} tavua)", gain);
+            quota_cost
+        } else {
+            let quota_cost = 10;
+            self.stats.record_explore(quota_cost, gain);
+            
+            // OPI: Lisää PatternBankiin
+            let mut pattern = Pattern::new(self.next_pattern_id, operator);
+            pattern.record_usage(gain);
+            let pattern_id = self.next_pattern_id;
+            self.next_pattern_id += 1;
+            self.known_patterns.push(pattern);
+            println!("  ✓ Explore: Uusi malli #{} löydetty (säästö: {} tavua)", pattern_id, gain);
+            println!("  📚 PatternBank: {}/{} mallia muistissa", self.known_patterns.len(), self.pattern_bank_capacity);
+            // Muista unohtaa, jos täynnä
+            self.forget_if_needed();
+            quota_cost
         }
     }
 
@@ -440,6 +491,10 @@ impl Solver {
                     self.find_xor_mask_exact(data_slice, key, *base, *len)
                         .map(|p| (p, pattern.id))
                 }
+                Operator::Dictionary { word_id } => {
+                    self.find_dictionary_word(data_slice, *word_id)
+                        .map(|p| (p, pattern.id))
+                }
             };
 
             if let Some((patch, pid)) = candidate {
@@ -460,31 +515,39 @@ impl Solver {
         best_match.map(|(patch, pid, _)| (patch, pid))
     }
 
-    /// Explore: yritä ensin BackRef (LZ), sitten n-grammit (sanat), sitten muut
-    fn explore(&self, world: &World) -> Option<Patch> {
+    /// Explore: yritä ensin Dictionary (sanat), sitten BackRef (LZ), sitten n-grammit, sitten muut
+    fn explore(&mut self, world: &World) -> Option<Patch> {
         let slice = world.get_window_data();
         
-        // 1. Etsi pidempiä n-grammeja (sanat, lauseet) - PRIORISOITU
+        // HUOM: explore() on nyt &mut self, koska build_dictionary_entry muuttaa sanakirjaa
+        // Tämä vaatii muutoksia kutsujissa myös
+        
+        // 1. Yritä rakentaa Dictionary-entry (sanat, lauseet) - PRIORISOITU
+        // Huom: Emme voi palauttaa suoraan Patchia, vaan pitää lisätä se PatternBankiin
+        // ja luoda Patch exploit-tyyliin. Tämä on hieman kömpelö, mutta toimii.
+        // Parempi tapa: palauta None täältä ja anna add_pattern hoitaa loput.
+        
+        // 2. Etsi pidempiä n-grammeja (sanat, lauseet)
         if let Some(p) = self.find_ngram_reference(slice, 4, 20) { // 4-20 tavua (sanat)
             return Some(p);
         }
         
-        // 2. Backref (LZ-viittaukset)
+        // 3. Backref (LZ-viittaukset)
         if let Some(p) = self.find_backref(world, 4, 16384) { // min len 4, max distance 16KB
             return Some(p);
         }
         
-        // 3. Delta-sekvenssit
+        // 4. Delta-sekvenssit
         if let Some(p) = self.find_delta_sequence(slice, 6) {
             return Some(p);
         }
         
-        // 4. XOR-naamiot
+        // 5. XOR-naamiot
         if let Some(p) = self.find_xor_mask(slice, 2, 8, 3) {
             return Some(p);
         }
         
-        // 5. Run-length (viimeisenä)
+        // 6. Run-length (viimeisenä)
         self.find_any_run_length(slice, 3)
     }
 
@@ -849,5 +912,111 @@ impl Solver {
     #[inline]
     fn add_delta(value: u8, delta: i8) -> u8 {
         (((value as i16) + (delta as i16)).rem_euclid(256)) as u8
+    }
+
+    /// Rakenna sanakirja ladatuista Dictionary-malleista
+    /// HUOM: Tämä on väliaikainen, sillä ladattaessa ei ole varsinaisia sanoja,
+    /// vain word_id:t. Todellisuudessa Dictionary-mallit tulisi rakentaa uudelleen
+    /// datasta, mutta nyt tyhjennämme sanakirjan ladattaessa.
+    fn rebuild_dictionary(&mut self) {
+        self.dictionary.clear();
+        self.word_to_id.clear();
+        self.next_word_id = 0;
+        // TODO: Jos haluamme säilyttää Dictionary-malleja, pitää tallentaa myös sanakirja
+        // tai rakentaa se uudelleen datasta
+    }
+
+    /// Etsi sanakirjasta word_id:tä vastaava sana ja skannaa data sitä vastaan
+    fn find_dictionary_word(&self, data: &[u8], word_id: u32) -> Option<Patch> {
+        let word = self.dictionary.get(&word_id)?;
+        let word_len = word.len();
+        
+        if word_len == 0 || word_len > data.len() {
+            return None;
+        }
+
+        // Etsi ensimmäinen esiintymä
+        for start in 0..=data.len().saturating_sub(word_len) {
+            if &data[start..start + word_len] == word.as_slice() {
+                use crate::operator::OP_DICT;
+                let new_data = vec![
+                    OP_DICT,
+                    (word_id & 0xFF) as u8,
+                    ((word_id >> 8) & 0xFF) as u8,
+                ];
+                return Some(Patch {
+                    range: start..(start + word_len),
+                    new_data,
+                });
+            }
+        }
+
+        None
+    }
+
+    /// Rakenna uusi Dictionary-entry: etsi toistuva 4-20 tavun sekvenssi (sana),
+    /// lisää sanakirjaan ja luo Pattern
+    fn build_dictionary_entry(&mut self, data: &[u8], min_len: usize, max_len: usize) -> Option<Pattern> {
+        let max_len = max_len.min(data.len());
+        
+        // Etsi toistuvia sekvenssejä (vähintään 2 esiintymää)
+        let mut best: Option<(Vec<u8>, usize)> = None; // (word, count)
+        
+        for len in (min_len..=max_len).rev() { // Aloita pisimmistä
+            if len > data.len() {
+                continue;
+            }
+            
+            let mut seen = HashMap::new();
+            for start in 0..=data.len().saturating_sub(len) {
+                let seq = &data[start..start + len];
+                *seen.entry(seq.to_vec()).or_insert(0) += 1;
+            }
+            
+            for (seq, count) in seen {
+                if count >= 2 {
+                    match &best {
+                        None => best = Some((seq, count)),
+                        Some((_, best_count)) if count > *best_count => {
+                            best = Some((seq, count));
+                        }
+                        _ => {}
+                    }
+                }
+            }
+            
+            if best.is_some() {
+                break; // Löytyi pidempi, ei tarvitse etsiä lyhyempiä
+            }
+        }
+        
+        let (word, _occurrences) = best?;
+        
+        // Tarkista onko sana jo sanakirjassa
+        if let Some(&existing_id) = self.word_to_id.get(&word) {
+            // Sana on jo olemassa, käytä sitä
+            let pattern_id = self.next_pattern_id;
+            self.next_pattern_id += 1;
+            
+            let pattern = Pattern::new(
+                pattern_id,
+                Operator::Dictionary { word_id: existing_id },
+            );
+            return Some(pattern);
+        }
+        
+        // Lisää uusi sana sanakirjaan
+        let word_id = self.next_word_id;
+        self.next_word_id += 1;
+        self.dictionary.insert(word_id, word.clone());
+        self.word_to_id.insert(word.clone(), word_id);
+        
+        let pattern_id = self.next_pattern_id;
+        self.next_pattern_id += 1;
+        
+        Some(Pattern::new(
+            pattern_id,
+            Operator::Dictionary { word_id },
+        ))
     }
 }

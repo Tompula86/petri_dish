@@ -1,5 +1,5 @@
 use crate::world::World;
-use crate::operator::{OP_DELTA, OP_LZ, OP_RLE, OP_XOR};
+use crate::operator::{OP_DELTA, OP_DICT, OP_LZ, OP_RLE, OP_XOR};
 
 /// Evaluator (Arvioija): mittaa kokonaiskustannuksen ja hyväksyy vain muutokset, 
 /// jotka parantavat nettoa.
@@ -48,6 +48,10 @@ impl Evaluator {
                     c_residual += 1;
                     i += 1;
                 }
+            } else if data[i] == OP_DICT && i + 2 < data.len() {
+                // [OP_DICT, word_id_lo, word_id_hi]
+                c_models += 3;
+                i += 3;
             } else {
                 // Raaka data: kustannus = 1 tavu
                 c_residual += 1;
