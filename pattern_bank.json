@@ -1,1952 +1,1833 @@
 [
   {
-    "id": 4,
+    "id": 0,
     "operator": {
-      "BackRef": [
-        500,
-        250
-      ]
+      "Dictionary": {
+        "word_id": 0
+      }
     },
-    "usage_count": 397,
-    "total_bytes_saved": 97662,
-    "last_used": 1762885982,
-    "recent_gain": 5.023677201284408
+    "usage_count": 85,
+    "total_bytes_saved": 1445,
+    "last_used": 1762889882,
+    "recent_gain": 7.087609222758153
   },
   {
     "id": 11,
     "operator": {
-      "BackRef": [
-        180,
-        210
-      ]
+      "Dictionary": {
+        "word_id": 1
+      }
     },
-    "usage_count": 876,
-    "total_bytes_saved": 180456,
-    "last_used": 1762885982,
-    "recent_gain": 4.801675257376182
+    "usage_count": 14,
+    "total_bytes_saved": 238,
+    "last_used": 1762889881,
+    "recent_gain": 4.364931389690872
   },
   {
-    "id": 424,
+    "id": 14,
     "operator": {
-      "BackRef": [
-        10,
-        255
-      ]
+      "Dictionary": {
+        "word_id": 2
+      }
     },
-    "usage_count": 622,
-    "total_bytes_saved": 156122,
-    "last_used": 1762885980,
-    "recent_gain": 5.365263782900373
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889881,
+    "recent_gain": 4.315940770157707
   },
   {
-    "id": 790,
+    "id": 15,
     "operator": {
-      "BackRef": [
-        10,
-        168
-      ]
+      "Dictionary": {
+        "word_id": 3
+      }
     },
-    "usage_count": 937,
-    "total_bytes_saved": 153668,
-    "last_used": 1762885982,
-    "recent_gain": 3.89007839864788
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889881,
+    "recent_gain": 4.315940770157707
   },
   {
-    "id": 5545,
+    "id": 16,
     "operator": {
-      "BackRef": [
-        27,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 4
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 66,
+    "last_used": 1762889881,
+    "recent_gain": 4.142159505832235
+  },
+  {
+    "id": 17,
+    "operator": {
+      "Dictionary": {
+        "word_id": 5
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 62,
+    "last_used": 1762889881,
+    "recent_gain": 3.888280636999429
+  },
+  {
+    "id": 18,
+    "operator": {
+      "Dictionary": {
+        "word_id": 6
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 60,
+    "last_used": 1762889881,
+    "recent_gain": 3.8081830324920922
+  },
+  {
+    "id": 19,
+    "operator": {
+      "Dictionary": {
+        "word_id": 7
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 58,
+    "last_used": 1762889881,
+    "recent_gain": 3.6344017681666227
+  },
+  {
+    "id": 20,
+    "operator": {
+      "Dictionary": {
+        "word_id": 8
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 70,
+    "last_used": 1762889882,
+    "recent_gain": 4.129149296011585
+  },
+  {
+    "id": 21,
+    "operator": {
+      "Dictionary": {
+        "word_id": 9
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 56,
+    "last_used": 1762889881,
+    "recent_gain": 3.5543041636592867
+  },
+  {
+    "id": 22,
+    "operator": {
+      "Dictionary": {
+        "word_id": 10
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 68,
+    "last_used": 1762889881,
+    "recent_gain": 3.3952777212167464
+  },
+  {
+    "id": 23,
+    "operator": {
+      "Dictionary": {
+        "word_id": 11
+      }
+    },
+    "usage_count": 7,
+    "total_bytes_saved": 84,
+    "last_used": 1762889882,
+    "recent_gain": 3.5558699997710823
+  },
+  {
+    "id": 25,
+    "operator": {
+      "Dictionary": {
+        "word_id": 12
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 58,
+    "last_used": 1762889881,
+    "recent_gain": 2.8854121518535725
+  },
+  {
+    "id": 26,
+    "operator": {
+      "Dictionary": {
+        "word_id": 13
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 46,
+    "last_used": 1762889881,
+    "recent_gain": 2.8727651616682035
+  },
+  {
+    "id": 27,
+    "operator": {
+      "Dictionary": {
+        "word_id": 14
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 44,
+    "last_used": 1762889882,
+    "recent_gain": 2.792667557160869
+  },
+  {
+    "id": 28,
+    "operator": {
+      "Dictionary": {
+        "word_id": 15
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 52,
+    "last_used": 1762889882,
+    "recent_gain": 3.0094655576744906
+  },
+  {
+    "id": 29,
+    "operator": {
+      "Dictionary": {
+        "word_id": 16
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 42,
+    "last_used": 1762889882,
+    "recent_gain": 2.618886292835397
+  },
+  {
+    "id": 37,
+    "operator": {
+      "Dictionary": {
+        "word_id": 17
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 44,
+    "last_used": 1762889890,
+    "recent_gain": 3.463827897194207
+  },
+  {
+    "id": 38,
+    "operator": {
+      "Dictionary": {
+        "word_id": 18
+      }
+    },
+    "usage_count": 2,
+    "total_bytes_saved": 2,
+    "last_used": 1762889563,
+    "recent_gain": 0.14989025404881542
+  },
+  {
+    "id": 39,
+    "operator": {
+      "Dictionary": {
+        "word_id": 19
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 52,
+    "last_used": 1762889882,
+    "recent_gain": 3.0443954709831895
+  },
+  {
+    "id": 42,
+    "operator": {
+      "Dictionary": {
+        "word_id": 21
+      }
     },
     "usage_count": 3,
-    "total_bytes_saved": 48,
-    "last_used": 1762887470,
-    "recent_gain": 8.950522637527675
+    "total_bytes_saved": 46,
+    "last_used": 1762889882,
+    "recent_gain": 4.121529208022133
   },
   {
-    "id": 5558,
+    "id": 43,
     "operator": {
-      "BackRef": [
-        714,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 22
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887447,
-    "recent_gain": 7.802799665848471
+    "usage_count": 4,
+    "total_bytes_saved": 50,
+    "last_used": 1762889882,
+    "recent_gain": 3.4884330001445067
   },
   {
-    "id": 5599,
+    "id": 44,
     "operator": {
-      "BackRef": [
-        164,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887449,
-    "recent_gain": 8.213473332472075
-  },
-  {
-    "id": 5600,
-    "operator": {
-      "BackRef": [
-        1825,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887449,
-    "recent_gain": 8.213473332472075
-  },
-  {
-    "id": 5710,
-    "operator": {
-      "BackRef": [
-        201,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887455,
-    "recent_gain": 8.645761402602185
-  },
-  {
-    "id": 5711,
-    "operator": {
-      "BackRef": [
-        100,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887455,
-    "recent_gain": 8.105401314939552
-  },
-  {
-    "id": 5737,
-    "operator": {
-      "BackRef": [
-        279,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887456,
-    "recent_gain": 8.645761402602185
-  },
-  {
-    "id": 5754,
-    "operator": {
-      "BackRef": [
-        148,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887457,
-    "recent_gain": 9.100801476423353
-  },
-  {
-    "id": 5755,
-    "operator": {
-      "BackRef": [
-        397,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887457,
-    "recent_gain": 9.100801476423353
-  },
-  {
-    "id": 5758,
-    "operator": {
-      "BackRef": [
-        302,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887457,
-    "recent_gain": 9.100801476423353
-  },
-  {
-    "id": 5761,
-    "operator": {
-      "BackRef": [
-        62,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887457,
-    "recent_gain": 9.100801476423353
-  },
-  {
-    "id": 5762,
-    "operator": {
-      "BackRef": [
-        130,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887457,
-    "recent_gain": 7.963201291870437
-  },
-  {
-    "id": 5763,
-    "operator": {
-      "BackRef": [
-        99,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887457,
-    "recent_gain": 7.963201291870437
-  },
-  {
-    "id": 5765,
-    "operator": {
-      "BackRef": [
-        157,
-        17
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 13,
-    "last_used": 1762887457,
-    "recent_gain": 7.394401199593977
-  },
-  {
-    "id": 5816,
-    "operator": {
-      "BackRef": [
-        81,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887459,
-    "recent_gain": 9.579791027814057
-  },
-  {
-    "id": 5817,
-    "operator": {
-      "BackRef": [
-        1272,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887459,
-    "recent_gain": 9.579791027814057
-  },
-  {
-    "id": 5821,
-    "operator": {
-      "BackRef": [
-        541,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887459,
-    "recent_gain": 8.98105408857568
-  },
-  {
-    "id": 5846,
-    "operator": {
-      "BackRef": [
-        2473,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887460,
-    "recent_gain": 9.579791027814057
-  },
-  {
-    "id": 5847,
-    "operator": {
-      "BackRef": [
-        3504,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887460,
-    "recent_gain": 8.382317149337302
-  },
-  {
-    "id": 5861,
-    "operator": {
-      "BackRef": [
-        1466,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887460,
-    "recent_gain": 8.98105408857568
-  },
-  {
-    "id": 5862,
-    "operator": {
-      "BackRef": [
-        1558,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887460,
-    "recent_gain": 8.382317149337302
-  },
-  {
-    "id": 5863,
-    "operator": {
-      "BackRef": [
-        156,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887460,
-    "recent_gain": 8.382317149337302
-  },
-  {
-    "id": 5864,
-    "operator": {
-      "BackRef": [
-        127,
-        17
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 13,
-    "last_used": 1762887460,
-    "recent_gain": 7.783580210098924
-  },
-  {
-    "id": 5868,
-    "operator": {
-      "BackRef": [
-        86,
-        17
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 13,
-    "last_used": 1762887460,
-    "recent_gain": 7.783580210098924
-  },
-  {
-    "id": 5870,
-    "operator": {
-      "BackRef": [
-        2931,
-        17
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 13,
-    "last_used": 1762887460,
-    "recent_gain": 7.783580210098924
-  },
-  {
-    "id": 5872,
-    "operator": {
-      "BackRef": [
-        643,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887460,
-    "recent_gain": 7.184843270860541
-  },
-  {
-    "id": 5935,
-    "operator": {
-      "BackRef": [
-        761,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887464,
-    "recent_gain": 10.083990555593745
-  },
-  {
-    "id": 5939,
-    "operator": {
-      "BackRef": [
-        907,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887464,
-    "recent_gain": 9.453741145869138
-  },
-  {
-    "id": 5940,
-    "operator": {
-      "BackRef": [
-        520,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887464,
-    "recent_gain": 8.823491736144529
-  },
-  {
-    "id": 5941,
-    "operator": {
-      "BackRef": [
-        469,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887464,
-    "recent_gain": 8.823491736144529
-  },
-  {
-    "id": 5943,
-    "operator": {
-      "BackRef": [
-        74,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887464,
-    "recent_gain": 7.562992916695307
-  },
-  {
-    "id": 5944,
-    "operator": {
-      "BackRef": [
-        334,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887464,
-    "recent_gain": 7.562992916695307
-  },
-  {
-    "id": 5946,
-    "operator": {
-      "BackRef": [
-        2511,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887464,
-    "recent_gain": 10.083990555593745
-  },
-  {
-    "id": 5957,
-    "operator": {
-      "BackRef": [
-        68,
-        15
-      ]
+      "Dictionary": {
+        "word_id": 23
+      }
     },
     "usage_count": 2,
-    "total_bytes_saved": 22,
-    "last_used": 1762887476,
-    "recent_gain": 7.713110745634763
-  },
-  {
-    "id": 5996,
-    "operator": {
-      "BackRef": [
-        61,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887466,
-    "recent_gain": 7.961045175468744
-  },
-  {
-    "id": 5998,
-    "operator": {
-      "BackRef": [
-        796,
-        15
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887466,
-    "recent_gain": 7.297624744179685
-  },
-  {
-    "id": 6000,
-    "operator": {
-      "BackRef": [
-        2287,
-        15
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887466,
-    "recent_gain": 7.297624744179685
-  },
-  {
-    "id": 6003,
-    "operator": {
-      "BackRef": [
-        125,
-        15
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887466,
-    "recent_gain": 7.297624744179685
-  },
-  {
-    "id": 6009,
-    "operator": {
-      "BackRef": [
-        50,
-        20
-      ]
-    },
-    "usage_count": 1,
     "total_bytes_saved": 16,
-    "last_used": 1762887466,
-    "recent_gain": 10.614726900624996
+    "last_used": 1762889563,
+    "recent_gain": 1.1991220323905234
   },
   {
-    "id": 6010,
+    "id": 46,
     "operator": {
-      "BackRef": [
-        71,
-        18
-      ]
+      "Dictionary": {
+        "word_id": 24
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887466,
-    "recent_gain": 9.287886038046873
+    "usage_count": 5,
+    "total_bytes_saved": 44,
+    "last_used": 1762889882,
+    "recent_gain": 2.50047823146847
   },
   {
-    "id": 6013,
+    "id": 47,
     "operator": {
-      "BackRef": [
-        567,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887466,
-    "recent_gain": 7.961045175468744
-  },
-  {
-    "id": 6014,
-    "operator": {
-      "BackRef": [
-        408,
-        15
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887466,
-    "recent_gain": 7.297624744179685
-  },
-  {
-    "id": 6042,
-    "operator": {
-      "BackRef": [
-        86,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887467,
-    "recent_gain": 6.9833729609374995
-  },
-  {
-    "id": 6048,
-    "operator": {
-      "BackRef": [
-        301,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887467,
-    "recent_gain": 6.9833729609374995
-  },
-  {
-    "id": 6049,
-    "operator": {
-      "BackRef": [
-        2083,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887467,
-    "recent_gain": 6.9833729609374995
-  },
-  {
-    "id": 6066,
-    "operator": {
-      "BackRef": [
-        336,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887468,
-    "recent_gain": 11.173396737499996
-  },
-  {
-    "id": 6069,
-    "operator": {
-      "BackRef": [
-        88,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887468,
-    "recent_gain": 11.173396737499996
-  },
-  {
-    "id": 6105,
-    "operator": {
-      "BackRef": [
-        228,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887471,
-    "recent_gain": 11.761470249999997
-  },
-  {
-    "id": 6109,
-    "operator": {
-      "BackRef": [
-        1734,
-        18
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 14,
-    "last_used": 1762887471,
-    "recent_gain": 10.291286468749998
-  },
-  {
-    "id": 6111,
-    "operator": {
-      "BackRef": [
-        2488,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887471,
-    "recent_gain": 8.821102687499994
-  },
-  {
-    "id": 6114,
-    "operator": {
-      "BackRef": [
-        118,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887471,
-    "recent_gain": 7.3509189062499996
-  },
-  {
-    "id": 6143,
-    "operator": {
-      "BackRef": [
-        3643,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887473,
-    "recent_gain": 12.380494999999998
-  },
-  {
-    "id": 6144,
-    "operator": {
-      "BackRef": [
-        204,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887473,
-    "recent_gain": 7.737809374999999
-  },
-  {
-    "id": 6148,
-    "operator": {
-      "BackRef": [
-        2866,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887473,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6150,
-    "operator": {
-      "BackRef": [
-        23,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887473,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6154,
-    "operator": {
-      "BackRef": [
-        1699,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887473,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6156,
-    "operator": {
-      "BackRef": [
-        335,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887473,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6159,
-    "operator": {
-      "BackRef": [
-        3542,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887473,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6162,
-    "operator": {
-      "BackRef": [
-        3485,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887473,
-    "recent_gain": 12.380494999999998
-  },
-  {
-    "id": 6163,
-    "operator": {
-      "BackRef": [
-        3469,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887473,
-    "recent_gain": 12.380494999999998
-  },
-  {
-    "id": 6167,
-    "operator": {
-      "BackRef": [
-        100,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887473,
-    "recent_gain": 11.606714062499998
-  },
-  {
-    "id": 6168,
-    "operator": {
-      "BackRef": [
-        186,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887473,
-    "recent_gain": 11.606714062499998
-  },
-  {
-    "id": 6169,
-    "operator": {
-      "BackRef": [
-        199,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887473,
-    "recent_gain": 11.606714062499998
-  },
-  {
-    "id": 6170,
-    "operator": {
-      "BackRef": [
-        320,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887473,
-    "recent_gain": 7.737809374999999
-  },
-  {
-    "id": 6171,
-    "operator": {
-      "BackRef": [
-        692,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887473,
-    "recent_gain": 7.737809374999999
-  },
-  {
-    "id": 6174,
-    "operator": {
-      "BackRef": [
-        607,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887474,
-    "recent_gain": 7.737809374999999
-  },
-  {
-    "id": 6185,
-    "operator": {
-      "BackRef": [
-        294,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887474,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6189,
-    "operator": {
-      "BackRef": [
-        33,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887474,
-    "recent_gain": 6.964028437499998
-  },
-  {
-    "id": 6193,
-    "operator": {
-      "BackRef": [
-        468,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887474,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6195,
-    "operator": {
-      "BackRef": [
-        2883,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887474,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6196,
-    "operator": {
-      "BackRef": [
-        3378,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887474,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6203,
-    "operator": {
-      "BackRef": [
-        180,
-        12
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887475,
-    "recent_gain": 6.516049999999999
-  },
-  {
-    "id": 6204,
-    "operator": {
-      "BackRef": [
-        3325,
-        12
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887475,
-    "recent_gain": 6.516049999999999
-  },
-  {
-    "id": 6208,
-    "operator": {
-      "BackRef": [
-        953,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887475,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6211,
-    "operator": {
-      "BackRef": [
-        533,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 25
+      }
     },
     "usage_count": 2,
     "total_bytes_saved": 16,
-    "last_used": 1762887493,
-    "recent_gain": 6.887037499999999
+    "last_used": 1762889563,
+    "recent_gain": 1.1991220323905234
   },
   {
-    "id": 6226,
+    "id": 49,
     "operator": {
-      "BackRef": [
-        979,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 26
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6229,
-    "operator": {
-      "BackRef": [
-        60,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6230,
-    "operator": {
-      "BackRef": [
-        72,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6234,
-    "operator": {
-      "BackRef": [
-        1141,
-        19
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887476,
-    "recent_gain": 12.217593749999999
-  },
-  {
-    "id": 6235,
-    "operator": {
-      "BackRef": [
-        2811,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6236,
-    "operator": {
-      "BackRef": [
-        2218,
-        15
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887476,
-    "recent_gain": 8.959568749999997
-  },
-  {
-    "id": 6248,
-    "operator": {
-      "BackRef": [
-        138,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6249,
-    "operator": {
-      "BackRef": [
-        80,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6251,
-    "operator": {
-      "BackRef": [
-        149,
-        20
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887476,
-    "recent_gain": 13.032099999999998
-  },
-  {
-    "id": 6253,
-    "operator": {
-      "BackRef": [
-        302,
-        18
-      ]
-    },
-    "usage_count": 1,
+    "usage_count": 2,
     "total_bytes_saved": 14,
-    "last_used": 1762887476,
-    "recent_gain": 11.403087499999998
+    "last_used": 1762889564,
+    "recent_gain": 1.049231778341708
   },
   {
-    "id": 6255,
+    "id": 50,
     "operator": {
-      "BackRef": [
-        1244,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 27
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887477,
-    "recent_gain": 13.032099999999998
+    "usage_count": 7,
+    "total_bytes_saved": 57,
+    "last_used": 1762889883,
+    "recent_gain": 2.9104910021013044
   },
   {
-    "id": 6256,
+    "id": 51,
     "operator": {
-      "BackRef": [
-        3155,
-        16
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887477,
-    "recent_gain": 9.774074999999996
-  },
-  {
-    "id": 6262,
-    "operator": {
-      "BackRef": [
-        44,
-        14
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887477,
-    "recent_gain": 8.1450625
-  },
-  {
-    "id": 6264,
-    "operator": {
-      "BackRef": [
-        1030,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887477,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6268,
-    "operator": {
-      "BackRef": [
-        951,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887477,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6269,
-    "operator": {
-      "BackRef": [
-        499,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887477,
-    "recent_gain": 7.330556249999998
-  },
-  {
-    "id": 6271,
-    "operator": {
-      "BackRef": [
-        1117,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887478,
-    "recent_gain": 7.716374999999998
-  },
-  {
-    "id": 6273,
-    "operator": {
-      "BackRef": [
-        71,
-        13
-      ]
+      "Dictionary": {
+        "word_id": 28
+      }
     },
     "usage_count": 2,
-    "total_bytes_saved": 18,
-    "last_used": 1762887491,
-    "recent_gain": 8.03728125
+    "total_bytes_saved": 14,
+    "last_used": 1762889564,
+    "recent_gain": 1.049231778341708
   },
   {
-    "id": 6275,
+    "id": 52,
     "operator": {
-      "BackRef": [
-        72,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887478,
-    "recent_gain": 7.716374999999998
-  },
-  {
-    "id": 6279,
-    "operator": {
-      "BackRef": [
-        1789,
-        13
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887478,
-    "recent_gain": 7.716374999999998
-  },
-  {
-    "id": 6280,
-    "operator": {
-      "BackRef": [
-        77,
-        12
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887478,
-    "recent_gain": 6.858999999999999
-  },
-  {
-    "id": 6281,
-    "operator": {
-      "BackRef": [
-        602,
-        12
-      ]
-    },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887478,
-    "recent_gain": 6.858999999999999
-  },
-  {
-    "id": 6282,
-    "operator": {
-      "BackRef": [
-        1634,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 29
+      }
     },
     "usage_count": 2,
-    "total_bytes_saved": 16,
-    "last_used": 1762887491,
-    "recent_gain": 7.1442499999999995
+    "total_bytes_saved": 14,
+    "last_used": 1762889564,
+    "recent_gain": 1.049231778341708
   },
   {
-    "id": 6323,
+    "id": 54,
     "operator": {
-      "BackRef": [
-        28,
-        11
-      ]
+      "Dictionary": {
+        "word_id": 30
+      }
     },
     "usage_count": 3,
     "total_bytes_saved": 21,
-    "last_used": 1762887493,
-    "recent_gain": 6.4384140625
+    "last_used": 1762889565,
+    "recent_gain": 1.0630374596356778
   },
   {
-    "id": 6337,
+    "id": 56,
     "operator": {
-      "BackRef": [
-        2533,
-        11
-      ]
+      "Dictionary": {
+        "word_id": 31
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887482,
-    "recent_gain": 6.317499999999999
+    "usage_count": 4,
+    "total_bytes_saved": 44,
+    "last_used": 1762889883,
+    "recent_gain": 2.89428616640443
   },
   {
-    "id": 6344,
+    "id": 61,
     "operator": {
-      "BackRef": [
-        1365,
-        14
-      ]
+      "Dictionary": {
+        "word_id": 33
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887482,
-    "recent_gain": 9.025
+    "usage_count": 5,
+    "total_bytes_saved": 41,
+    "last_used": 1762889884,
+    "recent_gain": 2.4467686745879447
   },
   {
-    "id": 6346,
+    "id": 62,
     "operator": {
-      "BackRef": [
-        2135,
-        13
-      ]
+      "Dictionary": {
+        "word_id": 34
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887482,
-    "recent_gain": 8.122499999999999
+    "usage_count": 4,
+    "total_bytes_saved": 54,
+    "last_used": 1762889883,
+    "recent_gain": 4.1609501812812795
   },
   {
-    "id": 6347,
+    "id": 63,
     "operator": {
-      "BackRef": [
-        222,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 35
+      }
     },
-    "usage_count": 1,
+    "usage_count": 4,
+    "total_bytes_saved": 52,
+    "last_used": 1762889883,
+    "recent_gain": 4.0721993729629045
+  },
+  {
+    "id": 64,
+    "operator": {
+      "Dictionary": {
+        "word_id": 36
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 54,
+    "last_used": 1762889883,
+    "recent_gain": 3.434317916763892
+  },
+  {
+    "id": 65,
+    "operator": {
+      "Dictionary": {
+        "word_id": 37
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 48,
+    "last_used": 1762889883,
+    "recent_gain": 2.85665166415845
+  },
+  {
+    "id": 66,
+    "operator": {
+      "Dictionary": {
+        "word_id": 38
+      }
+    },
+    "usage_count": 13,
+    "total_bytes_saved": 64,
+    "last_used": 1762889909,
+    "recent_gain": 2.5820695356370247
+  },
+  {
+    "id": 67,
+    "operator": {
+      "Dictionary": {
+        "word_id": 39
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 22,
+    "last_used": 1762889902,
+    "recent_gain": 1.788968670326747
+  },
+  {
+    "id": 69,
+    "operator": {
+      "Dictionary": {
+        "word_id": 40
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 19,
+    "last_used": 1762889883,
+    "recent_gain": 1.1750413669834725
+  },
+  {
+    "id": 70,
+    "operator": {
+      "Dictionary": {
+        "word_id": 41
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 31,
+    "last_used": 1762889888,
+    "recent_gain": 1.2046355713142014
+  },
+  {
+    "id": 72,
+    "operator": {
+      "Dictionary": {
+        "word_id": 42
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 22,
+    "last_used": 1762889883,
+    "recent_gain": 1.080063500718923
+  },
+  {
+    "id": 73,
+    "operator": {
+      "Dictionary": {
+        "word_id": 43
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 22,
+    "last_used": 1762889883,
+    "recent_gain": 1.080063500718923
+  },
+  {
+    "id": 74,
+    "operator": {
+      "Dictionary": {
+        "word_id": 44
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 19,
+    "last_used": 1762889883,
+    "recent_gain": 1.1750413669834725
+  },
+  {
+    "id": 75,
+    "operator": {
+      "Dictionary": {
+        "word_id": 45
+      }
+    },
+    "usage_count": 7,
+    "total_bytes_saved": 64,
+    "last_used": 1762889884,
+    "recent_gain": 2.579470255333624
+  },
+  {
+    "id": 76,
+    "operator": {
+      "Dictionary": {
+        "word_id": 46
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 36,
+    "last_used": 1762889884,
+    "recent_gain": 2.531756032681724
+  },
+  {
+    "id": 77,
+    "operator": {
+      "Dictionary": {
+        "word_id": 47
+      }
+    },
+    "usage_count": 6,
+    "total_bytes_saved": 54,
+    "last_used": 1762889884,
+    "recent_gain": 2.6640674406522016
+  },
+  {
+    "id": 78,
+    "operator": {
+      "Dictionary": {
+        "word_id": 48
+      }
+    },
+    "usage_count": 6,
+    "total_bytes_saved": 52,
+    "last_used": 1762889888,
+    "recent_gain": 3.3675749433267916
+  },
+  {
+    "id": 79,
+    "operator": {
+      "Dictionary": {
+        "word_id": 49
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 52,
+    "last_used": 1762889884,
+    "recent_gain": 4.24448579917856
+  },
+  {
+    "id": 80,
+    "operator": {
+      "Dictionary": {
+        "word_id": 50
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 52,
+    "last_used": 1762889884,
+    "recent_gain": 4.24448579917856
+  },
+  {
+    "id": 81,
+    "operator": {
+      "Dictionary": {
+        "word_id": 51
+      }
+    },
+    "usage_count": 6,
+    "total_bytes_saved": 80,
+    "last_used": 1762889899,
+    "recent_gain": 6.340294518689565
+  },
+  {
+    "id": 82,
+    "operator": {
+      "Dictionary": {
+        "word_id": 52
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 48,
+    "last_used": 1762889887,
+    "recent_gain": 4.123731320355726
+  },
+  {
+    "id": 83,
+    "operator": {
+      "Dictionary": {
+        "word_id": 53
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 26,
+    "last_used": 1762889888,
+    "recent_gain": 2.230030496928122
+  },
+  {
+    "id": 84,
+    "operator": {
+      "Dictionary": {
+        "word_id": 54
+      }
+    },
+    "usage_count": 2,
     "total_bytes_saved": 16,
-    "last_used": 1762887482,
-    "recent_gain": 14.44
+    "last_used": 1762889567,
+    "recent_gain": 1.262233718305814
   },
   {
-    "id": 6349,
+    "id": 85,
     "operator": {
-      "BackRef": [
-        245,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 55
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887482,
-    "recent_gain": 14.44
+    "usage_count": 4,
+    "total_bytes_saved": 35,
+    "last_used": 1762889885,
+    "recent_gain": 2.283663032969248
   },
   {
-    "id": 6350,
+    "id": 86,
     "operator": {
-      "BackRef": [
-        257,
-        19
-      ]
+      "Dictionary": {
+        "word_id": 56
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887482,
-    "recent_gain": 13.5375
+    "usage_count": 4,
+    "total_bytes_saved": 40,
+    "last_used": 1762889885,
+    "recent_gain": 3.1796541862829346
   },
   {
-    "id": 6353,
+    "id": 91,
     "operator": {
-      "BackRef": [
-        933,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 57
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887482,
-    "recent_gain": 14.44
+    "usage_count": 17,
+    "total_bytes_saved": 51,
+    "last_used": 1762889608,
+    "recent_gain": 0.9314592096075677
   },
   {
-    "id": 6358,
+    "id": 96,
     "operator": {
-      "BackRef": [
-        1348,
-        18
-      ]
+      "Dictionary": {
+        "word_id": 58
+      }
     },
-    "usage_count": 1,
+    "usage_count": 3,
+    "total_bytes_saved": 17,
+    "last_used": 1762889886,
+    "recent_gain": 1.1184190487045247
+  },
+  {
+    "id": 97,
+    "operator": {
+      "Dictionary": {
+        "word_id": 59
+      }
+    },
+    "usage_count": 8,
+    "total_bytes_saved": 70,
+    "last_used": 1762889907,
+    "recent_gain": 5.158901427165944
+  },
+  {
+    "id": 98,
+    "operator": {
+      "Dictionary": {
+        "word_id": 60
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 50,
+    "last_used": 1762889887,
+    "recent_gain": 4.374457885115984
+  },
+  {
+    "id": 99,
+    "operator": {
+      "Dictionary": {
+        "word_id": 61
+      }
+    },
+    "usage_count": 2,
     "total_bytes_saved": 14,
-    "last_used": 1762887482,
-    "recent_gain": 12.634999999999998
+    "last_used": 1762889569,
+    "recent_gain": 1.16258368791325
   },
   {
-    "id": 6362,
+    "id": 100,
     "operator": {
-      "BackRef": [
-        199,
-        15
+      "Dictionary": {
+        "word_id": 62
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 45,
+    "last_used": 1762889888,
+    "recent_gain": 4.7657429767543755
+  },
+  {
+    "id": 115,
+    "operator": {
+      "Dictionary": {
+        "word_id": 63
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 58,
+    "last_used": 1762889888,
+    "recent_gain": 4.869257551261887
+  },
+  {
+    "id": 125,
+    "operator": {
+      "Dictionary": {
+        "word_id": 64
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 50,
+    "last_used": 1762889888,
+    "recent_gain": 4.111561167320188
+  },
+  {
+    "id": 132,
+    "operator": {
+      "Dictionary": {
+        "word_id": 65
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889888,
+    "recent_gain": 5.7678407655854365
+  },
+  {
+    "id": 135,
+    "operator": {
+      "Dictionary": {
+        "word_id": 68
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 60,
+    "last_used": 1762889888,
+    "recent_gain": 4.7719991687866
+  },
+  {
+    "id": 137,
+    "operator": {
+      "Dictionary": {
+        "word_id": 70
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 85,
+    "last_used": 1762889898,
+    "recent_gain": 7.090577622196508
+  },
+  {
+    "id": 138,
+    "operator": {
+      "Dictionary": {
+        "word_id": 71
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 64,
+    "last_used": 1762889889,
+    "recent_gain": 4.932698942169573
+  },
+  {
+    "id": 145,
+    "operator": {
+      "Dictionary": {
+        "word_id": 73
+      }
+    },
+    "usage_count": 6,
+    "total_bytes_saved": 56,
+    "last_used": 1762889891,
+    "recent_gain": 3.1846737206136786
+  },
+  {
+    "id": 148,
+    "operator": {
+      "Dictionary": {
+        "word_id": 75
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 58,
+    "last_used": 1762889892,
+    "recent_gain": 3.8884399580405047
+  },
+  {
+    "id": 156,
+    "operator": {
+      "Dictionary": {
+        "word_id": 79
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 41,
+    "last_used": 1762889892,
+    "recent_gain": 4.786749481422963
+  },
+  {
+    "id": 157,
+    "operator": {
+      "Dictionary": {
+        "word_id": 80
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 58,
+    "last_used": 1762889892,
+    "recent_gain": 5.017149647910533
+  },
+  {
+    "id": 158,
+    "operator": {
+      "Dictionary": {
+        "word_id": 81
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 58,
+    "last_used": 1762889892,
+    "recent_gain": 4.936059505645534
+  },
+  {
+    "id": 159,
+    "operator": {
+      "Dictionary": {
+        "word_id": 82
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889895,
+    "recent_gain": 7.346855746847779
+  },
+  {
+    "id": 168,
+    "operator": {
+      "Dictionary": {
+        "word_id": 86
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 48,
+    "last_used": 1762889893,
+    "recent_gain": 5.043898064343035
+  },
+  {
+    "id": 190,
+    "operator": {
+      "Dictionary": {
+        "word_id": 92
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 85,
+    "last_used": 1762889894,
+    "recent_gain": 6.655602818983078
+  },
+  {
+    "id": 192,
+    "operator": {
+      "Dictionary": {
+        "word_id": 94
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889895,
+    "recent_gain": 6.505589165789779
+  },
+  {
+    "id": 217,
+    "operator": {
+      "Dictionary": {
+        "word_id": 98
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 85,
+    "last_used": 1762889897,
+    "recent_gain": 6.639517165356258
+  },
+  {
+    "id": 227,
+    "operator": {
+      "Dictionary": {
+        "word_id": 66
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 48,
+    "last_used": 1762889888,
+    "recent_gain": 4.6773754391334785
+  },
+  {
+    "id": 232,
+    "operator": {
+      "Dictionary": {
+        "word_id": 104
+      }
+    },
+    "usage_count": 6,
+    "total_bytes_saved": 78,
+    "last_used": 1762889900,
+    "recent_gain": 6.226113751246093
+  },
+  {
+    "id": 234,
+    "operator": {
+      "Dictionary": {
+        "word_id": 106
+      }
+    },
+    "usage_count": 6,
+    "total_bytes_saved": 98,
+    "last_used": 1762889897,
+    "recent_gain": 6.782772004377079
+  },
+  {
+    "id": 238,
+    "operator": {
+      "Dictionary": {
+        "word_id": 103
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 65,
+    "last_used": 1762889900,
+    "recent_gain": 5.800565502956064
+  },
+  {
+    "id": 250,
+    "operator": {
+      "Dictionary": {
+        "word_id": 107
+      }
+    },
+    "usage_count": 7,
+    "total_bytes_saved": 119,
+    "last_used": 1762889906,
+    "recent_gain": 10.820383565860146
+  },
+  {
+    "id": 254,
+    "operator": {
+      "Dictionary": {
+        "word_id": 109
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889897,
+    "recent_gain": 6.961699575080894
+  },
+  {
+    "id": 260,
+    "operator": {
+      "Dictionary": {
+        "word_id": 110
+      }
+    },
+    "usage_count": 66,
+    "total_bytes_saved": 410,
+    "last_used": 1762889898,
+    "recent_gain": 4.714596843419572
+  },
+  {
+    "id": 269,
+    "operator": {
+      "Dictionary": {
+        "word_id": 112
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 71,
+    "last_used": 1762889903,
+    "recent_gain": 7.992543249830232
+  },
+  {
+    "id": 273,
+    "operator": {
+      "Dictionary": {
+        "word_id": 113
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 46,
+    "last_used": 1762889898,
+    "recent_gain": 6.516829740409178
+  },
+  {
+    "id": 280,
+    "operator": {
+      "Dictionary": {
+        "word_id": 116
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 62,
+    "last_used": 1762889898,
+    "recent_gain": 6.905649164434233
+  },
+  {
+    "id": 281,
+    "operator": {
+      "Dictionary": {
+        "word_id": 117
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889898,
+    "recent_gain": 7.328104815874626
+  },
+  {
+    "id": 287,
+    "operator": {
+      "Dictionary": {
+        "word_id": 77
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 52,
+    "last_used": 1762889892,
+    "recent_gain": 5.286295106312039
+  },
+  {
+    "id": 290,
+    "operator": {
+      "Dictionary": {
+        "word_id": 118
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 68,
+    "last_used": 1762889899,
+    "recent_gain": 7.359603702166234
+  },
+  {
+    "id": 294,
+    "operator": {
+      "Dictionary": {
+        "word_id": 119
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 44,
+    "last_used": 1762889899,
+    "recent_gain": 5.339426433695388
+  },
+  {
+    "id": 316,
+    "operator": {
+      "Dictionary": {
+        "word_id": 129
+      }
+    },
+    "usage_count": 7,
+    "total_bytes_saved": 119,
+    "last_used": 1762889901,
+    "recent_gain": 7.964866439486987
+  },
+  {
+    "id": 319,
+    "operator": {
+      "Dictionary": {
+        "word_id": 123
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 83,
+    "last_used": 1762889900,
+    "recent_gain": 8.642106875815143
+  },
+  {
+    "id": 322,
+    "operator": {
+      "Dictionary": {
+        "word_id": 130
+      }
+    },
+    "usage_count": 2,
+    "total_bytes_saved": 18,
+    "last_used": 1762889597,
+    "recent_gain": 2.3716808501916784
+  },
+  {
+    "id": 326,
+    "operator": {
+      "Dictionary": {
+        "word_id": 131
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 64,
+    "last_used": 1762889904,
+    "recent_gain": 7.855125182796886
+  },
+  {
+    "id": 344,
+    "operator": {
+      "Dictionary": {
+        "word_id": 133
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 66,
+    "last_used": 1762889902,
+    "recent_gain": 7.798181027352534
+  },
+  {
+    "id": 345,
+    "operator": {
+      "Dictionary": {
+        "word_id": 76
+      }
+    },
+    "usage_count": 3,
+    "total_bytes_saved": 30,
+    "last_used": 1762889891,
+    "recent_gain": 4.075703195153669
+  },
+  {
+    "id": 346,
+    "operator": {
+      "Dictionary": {
+        "word_id": 114
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 56,
+    "last_used": 1762889900,
+    "recent_gain": 6.4617588269086585
+  },
+  {
+    "id": 350,
+    "operator": {
+      "Dictionary": {
+        "word_id": 132
+      }
+    },
+    "usage_count": 4,
+    "total_bytes_saved": 66,
+    "last_used": 1762889901,
+    "recent_gain": 7.996600859858049
+  },
+  {
+    "id": 361,
+    "operator": {
+      "Dictionary": {
+        "word_id": 134
+      }
+    },
+    "usage_count": 5,
+    "total_bytes_saved": 69,
+    "last_used": 1762889907,
+    "recent_gain": 8.311381084884955
+  },
+  {
+    "id": 545,
+    "operator": {
+      "RunLength": [
+        95,
+        43
       ]
     },
     "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887483,
-    "recent_gain": 9.927499999999998
+    "total_bytes_saved": 40,
+    "last_used": 1762889881,
+    "recent_gain": 15.888572738328728
   },
   {
-    "id": 6365,
+    "id": 547,
     "operator": {
-      "BackRef": [
-        1336,
-        15
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 40
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 11,
-    "last_used": 1762887483,
-    "recent_gain": 9.927499999999998
+    "total_bytes_saved": 36,
+    "last_used": 1762889881,
+    "recent_gain": 14.299715464495852
   },
   {
-    "id": 6367,
+    "id": 549,
     "operator": {
-      "BackRef": [
-        215,
-        14
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 40
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 10,
-    "last_used": 1762887483,
-    "recent_gain": 9.025
+    "total_bytes_saved": 36,
+    "last_used": 1762889881,
+    "recent_gain": 14.299715464495852
   },
   {
-    "id": 6368,
+    "id": 551,
     "operator": {
-      "BackRef": [
-        262,
-        12
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 40
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887483,
-    "recent_gain": 7.22
+    "total_bytes_saved": 36,
+    "last_used": 1762889881,
+    "recent_gain": 14.299715464495852
   },
   {
-    "id": 6374,
+    "id": 552,
     "operator": {
-      "BackRef": [
-        153,
-        12
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 39
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887483,
-    "recent_gain": 7.22
+    "total_bytes_saved": 35,
+    "last_used": 1762889881,
+    "recent_gain": 13.902501146037642
   },
   {
-    "id": 6375,
+    "id": 554,
     "operator": {
-      "BackRef": [
-        2513,
-        12
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 38
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887483,
-    "recent_gain": 7.22
+    "total_bytes_saved": 34,
+    "last_used": 1762889881,
+    "recent_gain": 13.505286827579418
   },
   {
-    "id": 6378,
+    "id": 555,
     "operator": {
-      "BackRef": [
-        913,
-        12
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 38
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887483,
-    "recent_gain": 7.22
+    "total_bytes_saved": 34,
+    "last_used": 1762889881,
+    "recent_gain": 13.505286827579418
   },
   {
-    "id": 6379,
+    "id": 556,
     "operator": {
-      "BackRef": [
-        2565,
-        13
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 38
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 9,
-    "last_used": 1762887483,
-    "recent_gain": 8.122499999999999
+    "total_bytes_saved": 34,
+    "last_used": 1762889881,
+    "recent_gain": 13.505286827579418
   },
   {
-    "id": 6397,
+    "id": 557,
     "operator": {
-      "BackRef": [
-        615,
-        11
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 37
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887484,
-    "recent_gain": 6.317499999999999
+    "usage_count": 2,
+    "total_bytes_saved": 66,
+    "last_used": 1762889881,
+    "recent_gain": 13.108072509121198
   },
   {
-    "id": 6399,
+    "id": 558,
     "operator": {
-      "BackRef": [
-        3235,
-        12
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 37
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887484,
-    "recent_gain": 7.22
+    "total_bytes_saved": 33,
+    "last_used": 1762889881,
+    "recent_gain": 13.108072509121198
   },
   {
-    "id": 6402,
+    "id": 559,
     "operator": {
-      "BackRef": [
-        3178,
-        11
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 36
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887485,
-    "recent_gain": 6.6499999999999995
+    "total_bytes_saved": 32,
+    "last_used": 1762889881,
+    "recent_gain": 12.710858190662979
   },
   {
-    "id": 6403,
+    "id": 589,
     "operator": {
-      "BackRef": [
-        3163,
-        11
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 39
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887485,
-    "recent_gain": 6.6499999999999995
+    "total_bytes_saved": 35,
+    "last_used": 1762889882,
+    "recent_gain": 14.634211732671202
   },
   {
-    "id": 6404,
+    "id": 591,
     "operator": {
-      "BackRef": [
-        3254,
-        11
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 37
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887485,
-    "recent_gain": 6.6499999999999995
+    "total_bytes_saved": 33,
+    "last_used": 1762889882,
+    "recent_gain": 13.797971062232842
   },
   {
-    "id": 6461,
+    "id": 594,
     "operator": {
-      "BackRef": [
-        60,
-        20
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 37
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887491,
-    "recent_gain": 16.0
+    "total_bytes_saved": 33,
+    "last_used": 1762889882,
+    "recent_gain": 13.797971062232842
   },
   {
-    "id": 6462,
+    "id": 595,
     "operator": {
-      "BackRef": [
-        1401,
-        20
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 37
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887491,
-    "recent_gain": 16.0
+    "total_bytes_saved": 33,
+    "last_used": 1762889882,
+    "recent_gain": 13.797971062232842
   },
   {
-    "id": 6463,
+    "id": 597,
     "operator": {
-      "BackRef": [
-        997,
-        20
-      ]
+      "DeltaSequence": {
+        "start": 95,
+        "delta": 0,
+        "len": 36
+      }
     },
     "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887491,
-    "recent_gain": 16.0
+    "total_bytes_saved": 32,
+    "last_used": 1762889882,
+    "recent_gain": 13.379850727013663
   },
   {
-    "id": 6464,
+    "id": 1099,
     "operator": {
-      "BackRef": [
-        72,
-        19
-      ]
+      "Dictionary": {
+        "word_id": 171
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887491,
-    "recent_gain": 15.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6465,
+    "id": 1100,
     "operator": {
-      "BackRef": [
-        340,
-        19
-      ]
+      "Dictionary": {
+        "word_id": 172
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887491,
-    "recent_gain": 15.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6467,
+    "id": 1101,
     "operator": {
-      "BackRef": [
-        1911,
-        19
-      ]
+      "Dictionary": {
+        "word_id": 170
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887491,
-    "recent_gain": 15.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6471,
+    "id": 1102,
     "operator": {
-      "BackRef": [
-        3651,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 173
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887491,
-    "recent_gain": 16.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6472,
+    "id": 1103,
     "operator": {
-      "BackRef": [
-        2632,
-        17
-      ]
+      "Dictionary": {
+        "word_id": 171
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 13,
-    "last_used": 1762887491,
-    "recent_gain": 13.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6479,
+    "id": 1104,
     "operator": {
-      "BackRef": [
-        966,
-        10
-      ]
+      "Dictionary": {
+        "word_id": 174
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 6,
-    "last_used": 1762887491,
-    "recent_gain": 6.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6480,
+    "id": 1105,
     "operator": {
-      "BackRef": [
-        1038,
-        10
-      ]
+      "Dictionary": {
+        "word_id": 173
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 6,
-    "last_used": 1762887491,
-    "recent_gain": 6.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6481,
+    "id": 1106,
     "operator": {
-      "BackRef": [
-        1773,
-        10
-      ]
+      "Dictionary": {
+        "word_id": 54
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 6,
-    "last_used": 1762887492,
-    "recent_gain": 6.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6490,
+    "id": 1107,
     "operator": {
-      "BackRef": [
-        2817,
-        20
-      ]
+      "Dictionary": {
+        "word_id": 150
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 16,
-    "last_used": 1762887493,
-    "recent_gain": 16.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6492,
+    "id": 1108,
     "operator": {
-      "BackRef": [
-        34,
-        19
-      ]
+      "Dictionary": {
+        "word_id": 67
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 15,
-    "last_used": 1762887493,
-    "recent_gain": 15.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6493,
+    "id": 1109,
     "operator": {
-      "BackRef": [
-        725,
-        17
-      ]
+      "Dictionary": {
+        "word_id": 175
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 13,
-    "last_used": 1762887493,
-    "recent_gain": 13.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6494,
+    "id": 1110,
     "operator": {
-      "BackRef": [
-        679,
-        16
-      ]
+      "Dictionary": {
+        "word_id": 83
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887493,
-    "recent_gain": 12.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6495,
+    "id": 1111,
     "operator": {
-      "BackRef": [
-        505,
-        16
-      ]
+      "Dictionary": {
+        "word_id": 88
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 12,
-    "last_used": 1762887493,
-    "recent_gain": 12.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6496,
+    "id": 1112,
     "operator": {
-      "BackRef": [
-        398,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 176
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887493,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6497,
+    "id": 1113,
     "operator": {
-      "BackRef": [
-        919,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 177
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887493,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6501,
+    "id": 1114,
     "operator": {
-      "BackRef": [
-        1058,
-        11
-      ]
+      "Dictionary": {
+        "word_id": 126
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887494,
-    "recent_gain": 7.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6504,
+    "id": 1115,
     "operator": {
-      "BackRef": [
-        463,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 126
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887494,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6506,
+    "id": 1116,
     "operator": {
-      "BackRef": [
-        409,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 126
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887494,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6508,
+    "id": 1117,
     "operator": {
-      "BackRef": [
-        494,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 126
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887494,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6510,
+    "id": 1118,
     "operator": {
-      "BackRef": [
-        331,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 122
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887494,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6511,
+    "id": 1119,
     "operator": {
-      "BackRef": [
-        643,
-        12
-      ]
+      "Dictionary": {
+        "word_id": 135
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 8,
-    "last_used": 1762887494,
-    "recent_gain": 8.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6512,
+    "id": 1120,
     "operator": {
-      "BackRef": [
-        385,
-        11
-      ]
+      "Dictionary": {
+        "word_id": 135
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887494,
-    "recent_gain": 7.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   },
   {
-    "id": 6514,
+    "id": 1121,
     "operator": {
-      "BackRef": [
-        316,
-        11
-      ]
+      "Dictionary": {
+        "word_id": 89
+      }
     },
-    "usage_count": 1,
-    "total_bytes_saved": 7,
-    "last_used": 1762887494,
-    "recent_gain": 7.0
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1122,
+    "operator": {
+      "Dictionary": {
+        "word_id": 122
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1123,
+    "operator": {
+      "Dictionary": {
+        "word_id": 127
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1124,
+    "operator": {
+      "Dictionary": {
+        "word_id": 96
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1125,
+    "operator": {
+      "Dictionary": {
+        "word_id": 178
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1126,
+    "operator": {
+      "Dictionary": {
+        "word_id": 179
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1127,
+    "operator": {
+      "Dictionary": {
+        "word_id": 141
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1128,
+    "operator": {
+      "Dictionary": {
+        "word_id": 180
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1129,
+    "operator": {
+      "Dictionary": {
+        "word_id": 181
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1130,
+    "operator": {
+      "Dictionary": {
+        "word_id": 181
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1131,
+    "operator": {
+      "Dictionary": {
+        "word_id": 182
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
+  },
+  {
+    "id": 1132,
+    "operator": {
+      "Dictionary": {
+        "word_id": 183
+      }
+    },
+    "usage_count": 0,
+    "total_bytes_saved": 0,
+    "last_used": 0,
+    "recent_gain": 0.0
   }
 ]

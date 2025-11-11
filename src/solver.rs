@@ -27,7 +27,7 @@ pub struct Solver {
 }
 
 impl Solver {
-    const MIN_ACCEPT_GAIN: i32 = 6; // hylkää mikromallit joista nettohyöty pieni
+    const MIN_ACCEPT_GAIN: i32 = 12; // hylkää mikromallit joista nettohyöty pieni
     const PATTERN_BANK_FILE: &'static str = "pattern_bank.json";
 
     pub fn new(processing_quota: u32, pattern_bank_capacity: usize) -> Self {
@@ -334,15 +334,35 @@ impl Solver {
             use std::time::SystemTime;
             let now = SystemTime::now();
 
-            let age_penalty = 0.05; // per second
-            let legacy_weight = 0.001; // anna pieni arvo historialle
+            // Palkitse mallia, jota on käytetty *äskettäin* (viimeisen 60s aikana)
+            // Tämä on paljon tärkeämpää kuin ikäpenalty.
+            let recency_bonus = 60.0; 
+            
+            // Vanha historiallinen paino oli liian suuri ja tukki muistin.
+            // Asetetaan se nollaan tai hyvin pieneksi.
+            let legacy_weight = 0.0; // TAI 0.00001
 
             let mut worst_index = 0usize;
             let mut worst_score = f64::INFINITY;
 
             for (i, p) in self.known_patterns.iter().enumerate() {
-                let age = now.duration_since(p.last_used).unwrap_or_default().as_secs_f64();
-                let score = p.recent_gain - age * age_penalty + (p.total_bytes_saved as f64) * legacy_weight;
+                let age_secs = now.duration_since(p.last_used).unwrap_or_default().as_secs_f64();
+                
+                // UUSI LASKENTA:
+                // Perustuu ensisijaisesti VIIMEAIKAISEEN hyötyyn.
+                let mut score = p.recent_gain;
+
+                // Anna pieni bonus, jos mallia on juuri käytetty, jotta se ei heti poistu
+                if age_secs < recency_bonus {
+                    score += p.recent_gain * 0.5; // Lisäbonus aktiivisesta käytöstä
+                } else {
+                    // Rankaise vain vanhoja, käyttämättömiä malleja
+                    score -= (age_secs - recency_bonus) * 0.01; // Kevyt ikäpenalty
+                }
+
+                // Lisää (nyt merkityksetön) historiallinen paino
+                score += (p.total_bytes_saved as f64) * legacy_weight;
+                
                 if score < worst_score {
                     worst_score = score;
                     worst_index = i;
@@ -351,12 +371,12 @@ impl Solver {
 
             let removed = self.known_patterns.remove(worst_index);
             println!(
-                "  🗑️ Forget: PatternBank täynnä. Poistettiin malli #{} (recent_gain {:.2}, ikä {:?}, käyttöjä {}, kokonaishyöty {}).",
+                "  🗑️ Forget: PatternBank täynnä. Poistettiin malli #{} (score: {:.2}, recent_gain {:.2}, ikä {:?}, käyttöjä {}).",
                 removed.id,
+                worst_score,
                 removed.recent_gain,
                 now.duration_since(removed.last_used).unwrap_or_default(),
-                removed.usage_count,
-                removed.total_bytes_saved
+                removed.usage_count
             );
         }
     }
@@ -443,12 +463,24 @@ impl Solver {
     /// Exploit: Käytä tunnettuja malleja
     /// Palauttaa: (Patch, pattern_id) jos löytyi sovellettava malli
     /// HUOM: Patch.range on paikallinen ikkunan suhteen!
-    /// UUSI: Etsii parhaan mallin kaikista, ei pysähdy ensimmäiseen
+    /// UUSI: Etsii parhaan mallin vain N parhaan (recent_gain) mallin joukosta.
     fn exploit(&self, data_slice: &[u8]) -> Option<(Patch, u32)> {
         let mut best_match: Option<(Patch, u32, usize)> = None; // (patch, pattern_id, saved_bytes)
 
-        // Käy läpi KAIKKI tunnetut mallit ja löydä paras
-        for pattern in &self.known_patterns {
+        // --- UUSI OSA ALKAA ---
+        const EXPLOIT_BEAM_WIDTH: usize = 100; // Testaa vain 100 parasta mallia
+
+        // 1. Kerää ehdokkaat ja lajittele ne `recent_gain` mukaan
+        let mut candidates: Vec<&Pattern> = self.known_patterns.iter().collect();
+        // Lajitellaan laskevaan järjestykseen (paras ensin)
+        candidates.sort_by(|a, b| b.recent_gain.partial_cmp(&a.recent_gain).unwrap_or(Ordering::Equal));
+
+        // 2. Ota vain N parasta
+        let patterns_to_check = candidates.into_iter().take(EXPLOIT_BEAM_WIDTH);
+        // --- UUSI OSA LOPPUU ---
+
+        // Käy läpi VAIN PARHAAT tunnetut mallit ja löydä paras
+        for pattern in patterns_to_check {
             let candidate = match &pattern.operator {
                 Operator::RunLength(byte, min_count) => {
                     self.find_run_length(data_slice, *byte, *min_count)
@@ -515,40 +547,49 @@ impl Solver {
         best_match.map(|(patch, pid, _)| (patch, pid))
     }
 
-    /// Explore: yritä ensin Dictionary (sanat), sitten BackRef (LZ), sitten n-grammit, sitten muut
+    /// Explore: etsi PARAS malli ikkunasta, älä ensimmäistä
     fn explore(&mut self, world: &World) -> Option<Patch> {
         let slice = world.get_window_data();
-        
-        // HUOM: explore() on nyt &mut self, koska build_dictionary_entry muuttaa sanakirjaa
-        // Tämä vaatii muutoksia kutsujissa myös
-        
-        // 1. Yritä rakentaa Dictionary-entry (sanat, lauseet) - PRIORISOITU
-        // Huom: Emme voi palauttaa suoraan Patchia, vaan pitää lisätä se PatternBankiin
-        // ja luoda Patch exploit-tyyliin. Tämä on hieman kömpelö, mutta toimii.
-        // Parempi tapa: palauta None täältä ja anna add_pattern hoitaa loput.
-        
-        // 2. Etsi pidempiä n-grammeja (sanat, lauseet)
+
+        let mut best_patch: Option<Patch> = None;
+        let mut max_gain: i32 = i32::MIN; // seurataan parasta nettohyötyä
+
+        // Apuri: arvioi ehdokkaan hyöty (alkuperäinen koko - uusi koko) ja päivitä paras
+        let mut consider = |patch: Patch| {
+            let gain = patch.range.len() as i32 - patch.new_data.len() as i32;
+            if gain > max_gain {
+                max_gain = gain;
+                best_patch = Some(patch);
+            }
+        };
+
+        // 1. Pidemmät n-grammit (sanat, lauseet)
         if let Some(p) = self.find_ngram_reference(slice, 4, 20) { // 4-20 tavua (sanat)
-            return Some(p);
+            consider(p);
         }
-        
-        // 3. Backref (LZ-viittaukset)
+
+        // 2. Backref (LZ-viittaukset)
         if let Some(p) = self.find_backref(world, 4, 16384) { // min len 4, max distance 16KB
-            return Some(p);
+            consider(p);
         }
-        
-        // 4. Delta-sekvenssit
+
+        // 3. Delta-sekvenssit
         if let Some(p) = self.find_delta_sequence(slice, 6) {
-            return Some(p);
+            consider(p);
         }
-        
-        // 5. XOR-naamiot
+
+        // 4. XOR-naamiot
         if let Some(p) = self.find_xor_mask(slice, 2, 8, 3) {
-            return Some(p);
+            consider(p);
         }
-        
-        // 6. Run-length (viimeisenä)
-        self.find_any_run_length(slice, 3)
+
+        // 5. Run-length (viimeisenä)
+        if let Some(p) = self.find_any_run_length(slice, 3) {
+            consider(p);
+        }
+
+        // Palauta vain se yksi paras löydös (MIN_ACCEPT_GAIN tarkistetaan myöhemmin)
+        best_patch
     }
 
     /// Apufunktio: etsi mitä tahansa RunLength-mallia
