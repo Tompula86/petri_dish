@@ -65,6 +65,13 @@ impl Stats {
         self.update_gain_per_quota();
     }
 
+    /// Päivitä meta-learning-tilastot
+    pub fn record_meta(&mut self, quota_spent: u32, bytes_saved: i32) {
+        self.quota_spent_meta += quota_spent;
+        self.bytes_saved_meta += bytes_saved;
+        self.update_gain_per_quota();
+    }
+
     /// Laske gain/quota-suhde
     fn update_gain_per_quota(&mut self) {
         if self.quota_spent_exploit > 0 {
@@ -94,7 +101,7 @@ impl Stats {
 
     /// Kokonaishyöty tästä syklistä
     pub fn total_gain(&self) -> i32 {
-        self.bytes_saved_exploit + self.bytes_saved_explore
+        self.bytes_saved_exploit + self.bytes_saved_explore + self.bytes_saved_meta
     }
 
     /// Kokonaisquota käytetty tässä syklissä

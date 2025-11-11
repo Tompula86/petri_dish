@@ -1,5 +1,6 @@
 // src/scheduler.rs
 use crate::stats::Stats;
+use rand::Rng;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Action {
@@ -9,30 +10,62 @@ pub enum Action {
     MetaLearn, // Tulevaisuutta varten
 }
 
-pub struct Scheduler {}
+pub struct Scheduler {
+    /// Kynnys/exploit-bias parametrit, muokattavissa meta-learnillä
+    pub exploit_threshold: f64,
+    pub exploit_bias_prob: f64,
+    pub explore_vs_shift_prob: f64,
+    pub meta_prob: f64,
+}
 
 impl Scheduler {
     pub fn new() -> Self { 
-        Scheduler {} 
+        Scheduler { 
+            exploit_threshold: 1.0,
+            exploit_bias_prob: 0.7,
+            explore_vs_shift_prob: 0.9, // Priorisoi explore/exploit yli shift
+            meta_prob: 0.01,
+        } 
     }
 
     /// Päättää seuraavan toimenpiteen tilastojen perusteella
-    /// TÄMÄ ON PAIKKA, JOSSA ÄLYKKYYS SYNTYY!
     pub fn decide_next_action(&self, stats: &Stats, world_pressure: f64) -> Action {
-        // VAIHE 6.1 (Yksinkertainen malli):
-        // Jos exploit on tuottavaa, tee sitä.
-        if stats.gain_per_quota_exploit > 10.0 {
-            return Action::Exploit;
+        let mut rng = rand::thread_rng();
+
+        // Satunnaisesti meta-oppiminen  
+        let roll = rng.gen_range(0.0..1.0);
+        if roll < self.meta_prob {
+            return Action::MetaLearn;
         }
 
-        // Jos paine on kova (esim. > 80% täynnä), älä tutki, vaan siirrä ikkunaa
-        // ja yritä löytää nopeita voittoja
-        if world_pressure > 0.8 && stats.gain_per_quota_exploit > 0.0 {
-             // Yritä löytää toinen paikka käyttää vanhaa mallia
-            return Action::ShiftWindow; 
+        // Jos exploit on tuottavaa, käytä sitä usein
+        if stats.gain_per_quota_exploit > 0.0 && stats.gain_per_quota_exploit >= stats.gain_per_quota_explore {
+            if rng.gen_range(0.0..1.0) < self.exploit_bias_prob {
+                return Action::Exploit;
+            }
         }
 
-        // Oletus: tutki uutta
+        // Jos explore on tuottavaa, käytä sitä
+        if stats.gain_per_quota_explore > 0.0 {
+            if rng.gen_range(0.0..1.0) < 0.7 {
+                return Action::Explore;
+            }
+        }
+
+        // Oletuksena: AINA Explore
         Action::Explore
+    }
+
+    /// Kasvata exploit-biasia (meta-operaatiosta hyödyntämiseen)
+    pub fn increase_exploit_bias(&mut self, delta: f64) {
+        self.exploit_bias_prob = (self.exploit_bias_prob + delta).min(1.0);
+    }
+
+    /// Aseta eri scheduler-parametrit suoraan
+    pub fn set_params(&mut self, exploit_threshold: f64, exploit_bias_prob: f64, explore_vs_shift_prob: f64, meta_prob: f64) {
+        self.exploit_threshold = exploit_threshold;
+        self.exploit_bias_prob = exploit_bias_prob;
+        self.explore_vs_shift_prob = explore_vs_shift_prob;
+        self.meta_prob = meta_prob;
     }
 }

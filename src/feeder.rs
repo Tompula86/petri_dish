@@ -1,56 +1,50 @@
 use crate::world::World;
+use rand::Rng;
 
-/// Feeder: Virtasyöttäjä joka työntää uutta dataa Worldiin konfiguroitavalla nopeudella.
-/// Luo dynaamisen paineen: jos Solver ei pysy tiivistämään, muisti täyttyy.
+/// Feeder: generaattori, joka tuottaa datavirtaa loputtomasti (testiympäristöä varten)
 pub struct Feeder {
-    /// Datavir ta josta syötetään
-    data_stream: Vec<u8>,
-    /// Nykyinen positio virrassa
-    position: usize,
-    /// Kuinka monta tavua syötetään per feed()-kutsu
     pub feed_rate: usize,
+    cycle: u64,
 }
 
 impl Feeder {
-    pub fn new(data_stream: Vec<u8>, feed_rate: usize) -> Self {
-        Feeder {
-            data_stream,
-            position: 0,
-            feed_rate,
-        }
+    pub fn new(feed_rate: usize) -> Self {
+        Feeder { feed_rate, cycle: 0 }
     }
 
     /// Syötä uutta dataa Worldiin
-    /// Palauttaa: Ok(syötetty määrä) tai Err jos World täyttyi
     pub fn feed(&mut self, world: &mut World) -> Result<usize, &'static str> {
-        // Laske kuinka paljon voidaan syöttää
-        let remaining_in_stream = self.data_stream.len() - self.position;
-        let to_feed = self.feed_rate.min(remaining_in_stream);
+        self.cycle += 1;
+        let new_data = self.generate_data(self.feed_rate, self.cycle);
 
-        if to_feed == 0 {
-            return Ok(0); // Virta loppui
-        }
-
-        // Tarkista mahtuuko Worldiin
-        if world.data.len() + to_feed > world.memory_limit {
+        if world.data.len() + new_data.len() > world.memory_limit {
             return Err("OVERFLOW: World täynnä! Feeder nopeampi kuin Solver.");
         }
 
-        // Syötä data
-        let end_pos = self.position + to_feed;
-        world.data.extend_from_slice(&self.data_stream[self.position..end_pos]);
-        self.position = end_pos;
-
-        Ok(to_feed)
+        world.data.extend_from_slice(&new_data);
+        Ok(new_data.len())
     }
 
-    /// Kuinka paljon dataa on vielä jäljellä virrassa
-    pub fn remaining(&self) -> usize {
-        self.data_stream.len() - self.position
+    /// Proseduraalinen datan generointi
+    fn generate_data(&self, amount: usize, cycle: u64) -> Vec<u8> {
+        let mut data = Vec::with_capacity(amount);
+        let mut rng = rand::thread_rng();
+
+        match (cycle / 100) % 3 {
+            0 => { // Tyyppi A: Toistoja
+                for i in 0..amount { data.push((i % 10) as u8); }
+            }
+            1 => { // Tyyppi B: Korkea entropia (kohinaa)
+                for _ in 0..amount { data.push(rng.gen_range(0..=255) as u8); }
+            }
+            _ => { // Tyyppi C: Harvat kuviot
+                for _ in 0..amount { data.push(b'X'); }
+                if data.len() > 10 { data[10] = b'Y'; }
+            }
+        }
+
+        data
     }
 
-    /// Onko virta lopussa
-    pub fn is_depleted(&self) -> bool {
-        self.position >= self.data_stream.len()
-    }
+    pub fn is_depleted(&self) -> bool { false }
 }

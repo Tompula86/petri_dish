@@ -450,4 +450,3 @@ fn live(&mut self, world: &mut World, feeder: &mut Feeder) {
 
 ---
 
-Tämän suunnitelman parannukset kiteyttävät siirtymän staattisesta funktiosta dynaamiseksi agentiksi, joka 1) oppii, 2) yleistää (meta-mallit) ja 3) sopeutuu (unohtaa). Tulos ei ole vain parempi kuvaustehokkuus, vaan myös järjestelmä, joka yllättää meidät keksimällä oman operaattoriavaruutensa.

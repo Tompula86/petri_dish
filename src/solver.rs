@@ -10,6 +10,8 @@ pub struct Solver {
     /// PatternBank: Solverin oppimien mallien muisti
     pub known_patterns: Vec<Pattern>,
     next_pattern_id: u32,
+    /// Kuinka monta mallia PatternBank voi pitää
+    pub pattern_bank_capacity: usize,
     /// Tilastot suorituskyvystä
     pub stats: Stats,
     /// Scheduler: päättää strategiset valinnat
@@ -17,11 +19,12 @@ pub struct Solver {
 }
 
 impl Solver {
-    pub fn new(processing_quota: u32) -> Self {
+    pub fn new(processing_quota: u32, pattern_bank_capacity: usize) -> Self {
         Solver {
             processing_quota,
             known_patterns: Vec::new(),
             next_pattern_id: 0,
+            pattern_bank_capacity,
             stats: Stats::new(),
             scheduler: crate::scheduler::Scheduler::new(),
         }
@@ -114,7 +117,9 @@ impl Solver {
                             self.next_pattern_id += 1;
                             self.known_patterns.push(pattern);
                             println!("  ✓ Explore: Uusi malli #{} löydetty (säästö: {} tavua)", pattern_id, gain);
-                            println!("  📚 PatternBank: {} mallia muistissa", self.known_patterns.len());
+                            println!("  📚 PatternBank: {}/{} mallia muistissa", self.known_patterns.len(), self.pattern_bank_capacity);
+                            // Muista unohtaa, jos täynnä
+                            self.forget_if_needed();
                         }
                     } else {
                         quota_cost = 10; // Yritys maksoi
@@ -123,19 +128,37 @@ impl Solver {
                 },
 
                 crate::scheduler::Action::ShiftWindow => {
-                    // Yksinkertainen heuristiikka: siirrä ikkunaa eteenpäin
-                    // Tulevaisuudessa: fiksumpi "seek"
-                    let new_start = (world.window.start + 3000) % world.data.len();
-                    let window_size = 4096.min(world.data.len());
-                    quota_cost = world.shift_window(new_start, window_size);
-                    self.stats.record_seek(quota_cost);
-                    println!("  🔍 ShiftWindow: Siirryttiin kohtaan {} (kustannus: {} quota)", new_start, quota_cost);
+                    // Siirrä ikkunaa, mutta älä kuluta koko quotaa
+                    let data_len = world.data.len();
+                    if data_len == 0 || data_len <= 4096 {
+                        // Ei dataa tai kaikki mahtuu yhteen ikkunaan — ei kannata siirtää
+                        quota_cost = 1;
+                        self.stats.record_seek(quota_cost);
+                        println!("  🔍 ShiftWindow: Ei tarvetta siirtää ikkunaa (kustannus: {})", quota_cost);
+                    } else {
+                        // Siirrä ikkunaa satunnaiseen paikkaan
+                        use rand::Rng;
+                        let mut rng = rand::thread_rng();
+                        let new_start = rng.gen_range(0..data_len);
+                        let window_size = 4096.min(data_len - new_start);
+                        // Kiinteä kustannus välttää liian kalliita siirtoja
+                        quota_cost = 5; 
+                        world.window = new_start..(new_start + window_size);
+                        self.stats.record_seek(quota_cost);
+                        println!("  🔍 ShiftWindow: Siirryttiin kohtaan {} (kustannus: {} quota)", new_start, quota_cost);
+                    }
                 },
 
                 crate::scheduler::Action::MetaLearn => {
-                    // Ei toteutettu vielä
-                    quota_cost = 1;
-                    println!("  🧠 MetaLearn: Ei vielä toteutettu");
+                    // Meta-oppiminen on kallista
+                    quota_cost = 100;
+                    if current_quota >= quota_cost {
+                        println!("  🧠 MetaLearn: Käynnistetään meta-oppiminen...");
+                        self.meta_learn();
+                        self.stats.record_meta(quota_cost, 0);
+                    } else {
+                        println!("  🧠 MetaLearn: Ei tarpeeksi quotaa (tarvitaan {})", quota_cost);
+                    }
                 }
             }
 
@@ -147,6 +170,54 @@ impl Solver {
         }
 
         self.update_cost_breakdown(world, evaluator);
+    }
+
+    /// Etsi malleja malleista (hyvin yksinkertainen runko)
+    fn meta_learn(&mut self) {
+        println!("  🧠 MetaLearn: Tutkitaan PatternBankia...");
+
+        // Laske, kuinka monta RunLength-mallia meillä on
+        let rle_count = self.known_patterns.iter()
+            .filter(|p| matches!(p.operator, Operator::RunLength(_, _)))
+            .count();
+
+        if rle_count > 10 {
+            println!("  🧠 Oivallus: RunLength-malleja paljon ({} kpl). Priorisoi RunLength-tutkimusta.", rle_count);
+            // Esimerkki: säädä Schedulerin painotusta siten, että eksplorointi RunLength-tyyppisiin paikkoihin kasvaa
+            self.scheduler.increase_exploit_bias(0.1);
+            println!("  🧠 MetaLearn: Schedulerin exploit-biasia kasvatettu.");
+        } else {
+            println!("  🧠 MetaLearn: Ei löydetty vahvaa abstraktiota (RLE count={}).", rle_count);
+        }
+    }
+
+    /// Poista huonoin malli, jos PatternBank on täynnä
+    fn forget_if_needed(&mut self) {
+        if self.known_patterns.len() > self.pattern_bank_capacity {
+            use std::time::SystemTime;
+            let now = SystemTime::now();
+
+            // Rankkaa mallit yhdistetyllä scorella: score = bytes_saved*B + usage_count*U - age_sec*A
+            let bytes_weight = 1.0;
+            let usage_weight = 10.0;
+            let age_penalty = 0.1; // per second
+
+            let mut worst_index = 0usize;
+            let mut worst_score = std::f64::INFINITY;
+
+            for (i, p) in self.known_patterns.iter().enumerate() {
+                let age = now.duration_since(p.last_used).unwrap_or_default().as_secs() as f64;
+                let score = (p.total_bytes_saved as f64) * bytes_weight + (p.usage_count as f64) * usage_weight - age * age_penalty;
+                if score < worst_score {
+                    worst_score = score;
+                    worst_index = i;
+                }
+            }
+
+            let removed = self.known_patterns.remove(worst_index);
+            println!("  🗑️ Forget: PatternBank täynnä. Poistettiin malli #{}, score {:.2}, säästö {} tavua, käyttöjä {}.",
+                     removed.id, worst_score, removed.total_bytes_saved, removed.usage_count);
+        }
     }
 
     /// Päivitä kustannuskomponentit statsiin
@@ -184,10 +255,10 @@ impl Solver {
     }
 
     /// Explore: Etsi uusia malleja
-    /// Tällä hetkellä: etsii RunLength-malleja (5+ samaa peräkkäistä tavua)
+    /// Tällä hetkellä: etsii RunLength-malleja (3+ samaa peräkkäistä tavua)
     /// HUOM: Patch.range on paikallinen ikkunan suhteen!
     fn explore(&self, data_slice: &[u8]) -> Option<Patch> {
-        const MIN_RUN_LENGTH: usize = 5;
+        const MIN_RUN_LENGTH: usize = 3; // Alennettu 5:stä 3:een
         self.find_any_run_length(data_slice, MIN_RUN_LENGTH)
     }
 

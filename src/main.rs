@@ -21,31 +21,17 @@ fn main() {
     // Luo World (rajoitettu 50 kB, paine kovenee!)
     let mut world = World::new(50_000);
     
-    // SOPEUTUMISNOPEUS-TESTI: Luo Feeder joka vaihtaa dataa kesken kaiken
-    let mut feed_data = Vec::new();
-    
-    // VAIHE A: 30 000 tavua dataa tyyppiä A (pitkät 'A' ja '0' toistot)
-    for _ in 0..10 {
-        feed_data.extend(vec![b'A'; 1_500]);  // 1500 x 'A'
-        feed_data.extend(vec![0u8; 1_500]);   // 1500 x nolla
-    }
-    
-    // VAIHE B: 30 000 tavua dataa tyyppiä B (eri kuvio: 'B' ja '1')
-    for _ in 0..10 {
-        feed_data.extend(vec![b'B'; 1_500]);  // 1500 x 'B'
-        feed_data.extend(vec![1u8; 1_500]);   // 1500 x ykkösiä
-    }
-    
-    let mut feeder = Feeder::new(feed_data, 3_000); // 3 kB per sykli
+    // Vaihdetaan loputtomaan generaattorifeederiin
+    let mut feeder = Feeder::new(3_000); // 3 kB per sykli
 
     // Luo Evaluator ja Solver
     let evaluator = Evaluator::new();
-    let mut solver = Solver::new(1000);
+    let mut solver = Solver::new(1000, 50); // 50 patternin kapasiteetti
 
     println!("Aloitustilanne:");
     println!("  World kapasiteetti: {} tavua", world.memory_limit);
     println!("  Feeder nopeus: {} tavua/sykli", feeder.feed_rate);
-    println!("  Feeder virta: {} tavua (VAIHE A: 0-30k, VAIHE B: 30k-60k)", feeder.remaining());
+    println!("  Feeder virta: (generaattori, ei rajallista dataa)");
     
     // Avaa CSV-tiedosto
     let mut csv_file = File::create("results.csv").expect("CSV-tiedoston luonti epäonnistui");
@@ -56,7 +42,8 @@ fn main() {
     let mut cycle = 0;
     let mut overflow_detected = false;
     
-    while !feeder.is_depleted() && cycle < 50 {
+    // Aja rajatussa testissä 1000 sykliä tällä kierroksella
+    while cycle < 1000 {
         cycle += 1;
         let world_size = world.data.len();
         
@@ -96,11 +83,11 @@ fn main() {
         match feeder.feed(&mut world) {
             Ok(fed) => {
                 if fed > 0 {
-                    println!("  📥 Feeder: +{} tavua (jäljellä {})", fed, feeder.remaining());
+                    println!("  📥 Feeder: +{} tavua", fed);
                 }
             }
             Err(e) => {
-                println!("\n💥 {} 💥", e);
+                println!("\n💥 {} 💥 (Sykli {})", e, cycle);
                 overflow_detected = true;
                 break;
             }
