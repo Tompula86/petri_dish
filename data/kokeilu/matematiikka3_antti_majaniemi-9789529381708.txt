@@ -1,0 +1,8543 @@
+Antti Majaniemi
+
+MATEMATIIKKA III
+z
+
+y
+x
+
+2016
+ISBN 978-952-93-8170-8
+
+Tämä teos on lisensoitu Creative Commons Nimeä-EiKaupallinen 4.0
+Kansainvälinen -lisenssillä. Tarkastele lisenssiä osoitteessa
+http://creativecommons.org/licenses/by-nc/4.0/deed.fi.
+
+Antti Majaniemen perikunta on päättänyt antaa tämän teoksen käytettäväksi
+yllä olevalla lisenssillä. Painatus ei ollut enää kannattavaa alhaisen
+kysynnän vuoksi, mutta tällä tavalla oppimateriaali on edelleen
+opiskelijoiden ja oppilaitosten käytettävissä.
+Tämä teos on ladattavissa osoitteessa http://anttimajaniemi.fi
+Turussa 20.11.2016
+Jari Majaniemi
+jari @ anttimajaniemi.fi
+
+i
+
+Sisällys
+1
+
+Vektorilaskennan kertausta ja täydennystä __________________ 1
+1.1
+Vektorin komponenttiesitys ____________________________ 1
+1.2
+Pistetulo ja ortogonaaliprojektio _________________________ 2
+1.3
+Ristitulo eli vektoritulo ja kolmoistulot ___________________ 5
+
+2
+
+Taso __________________________________________________ 9
+2.1
+Tason yhtälö ________________________________________ 9
+2.2
+Pisteen etäisyys tasosta _______________________________ 11
+2.3
+Tason vektori- ja parametriesitykset _____________________ 12
+*2.4 Tasoa koskevia lisätehtäviä ___________________________ 13
+
+3
+
+Suora ________________________________________________ 17
+3.1
+Suora kahden tason leikkauksena _______________________ 17
+3.2
+Suoran vektoriyhtälö ja parametriesitys __________________ 17
+*3.3 Suoran normaalimuoto _______________________________ 19
+
+4
+
+Toisen asteen pinnoista__________________________________ 22
+4.1
+Pallo _____________________________________________ 22
+4.2
+Ellipsoidi __________________________________________ 23
+4.3
+Hyperboloidit ______________________________________ 24
+4.4
+Kartio ____________________________________________ 27
+4.5
+Lieriöt ____________________________________________ 27
+4.6
+Paraboloidit ________________________________________ 28
+
+5
+
+Koordinaatistoista _____________________________________ 32
+5.1
+Koordinaatiston kierto tasossa kulman  verran ___________ 32
+5.2
+Tasokuvion kierto xy-koordinaatiston origon ympäri ________ 33
+5.3
+Vastaavat tulokset avaruudessa ________________________ 34
+5.4
+Napakoordinaatisto avaruudessa________________________ 35
+5.5
+Pallokoordinaatisto __________________________________ 36
+5.6
+Lieriökoordinaatisto _________________________________ 37
+
+6
+
+Osittaisderivaatat ja kokonaisdifferentiaali _________________ 40
+6.1
+Kahden muuttujan funktio ja sen derivointi _______________ 40
+6.2
+Kokonaisdifferentiaali _______________________________ 41
+6.3
+Yhdistetyn funktion derivointi _________________________ 42
+6.4
+Ratkaisemattoman funktion derivointi ___________________ 44
+
+7
+
+Ääriarvot _____________________________________________ 48
+7.1
+Maksimi ja minimi __________________________________ 48
+7.2
+Pienimmän neliösumman menetelmän sovelluksia _________ 50
+
+8
+
+Integraalilaskentaa _____________________________________ 56
+8.1
+Viivaintegraali _____________________________________ 56
+8.2
+Työ voimakentässä __________________________________ 57
+
+ii
+8.3
+9
+
+Pintaintegraali ______________________________________ 59
+
+Laplace-muunnos ______________________________________ 62
+9.1
+Laplace-muunnos eli L-muunnos _______________________ 62
+9.2
+Käänteismuunnos ___________________________________ 64
+9.3
+Derivaatan ja integraalin L-muunnos ____________________ 65
+9.4
+L-muunnoksen käyttäminen diff.yhtälöiden ratkaisemiseen___ 67
+9.5
+Virtapiirin vastinpiiri L-muunnoksessa___________________ 68
+9.6
+Viive, yksikköaskel ja yksikköimpulssi __________________ 70
+
+10
+Sarjoista ____________________________________________ 77
+10.1 Lukujono ja sarja ___________________________________ 77
+10.2 Aritmeettinen ja geometrinen sarja ______________________ 78
+10.3 Potenssisarja _______________________________________ 80
+10.4 Potenssisarjan muodostamistapoja ______________________ 81
+10.5 Sarjojen sovelluksia _________________________________ 86
+11
+Fourier´n sarja ______________________________________ 92
+11.1 F-sarjaan liittyviä käsitteitä ____________________________ 92
+11.2 F-sarjan kertoimien määrittäminen ______________________ 93
+11.3 Jaksollisen funktion, jonka jakso on T, Fourier´n sarja ______ 95
+12
+Diff.yhtälön numeerinen ratkaiseminen _________________ 100
+12.1 Eulerin menetelmä _________________________________ 100
+12.2 Runge-Kutta-menetelmä _____________________________ 102
+Vastauksia _______________________________________________ 103
+
+Kuten edellisissäkin osissa, myös tässä monisteessa on asioita, joiden käsittelytapa ja käsittelyn laajuus riippuvat opintosuunnasta.
+Tähän painokseen olen tehnyt joitakin painovirheiden korjauksia ja muuttanut useaan kuvaan viivanpaksuutta, jotta kuvat näkyisivät painettuina paremmin.
+Turussa 1. 8. 1998
+Antti Majaniemi
+Toinen, päivitetty painos. Olen päivittänyt Antti Majaniemen alkuperäiseen
+monisteeseen harjoitustehtäviä tämän päivän tilanteeseen paremmin sopiviksi.
+Turussa 16. 8. 2007
+
+Jari Majaniemi
+
+1
+
+1
+
+Vektorilaskennan kertausta ja täydennystä
+
+1.1
+
+Vektorin komponenttiesitys
+
+1) Jokainen avaruusvektori a voidaan esittää muodossa
+
+a = a1i + a2 j + a3k
+missä esim. a2 j on yksikkövektorin j suuntainen komponenttivektori. Luvut
+(skalaarit) a1, a2 ja a3 ovat vektorin a (skalaari)
+kannan
+i , j, k suhteen. Jatkossa kantavektoreina ovat aina i , j ja k ja vektorin a
+komponenttiesitys lyhennetään matriisin tyyppiseen muotoon
+
+= [ 1, 2 , 3 ] .
+Pisteellä ja sen koordinaateilla esitetään paikkaa avaruudessa, kun taas
+vektorilla esitetään tietyn suuruista ja suuntaista siirtymää pisteestä toiseen.
+Geometrisesti
+a1 , a2 , a3
+.
+Esim. 1 Pisteestä A(2,3,4) pisteeseen B(5,1,–2)
+piirretyn vektorin komponenttiesitys on
+
+B(5,1,–2)
+a
+
+−→
+
+a = AB = [3,−2,−6] .
+
+A(2,3,4)
+
+2) Origosta O pisteeseen P(x,y,z) piirrettyä
+vektoria r sanotaan pisteen P
+. Sen komponentit ovat samat kuin pisteen
+P koordinaatit, ts.
+
+P(x,y,z)
+k
+
+r
+j
+
+=[ , , ]
+
+z
+
+y
+
+i
+
+x
+
+Esimerkiksi pisteen P(3,–2,–6) paikkavektori
+on r = [3,−2,−6] , ts. kyseessä on sama vektori kuin Esimerkissä 1, mutta
+siirrettynä alkamaan origosta.
+3) Vektorien peruslaskutoimitukset,
+voidaan suorittaa komponenteittain:
+
+a = [a1, a2 , a3 ]
+b = [b1, b2 , b3 ]
+
+⇒
+
+ja
+
+(luvulla)
+
+a + b = [a1 + b1 , a2 + b2 , a3 + b3 ]
+ta = [ta1, ta2 , ta3 ], t ∈ R .
+
+2
+Vektorin a
+
+− a = ( −1)a ja
+
+4) Vektorin a = [a1, a2 , a3 ]
+
+| |=
+
+a − b = a + ( −b ) .
+2
+2
+2
+1 + 2 + 3 .
+
+Esim. 2 Vektorin a = [3,−2,−6] pituus on | a | = 9 + 4 + 36 = 7 .
+o
+5) Vektorin a suuntainen
+saadaan, kun a jaetaan pituudellaan eli kerrotaan pituuden käänteisluvulla:
+o
+
+=
+
+1
+.
+|| ||
+=
+
+Esim. 3 Jos Esimerkin 2 vektorista a otetaan seitsemäsosa, saadaan a :n
+suuntainen yksikkövektori a o = 17 a = 17 [3,−2,−6] = [ 37 ,− 27 ,− 67 ] .
+*Vektorin a pituutta sanotaan joskus vektorin normiksi ja merkitään
+a :lla. Vektorin normointi tarkoittaa vektorin jakamista pituudellaan eli
+muuttamista samansuuntaiseksi yksikkövektoriksi.
+
+a = [a1, a2 , a3 ]
+on a1: a2: a3 . Vektorin suunta voidaan
+6)
+supistaa tai laventaa millä tahansa positiivisella reaaliluvulla. Vektorin a
+suuntaisen
+on a1: a2: a3 , millä tahansa positiivi- tai negatiiviluvulla supistettuna tai lavennettuna .
+−→
+
+Esim. 4 Jos A = (1,2,3) ja B = (–1,0,1), niin c = AB = [−2,−2,−2] .
+Vektorin c suunta = ( −2 ):( −2):( −2 ) = ( −1):( −1):( −1) .
+
+A
+B
+
+Suoran ℓ = AB suunta = ( −1):( −1):( −1) = 1 : 1 : 1 .
+
+Vektori s = [1, 1, 1] on suoran ℓ eräs
+suuntavektoreiksi käyvät kaikki vektorit, jotka
+vastakkaissuuntaisia kuin s .
+1.2
+
+. Suoran
+saman- tai
+
+ovat
+
+Pistetulo ja ortogonaaliprojektio
+
+1) Vektorien a ja b
+luku (skalaari)
+
+⋅
+
+=| || | cos α ,
+
+eli
+
+on
+("a piste b")
+
+missä α on vektorien a ja b välinen kulma, 0 ≤ α ≤ π .
+
+a
+
+b
+α
+
+3
+Pistetulon arvo on positiivinen tai negatiivinen sen mukaan, onko α terävä vai
+tylppä.
+2) Komponenttimuodossa:
+
+= [ 1, 2, 3 ]
+= [ 1, 2, 3 ]
+
+⇒
+
+⋅ =
+
+1 1 + 2 2 + 3 3.
+
+3) Jos a , b ≠ 0 , niin kohdan 1) mukaan vektorien a ja b välinen kulma
+saadaan trigonometrisesta yhtälöstä
+
+cos α =
+
+⋅
+.
+| || |
+
+Esim. 5 Laske viereisen kolmion Bkulma. Esim. kärjen C vastaista
+sivua merkitään yleensä c:llä.
+
+A(1,0,2)
+
+C(1,–1,–5)
+
+c
+
+a
+
+−→
+
+c = BA = [−3,−2,−2]
+
+β
+
+−→
+
+a = BC = [−3,−3,−9]
+cos β =
+
+B(4,2,4)
+
+9 + 6 + 18
+33
+=
+∴ β ≈ 36,4o .
+9 + 4 + 4 9 + 9 + 81
+17 99
+
+4) Kohdan 3) tuloksesta seuraa
+a , b ≠ 0 , niin
+
+- eli
+
+⊥
+5) Vektorin a
+
+⇔ ⋅
+
+: Jos
+
+=0.
+
+vektorilla b on luku (skalaari)
+
+a
+
+=| | cos α
+ja
+
+on vektori
+.
+
+=
+Esim. 6
+
+α
+ab
+
+a
+
+a
+α
+
+α
+a b = +2, a b = 2b
+
+b
+
+b
+o
+
+b
+a b = −2, a b = −2b
+
+o
+
+4
+
+a ⋅b
+a
+ja a o =
+, niin skalaarikomponentin ja projektio| a || b |
+|a |
+vektorin lausekkeet saavat seuraavat muodot:
+Koska cos α =
+
+=
+
+⋅
+
+=
+
+| |
+
+⋅
+| |2
+
+*Skalaarikomponentin ja projektiovektorin merkinnät ovat liian samanlaiset. Sen
+vuoksi voisi olla paikallan merkitä skalaarikomponenttia (eli skalaariprojektiota)
+( )| antaa projektiovektorin pituuden.
+esim. skal( ):llä. Sen itseisarvo |
+
+Esim. 7 Laske pisteen P peilikuva
+suoran AB suhteen, kun
+pisteiden P, A ja B
+koordinaatit ovat kuvan
+mukaiset.
+−→
+
+B(1,–1,–5)
+P(1,0,2)
+D
+a = [-3,-2,-2]
+
+AD = ab
+
+Q=?
+A(4,2,4)
+
+9 + 6 + 18
+b
+9 + 9 + 81
+1
+= b = [−1,−1,−3]
+3
+=
+
+−→
+
+b = AB = [-3,-3,-9]
+
+−→
+
+−→
+
+PD = AD − a
+
+( sillä a + PD = AD )
+
+−→
+
+= [−1,−1,−3] − [−3,−2,−2] = [2, 1,−1]
+Lasketaan Q:n koordinaatit Q:n paikkavektorin rQ avulla:
+−→
+
+rQ = rP + 2 ⋅ PD = [1, 0, 2] + 2[2, 1,−1] = [5, 2, 0] ∴ Q = ( 5,2,0 ) .
+*Toinen ratkaisutapa, jossa käytetään vielä enemmän vektoreita:
+−→
+
+−→
+
+a = AP = rP − rA , b = AB = rB − rA , ab =
+rD = rA + ab
+−→
+
+rQ = rP + 2 ⋅ PD = rP + 2 ⋅ ( rD − rP ) = 2rD − rP
+
+∴
+
+= 2 ⋅(
+
++
+
+)−
+
+.
+
+a ⋅b
+| b |2
+
+b
+
+5
+1.3
+
+Ristitulo eli vektoritulo ja kolmoistulot
+
+Kirjoitetaan vektorit a ja b alekkain ja niiden perään 1. komponentit:
+
+a = [a1, a2 , a3 ] a1
+b = [b1, b2 , b3 ] b1
+Näiden vektorien
+("a risti b") on vektori, jonka kompo×
+nentteina ovat edellisestä saatavat 2-riviset determinantit:
+(1)
+
+a ×b =
+
+Esim. 8
+
+Jos
+
+a2
+b2
+
+a3 a3 a1 a1 a2
+= a2b3 − a3b2 , ...
+,
+,
+b3 b3 b1 b1 b2
+
+a = [1, −2, 3] 1
+
+, niin a × b = [1, 5, 3]. Edelleen
+b = [2, −1, 1] 2
+
+a × b ⋅ a = [1, 5, 3] ⋅ [1, − 2, 3] = 1 − 10 + 9 = 0 ∴ a × b ⊥ a .
+Samalla
+periaattella
+voidaan
+todistaa yleisesti, että ristitulovektori a × b on kohtisuorassa
+sekä vektoria a että vektoria b
+vastaan.
+
+axb
+
+b
+
+Täten ristitulo antaa vektorien a
+ja b määräämän
+(vrt. kuva).
+
+a
+
+Lisäksi kolmikko a , b , a × b muodostaa ns. oikeakätisen systeemin.
+Esim. 9
+
+× = ,
+
+×
+
+i = [1, 0, 0] 1
+j = [0, 1, 0] 0
+
+× = , sillä esim.
+
+= ,
+
+j
+
+i
+
+⇒ i × j = [0, 0, 1] = k .
+k
+
+Nämä kolme tulosta saadaan toisistaan
+
+eli
+
+*Koska a × b on vektori, on mahdollista muodostaa tämän vektorin ja
+kolmannen vektorin c pistetulo ja ristitulo:
+
+× ⋅
+
+(
+
+)
+
+×
+
+×
+
+(
+
+Skalaarikolmitulon arvo on luku (skalaari) ja vektorikolmitulon vektori.
+
+).
+
+6
+Geometrisia tuloksia
+1) Ristitulovektorin a × b pituus on (lukuarvoltaan) yhtä suuri kuin vektorien
+a ja b määräämän suunnikkaan ala ts. (vrt kuva)
+
+| a × b | =| a || b |sin α
+Tämän puolikas on siten
+määräämän kolmion ala.
+
+vektorien
+
+a ja b
+
+a
+h = |a| sin α
+α
+
+2) Jos vektorikolmikko a , b , c muodostaa
+oikea/vasenkätisen systeemin, niin
+skalaarikolmitulon arvo a × b ⋅ c on
+c
+näiden kolmen vektorin määräämän
+h =|c| cos γ
+suuntaissärmiön
+tilavuus/tilavuuden
+b
+vastaluku.
+γ
+
+b
+
+A = |axb|
+
+*Laskulakeja: Komponenttiesityksen
+avulla voidaan todistaa mm. seuraavat
+laskulait. ("Erikoslait" on lihavoitu.
+Näitä käytetään mm. sähkötekniikassa.)
+
+1)
+
+× =− ×
+
+2)
+
+× ! ",
+
+V = a × b c cos γ = ( a × b ) ⋅ c
+
+( antisymmetrisyys)
+a×0=0
+
+3)
+
+a × (b + c ) = a × b + a × c
+
+4)
+
+a × ( tb ) = ( ta ) × b = t ( a × b )
+
+5)
+
+# × $⋅ ! ⋅# × $
+
+6)
+
+a
+
+( ristin ja pisteen vaihtosääntö )
+
+× × = # ⋅ $ −# ⋅ $
+
+(vektorikolmitulon kehityskaava )
+
+Samaan tapaan tai edellisten lakien avulla voidaan todistaa
+
+7)
+
+× ⋅ =
+
+8)
+
+×# ⋅ $= # ⋅ $ −# ⋅ $
+
+Esim. 10
+
+× ⋅ = × ⋅
+
+× = × =
+
+×
+
+( kiertosääntö )
+( toinen kehityskaava )
+
+= 0 (Laki 2).
+
+Esimerkistä 9 seuraa antisymmetrisyyden nojalla, että
+
+× =− ,
+
+× =−,
+
+×
+
+=− .
+
+( a + b ) × ( a + b ) = 0 (koska lain 2 mukaan jokaisen vektorin
+ristitulo itsensä kanssa = 0 )
+
+7
+
+(a + b ) × (a − b ) = a × a − a × b + b × a − b × b
+= 0 − a × b − a × b + 0 = −2( a × b ).
+Ristitulo ja skalaarikolmitulo voidaan esittää myös 3-rivisinä determinantteina:
+
+i
+j
+a × b = a1 a2
+
+k
+a3
+
+b1
+
+b3
+
+b2
+
+a1 a2
+a × b ⋅ c = b1 b2
+c1
+
+c2
+
+a3
+b3 .
+c3
+
+HARJOITUKSIA
+A
+1.1
+
+Pisteestä P( −1,3,2 ) siirrytään 5 yksikköä vektorin A( −1,9,4 ) B( 5,6,2 )
+suuntaan. Mihin pisteeseen joudutaan?
+
+1.2
+
+Laske vektorin a = [4,−3,0] ja koordinaattiakselien välisten kulmien
+kosinit. Näitä sanotaan vektorin a suuntakosineiksi. (Vihje: Ajattele,
+että a -vektori alkaa origosta. Esim. eräs y-akselin suuntainen vektori
+on j = [0,1,0] .)
+
+1.3
+
+Laske vektorin c = [2,−1,3] skalaarikomponentti ja ortogonaaliprojektio (projektiovektori) suoralla A( −1,9,4 ) B( 5,6,2 ) . (Vihje: aseta
+c alkamaan pisteestä A.)
+
+1.4
+
+Laske vektorien [4,2,−1] ja [2,−4,3] ristitulovektorin suunta.
+
+1.5
+
+Samasta pisteestä P lähtevät vektorit a = [3,−4,2] ja b = [−1,2,4]
+määräävät erään tason. Määritä tämän tason normaalin suunta.
+(Normaali on normaalivektorin suuntainen suora.)
+
+1.6
+
+Laske vektorien a = [3,−1,4], b = [2,3,−2] ja c = [4,−3,2] skalaari- ja
+vektorikolmitulot.
+
+B
+1.7
+
+Kolmion (kolmiolevyn) painopiste jakaa jokaisen keskijanan kärjestä
+lukien suhteessa 2 : 1. Laske kolmion A(1,2,2) B(0,–1,–1) C(1,0,1)
+painopiste.
+
+1.8
+
+Pisteen P etäisyys suorasta AB voidaan laskea monella tavalla:
+
+8
+a) Käyttämällä skalaarikomponenttia ja
+Pythagoraan lausetta,
+b)
+Käyttämällä
+seuraavalla tavalla:
+
+P
+a
+
+perustrigonometriaa
+
+B
+e
+b
+
+A
+
+e =| a |sin α , sin α = 1 − cos2 α , cos α =...
+c) e =| a |sin α =
+
+| a | | b | sin α
+
+|b |
+
+=
+
+|a × b |
+.
+|b |
+
+Laske näillä kolmella tavalla pisteen P(1,1,0) etäisyys suorasta
+A(0,2,3) B(2,3,1).
+1.9
+
+Vektorit a = [1, 1, 2], b = [2, 0, 1] ja c = [3,−2, 0] alkavat samasta
+pisteestä P. Laske c :n kärjen etäisyys vektorien a ja b määräämästä
+tasosta. (Ohje: projisioi c vektorien a ja b määräämän tason normaalille.)
+
+1.10 Pisteestä P(1,–1,–1) piirretään suoralle A(2,–1,–5) B(2,5,1) normaali
+PD. Määritä suoran AB ne pisteet, jotka ovat etäisyydellä 2 pisteestä
+D.
+
+C
+1.11 Osoita yleisesti, että kolmiolevyn painopisteen koordinaatit ovat
+kärkien koordinaattien keskiarvot (vrt. 1.7).
+1.12 Samasta pisteestä P lähtee kolme
+ta
+vektoria a = [2, 3, 1] , b = [4,−2, 1]
+a
+ja c = [−2, 3, z ] . Laske, millä zP
+ub
+b
+komponentin arvolla vektori c on
+vektorien a ja b määräämässä tasossa, ts. c on muotoa
+
+c = ta + ub
+
+c
+
+(t , u ∈R ) .
+
+Laske myös kertoimien t ja u arvot tässä tapauksessa.
+1.13 Todista laskulakien avulla: jos skalaarikolmitulon kaksi vektoria ovat
+samoja, niin skalaarikolmitulon arvo = 0.
+1.14 Osoita, että vektorin a = [a1, a2 , a3 ] suuntakosinit (vrt. harj. 1.2.) ovat
+samat kuin vektorin a o komponentit.
+
+9
+
+2
+
+Taso
+
+2.1
+
+Tason yhtälö
+
+Analyyttisessa avaruusgeometriassa geometriset, lähinnä viivoja ja pintoja
+koskevat tehtävät muutetaan algebrallisiksi, laskennallisiksi vektoreita ja
+koordinaatteja käyttäen.
+o( o, o, o )
+
+Tehtävä:
+. Johda tason T yhtälö.
+Olkoon P(x,y,z) avaruuden yleinen
+piste. Milloin piste P kuuluu tasoon T?
+−→
+
+n = [a, b, c]
+
+−→
+
+P ∈ T ⇔ n ⊥ Po P ⇔
+
+P
+
+⋅ o = 0.
+
+Po
+T
+
+Koska
+
+a:b:c
+
+n = [a , b, c ] ja
+−→
+
+Po P = [ x − xo , y − yo , z − zo ],
+niin ehto
+
+( -
+
+(1)
+Esim. 1
+
+−→
+
+⋅ o = 0 saa muodon
+)+ ( −
+
+)+ ( −
+
+)=0
+
+Jos taso kulkee pisteen (2,3,–5) kautta ja sen normaalin suunta
+on 4:(–6):1, niin tason yhtälö on
+
+4 ⋅ ( x − 2 ) − 6 ⋅ ( y − 3) + ( z + 5) = 0 .
+eli
+
+4 x − 6 y + z + 15 = 0 .
+
+Yleisesti, jos tason yhtälöstä (1) poistetaan sulkeet, yhtälö saa muodon
+(2)
+Huom.
+
++
+
++
+
++
+
+=0.
+
+Tason yhtälölle (1) tai (2) on tyypillistä, että se on
+että siinä tuntemattomien kertoimet antavat
+.
+
+ja
+
+10
+Esim. 2
+
+Yhtälö 5x − y + 2 z − 3 = 0 on lineaarinen ja esittää siten tasoa.
+Tason normaalin suunta on 5:(–1):2. Tason pisteitä saat kun
+annat kahdelle muuttujalle jonkin arvon ja ratkaiset kolmannen:
+
+x = 0, z = 0 ⇒ y = −3
+x = 0, z = 2 ⇒ y = 1
+Esim. 3
+
+∴ ( 0,−3, 0)
+∴ ( 0, 1, 2) jne.
+
+. Määritä pisteiden
+A(2,3,1), B(4,1,–3) ja C(1,1,1) kautta kulkevan tason yhtälö.
+Tason normaalivektori ja normaalin suunta saadaan
+avulla.
+−→
+
+a = AB = [ 2, − 2,−4] 2
+−→
+
+∴ a × b = [−8, 4,−6]
+
+b = AC = [−1, − 2, 0] − 1
+∴ Normaalin suunta on (–8):4:(–6)
+= 4:(–2):3.
+
+n=ax b
+
+Yhtälö on siten
+
+b
+
+4( x − 2 ) − 2( y − 3) + 3( z − 1) = 0 eli
+
+A
+
+C
+B
+
+a
+
+4 x − 2 y + 3z − 5 = 0 .
+*Tarkistus: Pisteiden A, B ja C koordinaatit toteuttavat yhtälön.
+Esim. 4
+
+Sijainniltaan erikoisia tasoja.
+
+1) Jos tason yhtälöstä puuttuu vakiotermi, kyseessä on
+.
+Esim. yhtälön x + y − z = 0 eli yhtälön
+z = x + y kuvaaja on origon kautta
+kulkeva taso, sillä yhtälö on lineaarinen
+ja piste (0,0,0) toteuttaa yhtälön.
+
+z
+1
+
+y
+
+1
+
+Tason normaalin suunta on 1:1:(–1) ts.
+eräs normaalivektori on n = [1, 1, − 1] .
+
+–1
+x
+
+n
+
+2) Esim. yhtälön
+
+z
+
+z=2
+toteuttavat kaikki ne pisteet (x,y,z), joilla
+z-koordinaatti on = 2, mutta x- ja y-koor- z = 2
+dinaatit saavat olla mitä tahansa (yhtälö ei
+aseta niille mitään ehtoa). Kyseessä on
+
+x
+
+y
+
+11
+"korkeudella 2" oleva taso eli z-akselia vastaan kohtisuora taso,
+joka leikkaa z-akselin kohdassa 2. Jos siis tason yhtälössä on
+vain yksi muuttuja (ts. kahden muun kerroin = 0), taso on
+kohtisuorassa vastaavaa akselia vastaan.
+3) Taso x + y − 1 = 0 muodostuu
+niistä pisteistä (x, y, z), joiden xja y-koordinaatteja sitoo tämä
+yhtälö ja z saa olla mikä
+tahansa. Kyseessä on siis taso,
+joka leikkaa xy-tason pitkin
+suoraa x + y − 1 = 0 ja joka on
+pystysuora eli z-akselin suuntainen.
+2.2
+
+Pisteen etäisyys tasosta
+
+*Tehtävä: Johda laskukaava pisteen P1( x1, y1, z1 ) etäisyydelle e tasosta
+T: ax + by + cz + d = 0 .
+
+n = [a,b,c]
+
+Olkoon Po ( xo , yo , zo ) tason T jokin
+piste. Etäisyys e on yhtä suuri kuin
+vektorin
+
+P1
+a
+
+e
+
+−→
+
+a = Po P1 = [ x1 − xo , y1 − yo , z1 − z o ]
+skalaarikomponentin a n itseisarvo:
+
+e=
+
+Po
+T
+
+a ⋅n
+.
+|n|
+
+a:b:c
+
+Koska Po ∈T, niin axo + byo + czo + d = 0 ja siten
+
+a ⋅ n = n ⋅ a = a( x1 − xo ) + b( y1 − yo ) + c( z1 − zo )
+= ax1 + by1 + cz1 − axo − byo − czo = ax1 + by1 + cz1 + d .
+=d
+
+Koska lisäksi | n | = a 2 + b2 + c 2 , niin
+
+=
+
+|
+
+1+ 1+
+2
+2
+
++
+
++
+
+1+
+2
+
+|
+
+.
+
+12
+Esim. 5
+
+Laske pisteen (2,–3,–4) etäisyys tasosta z = x + 3 y − 2 .
+Tason yhtälössä täytyy siirtää ensin kaikki termit samalle puolelle, ts. yhtälön täytyy olla muodossa x + 3 y − z − 2 = 0 . Täten
+
+e=
+2.3
+
+| 2 + 3 ⋅ ( −3) − ( −4 ) − 2 |
+
+1+ 9 +1
+
+=
+
+5
+11.
+
+Tason vektori- ja parametriesitykset
+
+Tasolle voidaan johtaa kaksi erityyppistä vektoriesitystä, joista edellinen oli
+jo oikeastaan esillä tason yhtälöä johdettaessa. Jälkimmäisen esityksen
+ajatustapa on sovellusten kannalta käyttökelpoisempi.
+*1) Taso muodostui sellaisista pisteistä P,
+että
+
+a:b:c
+n = [a, b, c]
+
+−→
+n ⋅ Po P = 0 .
+
+P
+Po
+
+−→
+Po P = r − ro ,
+
+missä r ja ro ovat T
+Vektori
+pisteiden P ja Po paikkavektorit. Täten
+tasolle T saadaan vektoriyhtälö
+(3)
+
+ro
+
+r
+
+O
+
+) = 0.
+
+⋅( −
+
+Koska n = [a , b, c ] ja r − ro = [ x − xo , y − yo , z − zo ] , yhtälö (3) on itse
+asiassa sama kuin yhtälö a ( x - xo ) + b( y − yo ) + c( z − zo ) = 0 lyhyesti kirjoitettuna.
+*2) Jos tasosta tunnetaan kaksi
+vektoria a ja b , jotka eivät ole samaneikä vastakkaissuuntaisia, niin vektori
+r − ro voidaan esittää muodossa
+
+o
+
+r − ro = ta + ub , missä t , u ∈ R .
+Tästä saadaan tason T yleisen pisteen
+P paikkavektorille r seuraava yhtälö:
+(4)
+
+=
+
++
+
++
+
+, , ∈ .
+
+Esimerkiksi edellisessä kuvassa r ≈ ro + 2,1 a + 1,9 b .
+
+o
+
+13
+Kun yhtälössä (4) kertoimet t ja u saavat kaikki reaalilukuarvot, niin
+paikkavektorin r kärki "piirtää" koko tason T. Siksi yhtälö (4) on tason
+parametrimuotoinen vektoriyhtälö, jossa on kaksi parametria t ja u. Vektorit
+a ja b ovat tason suuntavektorit.
+*3) Yhtälö (4) on komponenttimuodossa seuraava:
+
+[ x , y , z ] = [ xo , yo , zo ] + t [a1, a2 , a3 ] + u [b1, b2 , b3 ] .
+Koska vastinkomponenttien täytyy olla yhtälön kummallakin puolella samoja, tämä yhtälö hajoaa kolmeksi yhtälöksi
+
+x = xo + ta1 + ub1
+(5)
+
+y = yo + ta2 + ub2
+
+(tason parametriyhtälöt).
+
+z = zo + ta3 + ub3
+*Esim. 6 Jos A(2,3,1), B(4,1,–3) ja C(1,1,1) ovat tason T kolme pistettä,
+niin tason suuntavektoreiksi voidaan valita
+−→
+
+−→
+
+a = AB = [ 2, − 2,−4] ja b = AC = [−1, − 2, 0] .
+Tason vektorimuotoinen yhtälö on siten (esim.)
+
+r = [2, 3, 1] + t [2,−2,−4] + u[−1,−2, 0] ( t , u ∈ R )
+ja parametriyhtälöt ovat
+
+x = 2 + 2t − u
+y = 3 − 2t − 2 u .
+z = 1 − 4t
+Tästä saadaan tason pisteitä antamalla parametreille arvoja.
+*2.4 Tasoa koskevia lisätehtäviä
+*1) Kahden tason välinen diedrikulma on
+sama kuin tasojen normaalien välinen terävä
+kulma. Se saadaan siten yhtälöstä
+
+n ⋅n
+cos α = 1 2 .
+| n1| | n2 |
+Ilman itseisarvoja tuloksena voisi olla
+vastaava tylppä kulma.
+
+n1
+
+n2
+α
+
+T2
+
+T1
+α
+
+14
+*2) Tason ja suoran välinen kulma α
+saadaan laskemalla ensin tason normaalin n ja suoran välinen terävä
+kulma β yhtälöstä
+
+cos β =
+
+n
+s
+β
+
+α
+
+n ⋅s
+|n||s|
+
+(Jos suoran suuntavektori s sattuu suuntautumaan kuvan tilanteessa alaviistoon, niin ilman itseisarvoja edellinen yhtälö antaisi suoran ja normaalin
+välisen tylpän kulman.) Kulma α saadaan sitten β:n komplementtikulmana
+α =π / 2− β .
+*3) Kaksi pistettä P ja Q ovat eri puolilla tasoa T, jos
+−→
+
+−→
+
+vektoreista AP ja AQ toinen muodostaa terävän- ja
+n
+toinen tylpän kulman normaalin n kanssa (vrt. kuva)
+ts. jos näiden vektorien pistetuloista n :n kanssa
+toinen on positiivinen ja toinen negatiivinen.
+
+P
+Q
+A
+
+HARJOITUKSIA
+A
+2.1
+
+Tasolla T olevan pisteen A(2,–5,4) kautta piirretään T:lle normaali,
+joka kulkee myös pisteen B(–4,3,10) kautta. Määritä a) tason normaalin suunta, b) tason T jokin normaalivektori, c) T:n yhtälö.
+
+2.2
+
+Mikä on sen tason yhtälö, joka on tason x + 2 y − z = 1 suuntainen ja
+kulkee pisteen ( −1, 1, 2 ) kautta?
+
+2.3
+
+Määritä tason x + 2 y − 3z + 2 = 0 neljä pistettä.
+
+2.4
+
+Määritä pisteiden (2,2,1), (3,0,2) ja (1,1,3) kautta kulkevan tason
+yhtälö.
+
+2.5
+
+Laske tasojen 2 x + 3 y − z + 2 = 0 ja 2 x + 3 y − z + 5 = 0 välinen
+etäisyys. (Tasot ovat yhdensuuntaiset, miksi?)
+
+15
+
+x = 3 − 4t − 5u
+*2.6
+
+Määritä tason
+
+y = 2 + 2t − 3u suuntavektorit ja normaalivektori.
+z = 3 + t + 2u
+
+B
+2.7
+
+Kahden tason yhteinen normaali leikkaa nämä tasot pisteissä (2,1,0)
+ja (1,–1,4). Mitkä ovat näiden tasojen yhtälöt?
+
+2.8
+
+Millä a:n arvolla pisteen (1,0,1) etäisyys tasosta ax + y − 3z + 1 = 0
+on 2 / 2 ?
+
+2.9
+
+Millä a:n arvolla pisteet (1,3,2), (–1,4,2), (4,0,5) ja (a, 2a+1, 4) ovat
+samassa tasossa?
+
+2.10
+
+Millainen on seuraavan yhtälön kuvaaja avaruudessa?
+a) x = 3, b) y + 1 = 0, c) z = 2y, d) x + y + 1 = 0, e) x + y + z = 0.
+
+2.11
+
+Määritä sen tason yhtälö, joka leikkaa xy-tason pitkin suoraa
+3x + 2 y = 6 ja z-akselin kohdassa z = –1 (xy-tason geometriassa
+yhtälö 3x + 2 y = 6 esittää suoraa, mutta avaruusgeometriassa pystytasoa).
+
+2.12
+
+Mitä suoraa pitkin sellainen taso leikkaa yz-tason, joka kulkee
+pisteen (4,3,2) kautta ja jonka normaalin suunta on 1:2:2?
+
+x = 2 − 3t − 4u
+2.13
+
+Osoita, että piste (2, 12, 4) on tasossa y = 1 + 2t − u
+
+.
+
+z = −2 + 3t + 2u
+
+C
+2.14
+
+Ovatko pisteet (2,1,0) ja (–1,2,3) samalla vai eri puolilla tasoa
+2x − 3 y + z − 2 = 0 ?
+
+2.15
+
+Pisteestä P (2,–3,1) siirrytään tason T: x + 3 y + z = 2 normaalivektorin n = [1, 3, 1] määräämä matka pisteeseen Q. Osoita, että
+siirtymissuunta on tällä kertaa tasoon päin.
+
+2.16
+
+Pisteestä P (2,–3,1) siirrytään tason T: 2 x − 3 y + z + 5 = 0
+normaalivektorin n = [2,−3, 1] määräämä matka pisteeseen Q.
+
+16
+a) Osoita, että etäisyys tasosta kasvaa.
+b) Onko siirtymissuunta tällä kertaa tasoon päin (sen toiselle
+puolelle) vai tasosta poispäin?
+2.17
+
+Tasoviuhka. Oletetaan, että kaksi tasoa
+
+L
+
+T: ax + by + cz + d = 0 ja
+T´: a ' x + b' y + c' z + d ' = 0
+leikkaavat toisensa. Kiinteällä k:n arvolla
+yhtälö
+
+( ax + by + cz + d ) + k ( a ' x + b' y + c' z + d ' ) = 0
+esittää jotakin näiden tasojen leikkaussuoran L kautta kulkevaa
+tasoa, koska se on 1) lineaarinen ja 2) leikkaussuoran piste toteuttaa
+kummankin tason T ja T' yhtälön ja siten myös vm. yhtälön.
+Antamalla k:lle arvoja saadaan kaikki muut leikkaussuoran kautta
+kulkevat tasot paitsi tasoa T'.
+Sovellus: Määritä tasojen x + y − z + 1 = 0 ja 2 x + y − z + 3 = 0
+leikkaussuoran kautta kulkevista tasoista se, joka kulkee myös
+pisteen (1,–2,1) kautta.
+2.18
+
+3x − 2 y + z − 12 = 0
+ja
+5x − y + 9 = 0
+Määritä
+tasojen
+leikkaussuoran kautta kulkevista tasoista se, joka on kohtisuorassa
+tasoa x + 3 y − 16 = 0 vastaan (käytä tasoviuhkaa, ks. edellinen
+tehtävä).
+
+2.19
+
+Määritä tasoviuhkasta (3x + 4 y − 5) + k ( 2 y − z ) = 0 ne kaksi tasoa,
+jotka ovat etäisyydellä 1 origosta.
+
+17
+
+3
+
+Suora
+
+3.1
+
+Suora kahden tason leikkauksena
+
+Jos tasot
+
+n1
+a1x + b1 y + c1z + d1 = 0
+a2 x + b2 y + c2 z + d 2 = 0
+
+(1)
+
+n2
+T2
+
+s
+
+T1
+
+leikkavat toisensa, niin
+
+L
+, sillä leikaussuoran pisteet
+ovat kummassakin tasossa eli toteuttavat kummankin yhtälön.
+Suoran (1) suuntavektori s on kohtisuorassa kummankin tason normaalia
+vastaan, joten
+.
+Esim. 1
+
+Määritä suoran
+
+4 x + y − 3z = 5
+suunta ja suoran jokin piste.
+2x − 3 y + z = 1
+
+n1 = [4, 1,−3] 4
+n2 = [2,−3, 1] 2
+
+s = n1 × n2 = [−8, − 10, − 14]
+
+∴ Suoran suunta on ( −8 ):( −10 ):( −14 ) = 4: 5: 7 .
+Suoran pisteitä saat, kun valitset yhdelle tuntemattomista jonkin
+arvon ja ratkaiset kaksi muuta yhtälöparista, esim.
+
+x = 0⇒
+
+−3 y + z = 1 | ⋅ 3
+y − 3z = 5 | ⋅ 1
+
+⇒ −8 y = 8 ⇒ y = −1, z = −2 .
+
+∴ Suoran eräs piste on ( 0,−1,−2 ) .
+3.2
+
+Suoran vektoriyhtälö ja parametriesitys
+
+Tehtävä: Tunnetaan suoran L yksi piste Po ( xo , yo , zo ) ja suoran suunta
+: : eli (eräs) suuntavektori = [ , , ] . Johda suoralle
+vektoriyhtälö.
+Suoran ns.
+(suuntavektorin komponentteina) käytetään perinteisesti kirjaimia l, m ja n. Luonnollisempi mutta
+mutkikkaampi merkintä olisi esim. s1, s2 , s3 tai sx , s y , sz .
+
+18
+Avaruuden yleinen piste P on suoralla L,
+jos sen paikkavektori r saadaan siten,
+että Po :n paikkavektoriin ro lisätään
+suuntavektori s sopivalla luvulla t
+kerrottuna, ts. jos
+(2)
+
+=
+
++
+
+o
+o
+
+( t ∈R ).
+
+Esim. kuvassa r ≈ ro + 2,4 s . Kun t saa
+kaikki reaalilukuarvot, niin r :n kärki "piirtää" koko suoran L. Siten (2) on
+suoran vektorimuotoinen parametriesitys, parametrina t.
+Yhtälö (2) on komponenttimuodossa seuraava:
+
+[ x , y , z ] = [ xo , yo , z o ] + t [l , m, n] .
+Tämä hajoaa kolmeksi yhtälöksi
+
+(3)
+
+Esim. 2
+
+=
+
++
+
+=
+
++
+
+=
+
++
+
+(
+
+).
+
+Esimerkissä 1 suoran suunnaksi saatiin 4 : 5: 7 ja suoran erääksi
+pisteeksi (0,–1,–2). Täten suoran vektoriyhtälö on
+
+r = [0,−1,−2] + t [4,5,7]
+ja parametriyhtälöt ovat
+
+x = 4t
+y = −1 + 5t .
+z = −2 + 7t
+Ratkaistaan ensimmäisestä yhtälöstä t:n arvo t = x / 4 ja
+sijoitetaan se muihin. Näin saadaan suoralle esitys
+
+y = −1 + 5 x / 4
+eli
+z = −2 + 7 x / 4
+
+5x − 4 y = 4
+.
+7x − 4z = 8
+
+*Parametrin eliminointi muutti parametriesityksen kahden tason leikkaussuora-esitykseksi. Tasot eivät ole samat kuin alunperin esimerkissä 1, vaan
+tasoista edellinen on pystysuora (z-akselin suuntainen) ja jälkimmäinen yakselin suuntainen. Suoran kautta kulkee nimittäin äärettömän monta tasoa,
+
+19
+ns.
+. Suoran yhtälöiksi voidaan valita minkä tahansa kahden
+tällaisen tason yhtälöt.
+Parametriyhtälöistä (tai vektoriyhtälöstä) saadaan helposti suoran pisteitä,
+kun parametrille t annetaan arvoja. Myös suoran ja tason leikkauspisteen
+laskemisessa parametriesitys on usein laskuiltaan yksinkertaisin.
+Esim. 3
+
+Laske suoran A(3,–2,1) B(1,4,3) ja tason
+2 x − y + 4 z = 6 leikkauspiste Q.
+A
+Suoran AB suunta = ( −2 ): 6: 2 = 1:( −3):( −1) .
+Suoran kolme parametriyhtälöä ja tason
+yhtälö muodostavat yhtälöryhmän
+
+Q
+B
+
+x = 3+ t
+y = −2 − 3t
+z =1− t
+2x − y + 4z = 6
+Kun x:n, y:n ja z:n lausekkeet kolmesta ensimmäisestä yhtälöstä
+sijoitetaan alimpaan yhtälöön, t:lle tulee yhtälö
+
+2(3 + t ) − ( −2 − 3t ) + 4(1 − t ) = 6 ∴ t = −6 .
+Kolmesta ensimmäisestä yhtälöstä saadaan tällä t:n arvolla
+leikkauspisteeksi Q = (–3,16,7).
+*3.3 Suoran normaalimuoto
+*Kun suoran kolmesta parametriyhtälöstä (3) ratkaistaan yhdestä t:n lauseke
+ja sijoitetaan kahteen muuhun, jäljelle jää kaksi parametritonta yhtälöä (vrt.
+Esimerkin 2 loppuosa). Parametrin eliminointi voidaan tehdä niinkin, että
+yhtälöistä (3) ratkaistaan jokaisesta t:n lauseke ja saadut lausekkeet merkitään yhtäsuuriksi (nehän ovat kaikki t:n suuruisia ja siten keskenäänkin yhtä
+suuria):
+(4)
+
+−
+
+=
+
+−
+
+=
+
+−
+
+(= t).
+
+*Tämänmuotoista suoran esitystä sanotaan perinteisesti suoran normaalimuodoksi. Siitä näkyy välittömästi suoran yksi piste ja suunta (niinkuin parametrimuodostakin).
+
+20
+Esim. 4
+
+x − 2 y +1
+=
+= z − 3 esittää suoraa, jonka suunta
+3
+2
+on 3:2:1 ja eräs piste on (2,–1,3). Esitys voidaan hajoittaa
+kahdeksi yhtälöksi, esim. yhtälöiksi
+Kaksoisyhtälö
+
+x −2
+= z − 3 ja
+3
+
+y +1
+x − 2 y +1
+= z − 3 (kolmas
+=
+seuraa
+2
+3
+2
+x − 3z + 7 = 0
+.
+näistä). Yhtälöt ovat sievennettyinä
+y − 2z + 7 = 0
+
+HARJOITUKSIA
+A
+3.1
+
+a) Määritä suoran
+
+2 x + y − z = −1
+suunta. b) Osoita, että yhtälöpari
+x− y+z=2
+
+3x − 1 = 0
+esittää samaa suoraa.
+3 y − 3z + 5 = 0
+x − 2 y + 4 z − 14 = 0
+suunta ja kaksi pistettä.
+x + 20 y − 18 z + 30 = 0
+
+3.2
+
+Määritä suoran
+
+3.3
+
+Suoran suunta on 3:4:(–1) ja suora kulkee pisteen (2,–7,9) kautta.
+Määritä suoran a) vektoriyhtälö, b) parametriyhtälöt, c) jokin esitys
+yhtälöparina.
+
+3.4
+
+Määritä edellisen suoran ja tason x + 2 y − z = 3 leikkauspiste.
+
+3.5
+
+Leikkaavatko suorat
+
+x = 3z + 4
+ja
+y = 2z + 3
+
+x = z+2
+toisensa vai kulkey = z −2
+
+vatko ne ristikkäin?
+
+B
+3.6
+
+Pisteen P(2,–1,3) kautta piirretään tasolle 3x − 2 y + z + 3 = 0 normaali. Laske a) tämän normaalin ja tason leikkauspiste Q, b) pisteen
+P
+R tämän tason suhteen. Piirrä tilannetta havainnollistava
+kuva (ei koordinaatistoon todelliseen asemaan sijoitettua kuvaa).
+
+3.7
+
+Laske pisteen P(1,0,2) peilikuva Q suoran A(4,2,4) B(1,–1,–5)
+suhteen siten, että lasket ensin (parametrimuotoisen) suoran AB ja
+pisteestä P tälle suoralle piirretyn normaalitason leikkauspisteen D.
+(Muita tapoja: Esim. 7 luvussa 1)
+
+21
+
+3.8
+
+3.9
+
+x+ y−z+2=0
+x + z −5= 0
+normaalitaso T. Määritä a) T:n yhtälö, b) Q = L ∩ T , c) P:n etäisyys
+suorasta L, d) P:n peilikuva R suoran L suhteen.
+Pisteen P(1,0,0) kautta piirretään suoralle L:
+
+Laske pisteen (3,3,2) etäisyys viereisestä suorasta
+
+x = 4 + 2t
+
+a) suoran normaalitason, b) projektiovektorin avulla.
+
+y = 3− t
+z = 2 + 2t
+
+3.10
+
+Kuinka suuren kulman edellisen tehtävän suora muodostaa tason x + 5 y − 7 z + 2 = 0 normaalin kanssa?
+
+3.11
+
+Jana A(2,5,0) B(6,–3,8) jaetaan neljään yhtä suureen osaan. Esitä
+jakopisteiden paikkavektorit samantapaisessa muodossa kuin suoran
+vektoriyhtälö on. Mitkä ovat näiden jakopisteiden koordinaatit?
+
+3.12
+
+Määritä janan (2,0,1) (4,–2,3) a) keskipiste ja b) keskinormaalitaso.
+
+C
+3.13
+
+3.14
+
+x −3
+z−6
+ja
+= y = 1− z
+2
+2
+leikkaavat toisensa. Mikä on leikkauspiste? b) Laske näiden suorien
+välinen (terävä) kulma. c) Mikä on näiden suorien määräämän tason
+vektoriyhtälö? d) Entä koordinaattiyhtälö?
+a) Osoita, että suorat x − 3 = − y − 3 =
+
+Laske seuraavan tason ja suoran leikkauspiste:
+
+r = [2,−1,3] + u[4,1,0] + v[6,2,2]
+3.15
+
+r = [6,2,3] + t [−3,−1,−5]
+
+Taso leikkaa koordinaattiakselit kohdissa 5, 3 ja 2 (kuva). a) Osoita, että tason
+yhtälö voidaan esittää muodossa
+
+x y z
++ + = 1.
+5 3 2
+
+2
+
+3
+
+b) Laske origosta tasolle piirretyn nor- 5
+maalin "kantapiste" eli leikkauspiste
+tason kanssa. Tasosta on piirretty näkyviin vain ns.
+, ts.
+se osa, jonka koordinaattitasot leikkaavat tästä tasosta. Koordinaattitasot xy, xz ja yz ovat ns.
+,
+ja
+.
+3.16
+
+Laske tehtävien 3.8 ja 3.9 mukaisten ristikkäisten suorien välinen
+lyhin etäisyys. Sen antaa suorien yhteinen normaali. Vihje:
+−→
+
+P1P2 ⊥s1, s2 , missä esim. P1 on suoran L1 yleinen piste (parametrimuodossa tai paikkavektorilla esitettynä).
+
+22
+
+4
+
+Toisen asteen pinnoista
+
+4.1
+
+Pallo
+
+Piste P(x,y,z) on r-säteisen pallon pinnalla silloin ja vain
+silloin kun janan Po P pituus = r eli tämän pituuden neliö
+= r 2 , siis
+(1)
+
+o
+
+( −
+
+o)
+
+2
+
++( −
+
+o)
+
+2
+
++ ( − o )2 =
+
+2
+
+.
+
+Kun neliöön korotukset suoritetaan, pallon yhtälö (1) saa
+muodon
+(2)
+Esim. 1
+
+2
+
++
+
+2
+
++ 2+
+
++
+
++
+
++
+
+= 0.
+
+Yhtälöstä x 2 + y 2 + z 2 − 2 x + y = 1 saadaan
+
+yhtälö
+
+( x − 1)2 + ( y + 12 )2 + z 2 = 94 ,
+joten kyseessä on pallo, jonka kp. on (1, − 12 , 0 ) ja säde 23 .
+Esim. 2
+
+Määritä edellisen pallon pisteeseen
+(0,0,1) piirretyn
+T
+yhtälö. Säteen suunta
+
+( −1): 12 : 1 = 2:( −1):( −2 )
+antaa tangenttitason normaalin suunnan. Koska taso T kulkee lisäksi
+pisteen (0,0,1) kautta, yhtälö on
+
+(0,0,1)
+
+(1,–½,0)
+
+2 x − y − 2( z − 1) = 0 eli
+2x − y − 2z + 2 = 0 .
+Pallon yhtälöille (1) ja (2) on tyypillistä, että niissä
+, mutta eivät välttämättä = 1, sillä yhtälön voi kertoa
+tai jakaa nollasta eroavalla luvulla.
+Jotta muotoa (2) oleva yhtälö esittäisi palloa, neliöinnin jälkeen oikealle
+puolelle (säteen neliöksi) täytyy tulla positiivinen luku kuten Esimerkissä 1.
+Jos tämä luku = 0, kyseessä on "0-säteinen pallo" eli piste. Jos taas tämä
+luku on < 0, yhtälö ei esitä mitään pintaa. Esim. yhtälössä
+
+23
+
+( x − 1)2 + ( y + 12 )2 + z 2 = − 94
+vp. on aina > 0, mutta op. < 0, joten mikään (x,y,z)-piste ei toteuta sitä.
+4.2
+
+Ellipsoidi
+
+x2
+
+y2
+
++
+= 1 pyöräytetään x-akselin ympäri, saadaan ns.
+a 2 b2
+, jonka
+on x. Kun tätä litistetään (tai venytetään) zakselin suunnassa, saadaan yleinen
+, jonka yhtälö on muotoa
+Jos ellipsi
+
+2
+
+(3)
+
+2
+
+2
+
++
+
+2
+
+2
+
++
+
+2
+
+=1.
+
+(Tarkempi perustelu sivuutetaan, vrt. harj. 4.13. ja 4.14.)
+Luvut a, b ja c ovat ellipsoidin
+Esim. 3
+
+, vrt. seuraava kuva.
+
+4 x 2 + 4 y 2 + 9 z 2 = 36 | :36
+
+x2 y2 z2
++
++
+= 1.
+9
+9
+4
+
+z
+c=2
+
+Kyseessä on ellipsoidi,
+y
+b=3
+jonka puoliakselit ovat
+a = b = 3 ja c = 2 . Koska
+a=3
+x- ja y-akselin suuntaiset
+x
+puoliakselit ovat yhtä
+pitkät, ellipsi leikkaa xytason pitkin ympyrää.
+Pinta on siten pyöräysellipsoidi, jonka akselina on z. Koska zsuuntainen puoliakseli on muita lyhempi, pinta on saatu 3säteisestä pallosta litistämällä palloa z-suunnassa (eli
+korvaamalla pallon z-koordinaatit 23 z :lla).
+Tämän ellipsoidin muotoa voidaan tutkia myös tasoleikkausten
+avulla:
+1) Leikkaus xy-tasossa:
+
+z = 0 ⇒ 4 x 2 + 4 y 2 = 36 eli x 2 + y 2 = 9 ∴ 3 − säteinen ympyrä
+2) Leikkaus yz-tasossa:
+
+24
+
+y2 z2
+x = 0 ⇒ 4 y + 9 z = 36 eli
++
+=1
+9
+4
+∴ ellipsi, puoliakselit y − suunnassa = 3, z − suunnassa = 2.
+2
+
+2
+
+Käsittele vastaavasti kolmas "pääleikkaus" y = 0.
+Esimerkiksi Derive-ohjelman piirtämä kuva muodostuu itse asiassa
+pinnan tasoleikkauksista. Viereisessä
+kuvassa on edellisen ellipsoidin
+puolikas.
+Esimerkin 3 ellipsoidi osoittaa ehkä
+yhtälöä (3) havainnollisemmin, että ellipsoidin yhtälö eroaa pallon yhtälöstä
+seuraavassa mielessä:
+Ellipsoidin yhtälölle on tyypillistä, että siinä ovat mukana kaikki kolme
+toisen asteen termiä ja niiden kertoimet ovat
+. Aidolla
+ellipsoidilla nämä kolme kerrointa eivät kaikki ole yhtä suuria, muuten
+kyseessä on ellipsoidin erikoistapaus, pallo.
+Jos mukana on myös 1. asteen termejä, ellipsoidin keskipiste ei ole origossa
+ja se löytyy neliöimällä samaan tapaan kuin pallolla.
+4.3
+
+Hyperboloidit
+
+Hyperbelistä ja liittohyperbelistä
+
+x2
+a2
+
+−
+
+y2
+b2
+
+= ±1 saadaan pyöräyttämällä ja
+x2
+
+litistämällä
+
+a2
+
+−
+
+y2
+b2
+
+1)
+
+−
+
+z2
+c2
+
+= ±1 :
+
+y
+
+x2
+a2
+
+−
+
+y2
+b2
+
+−
+
+z2
+c2
+
+=1
+
+x
+z
+
+Yhtälössä on
+miinusmerkkiä, ja etumerkiltään
+vähemmistössä oleva termi eli tässä x antaa hyperboloidin akselin
+suunnan.
+
+25
+2)
+y
+
+−
+
+x2
+
+y2
+
+z2
+
+a
+
+b
+
+c2
+
++
+2
+
++
+2
+
+=1
+
+Yhtälössä on
+miinusmerkki, ja etumerkiltään
+vähemmistössä oleva termi eli
+tässä x antaa hyperboloidin
+akselin suunnan.
+
+x
+
+z
+
+Jos hyperboloidin keskipiste ei ole origossa, mukana on myös 1. asteen
+termejä. Keskipiste saadaan selville neliöimällä.
+
+!
+
+"
+
+#
+
+$.
+Jos vakiotermi on 0, kyseessä on kartio, mikä esitellään tarkemmin
+seuraavassa kohdassa.
+Esim. 4
+
+Tutki seuraavaa pintaa (laji, mahdollinen keskipiste ja akselin
+suunta, kuva)
+
+x 2 − 4 y 2 + z 2 + 24 y = 32
+
+neliöinti
+
+x 2 − 4( y 2 − 6 y ) + z 2 = 32
+x 2 − 4( y 2 − 2 ⋅ y ⋅ 3 + 32 ) + z 2 = 32 − 4 ⋅ 32
+x 2 − 4( y − 3)2 + z 2 = −4
+
+:( −4 )
+
+x 2 ( y − 3)2 z 2
+−
++
+−
+=1
+4
+1
+4
+Tämä on 2-vaippainen hyperboloidi (2 miinusmerkkiä, kun op.
+on = 1). Keskipiste on (0,3,0) ja akseli on y-akselin suuntainen
+(koska y-termi on etumerkiltään vähemmistössä). Näiden tietojen
+perusteella saadaan hahmoteltua pinnan kuvaaja suunnilleen, vrt.
+seuraava kuva. Siitä nähdään, että akseli on y (eikä ainoastaan yakselin suuntainen).
+
+26
+%
+
+z
+
+pinnasta:
+
+3
+y
+
+1) Akselileikkaus:
+
+( y − 3)2 z 2
+x=0 ⇒
+−
+= 1.
+1
+4
+
+x
+
+Tämä on y-suuntaan kaartuva
+hyperbeli, jonka puoliakselit
+ovat 1 ja 2 ja keskipiste (3,0).
+Asymptootit saadaan piirtämällä suorakulmiolle lävistäjät
+(viereinen kuva).
+
+z
+
+2) Akselia vastaan kohtisuora
+leikkaus:
+
+y = 0 ⇒ x 2 + z 2 = 32
+
+y
+x
+
+∴ ympyrä.
+Kyseessä on siis (aika laakea)
+2-vaippainen pyöräyshyperboloidi,
+keskipisteenä (0,3,0).
+
+akselina
+
+on
+
+y
+
+ja
+
+Yksivaippainen hyperboloidi on
+eräs ns.
+, ts. se syntyy
+siten
+että
+suora
+liikkuu
+avaruudessa tietyllä tavoin.
+Tavallisimmat viivainpinnat ovat
+erilaiset lieriöt (joissa liikkuva
+suora säilyttää suuntansa) ja
+kartiot (liikkuva suora kulkee aina
+saman pisteen kautta). Myös taso voitaisiin ajatella viivainpinnaksi.
+Viivainpinta-ominaisuus tekee yksivaippaisen hyperboloidin käyttökelpoiseksi tekniikassa (esim. tukirakenteet, jyrsintä jne).
+
+27
+
+4.4
+
+Kartio
+
+&
+(kartiopinnan) yhtälö on muuten samanlainen kuin hyperboloidin,
+mutta siinä on (mahdollisen neliöinnin jälkeen)
+' $. Esimerkiksi
+(4)
+
+2
+
+2
+
+2
+
+−
+2
+
+−
+2
+
+=0
+2
+
+y
+
+esittää kartiota, jonka akseli on x
+(koska x-termi on etumerkiltään
+vähemmistössä) ja kärki on origossa.
+Hyperboloidien
+
+ja
+
+x
+z
+
+kartion
+
+x2 y2
+yhtälöiden samankaltaisuus johtuu siitä, että hyperbelien 2 − 2 = ±1
+a
+b
+2
+2
+x
+y
+asymptootit voidaan esittää muodossa 2 − 2 = 0 . Kun nämä pyörähtävät
+a
+b
+
+ja suoritetaan litistys, saadaan kartio. Kartio (4) on siis itse asiassa edellä
+käsiteltyjen hyperboloidien
+.
+
+Kartio (4) on ns.
+, sillä sen poikkileikkaus on ellipsi tai sen
+erikoistapaus, ympyrä. Jos kartiopinnan poikkileikkaus on esim. paraabeli,
+kartio on parabolinen. Tällaisen kartion yhtälö ei enää ole toista astetta vaan
+se on korkeampiasteinen.
+4.5
+
+Lieriöt
+
+(
+.
+Esim. 5
+
+Yhtälö y = x 2 esittää erästä
+, jonka sivuviivat ovat
+z-akselin suuntaiset. Yhtälön mukaan
+nimittäin x- ja y-koordinaatteja sitoo
+ehto y = x 2 , kun taas z saa olla mikä
+tahansa.
+
+z
+
+P(x,y,z)
+
+P´(x,y,0)
+
+x
+
+y
+
+28
+
+Esim. 6
+
+x2 z2
++
+=1
+Yhtälö x + 4 z = 4 eli yhtälö
+4
+1
+esittää erästä
+. Sillä on
+akselina y-akseli ja poikkileikkaus on ellipsi,
+jonka puoliakselit ovat 2 ja 1.
+2
+
+2
+
+Jos lieriön poikkileikkaus on hyperbeli tai liittohyperbeli,
+kyseessä on
+. Käytännössä tärkeimmät
+lieriöt ovat pyöräyslieriöitä eli ympyrälieriöitä. Millainen on esimerkiksi
+yhtälön ( y − 3)2 + z 2 = 4 kuvaaja? (Piirrä kuva.)
+4.6
+
+Paraboloidit
+
+Esim. 7
+
+Yhtälön z = x 2 + y 2 kuvaaja on ns.
+. Sen kuvaajaa voidaan tutkia tasoleikkauksilla:
+
+z
+
+1
+
+x = 0 ⇒ z = y2
+y = 0 ⇒ z = x2
+2
+
+2
+
+z = 1 ⇒ x + y = 1.
+
+y
+x
+
+1
+
+Akselileikkaukset ovat siis perusparaabeleja ja akselia vastaan kohtisuorat leikkaukset ympyröitä.
+Yleisemmin esim. z = ax 2 + by 2 , missä a ja b ovat samanmerkkisiä, esittää
+ns.
+, jossa z-akselia vastaan kohtisuorat leikkaukset
+ovat ellipsejä ja akselileikkaukset paraabeleja.
+Elliptisille paraboloidille on siis tyypillistä, että yksi muuttujista esiintyy
+yhtälössä vain 1. asteen termissä ja kaksi muuta samanmerkkisissä 2.
+asteen termeissä. Poikkeava eli ensimmäisen asteen termi antaa akselin
+suunnan. Jos huippu ei ole origossa, se saadaan selville neliöimällä.
+Esim. 8
+
+Tutki pintaa x 2 + z 2 + 4 x − y + 5 = 0 . Suoritetaan x:lle neliöinti
+(koska x esiintyy paitsi toisen myös ensimmäisen asteen
+termissä):
+
+( x + 2 )2 + z 2 = y − 5 + 2 2 , sievennettynä
+
+y − 1 = ( x + 2 )2 + z 2 .
+
+29
+Kyseessä on elliptinen
+paraboloidi, jonka akseli
+on || y-aks. ja huippu on (–
+2,1,0). Leikkaus y = 2
+antaa 1-ympyrän, joten
+paraboloidi on tyypiltään
+pyöräysparaboloidi. Sen
+kuvaajasta
+on
+pala
+viereisessä kuvassa.
+
+z
+
+y
+x
+
+Pyörähdysparaboloideja käytetään mm. lautasantenneissa, taskulampuissa,
+parabolisissa peileissä jne. Käyttö perustuu siihen, että akselin suuntaiset
+säteet heijastuvat polttopisteeseen tai päinvastoin polttopisteestä lähtevät
+säteet heijastuvat yhdensuuntaisiksi.
+Erikoisin toisen asteen pinta on
+eli
+.
+Sen yhtälö on muuten samanlainen kuin elliptisen paraboloidin, mutta toisen
+asteen termit ovat erimerkkiset.
+Esim. 9
+
+Tutki pintaa x 2 − z 2 − y = 0 eli y = x 2 − z 2 . Käytetään tutkimiseen tasoleikkauksia:
+
+1) z = 0 ⇒ y = x 2
+
+∴ ylöspäin aukeava parabeli xy - tasossa
+
+2 ) x = 0 ⇒ y = − z 2 ∴ alaspäin aukeava paraabeli yz - tasossa
+3) y = a > 0
+
+4) y = -a < 0
+
+x2 z2
+⇒ x − z = a eli
+−
+=1
+a
+a
+⇒ x − suuntaan kaartuva hyperbeli
+2
+
+2
+
+z2 x2
+⇒ x − z = − a eli
+−
+=1
+a
+a
+⇒ z − suuntaan kaartuva hyperbeli
+2
+
+2
+
+y
+
+x
+z
+
+30
+Origo on edellisen pinnan ns.
+. Origohuippuiset paraabelit, joista
+toinen on ylös- ja toinen alaspäin aukeava, ovat ns. satulaparaabelit.
+Joissakin matematiikan esimerkeissä satulapisteellä on avaruudessa vastaavantapainen merkitys kuin käännepisteellä tasogeometriassa. Esimerkiksi
+edellinen pinta on xy-suunnassa negatiivisen y-akselin suuntaan kupera,
+mutta zy-suunnassa positiivisen y-akselin suuntaan kupera. Hyperbolista
+paraboloidia ei saada pyöräyttämällä ja litistämällä.
+Satulapintaa käytetään jonkin
+verran tekniikassa, mm. kattorakenteissa. Voidaan todistaa,
+että satulapintakin on viivainpinta. Pala satulapintaa saadaan
+niin, että kahden pystyssä olevan
+paraabelinkaaren välille "pingoitetaan vaijereita".
+
+HARJOITUKSIA
+A
+4.1
+
+Origon kautta kulkevan pallon kp. on (1,–2,3). Määritä yhtälö.
+
+4.2
+
+Määritä pinnan x 2 + y 2 + z 2 − 4 x − 6 y − 2 z = 7 pisteeseen ( 4,2,−3)
+piirretyn tangenttitason yhtälö.
+
+4.3
+
+Tutki pintaa a) x 2 + y 2 + 4 z 2 = 4 , b) x 2 + y 2 + z 2 − 2 y + 3 = 0 .
+
+4.4
+
+Tutki pintaa a) x 2 − y 2 + z 2 = 1 , b) x 2 − y 2 − z 2 = 1 ,
+c) x 2 − y 2 − z 2 = 0 .
+
+4.5
+
+Tutki pintaa a) x 2 + z 2 = 1 , b) x 2 − y 2 = 1 , c) x 2 + y 2 + z = 0 , d)
+x + 2 y +1 = 0.
+
+B
+4.6
+
+Mikä pallon x 2 + y 2 + z 2 − 4 x + 2 y − 5 = 0 piste on kauimpana
+origosta? (Vihje: Origon ja kp:n kautta kulkeva suora parametrimuodossa)
+
+31
+4.7
+
+Pallo sivuaa tasoa x + 2 y − z = 1 pisteessä (2,0,1) ja kulkee origon
+kautta. Määritä yhtälö. (Vihje: Pallon keskipiste saadaan tason
+normaalin yhtälöstä sopivalla parametrin t arvolla eli keskipiste on
+muotoa (2+t, 2t, 1–t). Mistä saat t:lle ehtoyhtälön?)
+
+4.8
+
+Tutki pintaa a) x 2 + y 2 − z 2 − 2 x − 4 z = 2 , b) x 2 + 4 y 2 − z = 0 .
+
+4.9
+
+Tutki pintaa a) x 2 + y 2 − z 2 − 2 x − 4 z = 3 , b) 4 x 2 + y 2 − z 2 = 4 y .
+
+4.10
+
+Määritä sen ympyrän säde ja keskipiste, jonka taso 2 x + y + z = 2
+leikkaa pallosta x 2 + y 2 + z 2 = 4 .
+
+4.11
+
+Tutki
+
+pintoja
+
+4x 2 + y 2 − 4 y − z2 + 4 = 0 ,
+
+a)
+
+b)
+
+4x 2 − 4 y + z 2 + 4 = 0 .
+
+C
+4.12
+
+Määritä sellainen a:n arvo, että pinta 4 x 2 − 2ay 2 + z 2 − az + a − 1 = 0
+on kartio. Tutki sitten tämä kartio.
+
+4.13
+
+Kun käyrä y = f ( x ) pyörähtää x-akselin ympäri, syntyy
+pyöräyspinta. a) Perustele: Piste P(x,y,z) on tällä pinnalla
+⇔ y 2 + z 2 = f ( x )2 . b) Johda sovelluksena sellaisen kartion yhtälö,
+joka syntyy, kun suora y = ab x pyörähtää x-akselin ympäri.
+
+c)
+
+Suorita tähän kartioon litistys z-suunnassa, muuttamalla pinnan
+yhtälössä jokaisen pisteen z-koordinaatti suhteessa c/b (eli uuden
+pinnan z on = bc kertaa vanhan pinnan z). Mikä on saadun elliptisen
+kartion yhtälö?
+4.14
+
+Edellisen tehtävän a)- kohdan mukaan pyöräyspinnan yhtälö
+(akselina x) saadaan, kun pyörähtävän käyrän yhtälössä y = f ( x ) eli
+yhtälössä y 2 = f ( x )2 termi y 2 korvataan summalla y 2 + z 2 . Johda
+tämän perusteella (ja sitten litistämällä) ellipsoidin yhtälö.
+
+4.15
+
+Kartion akselin ja sivuviivan välinen kulma on 60° ja huippu on
+pisteessä ( 2,−1, 0 ) . Mikä on kartion yhtälö, jos sen akseli on xakselin suuntainen?
+
+32
+
+5
+
+Koordinaatistoista
+
+5.1
+
+Koordinaatiston kierto tasossa kulman α verran
+
+Pisteen P vanhojen ja uusien koordinaattien välille on aikaisemmin johdettu
+yhtälöt
+
+x1 = (cos α ) x + (sin α ) y
+y1 = ( − sin α ) x + (cos α ) y
+
+(1)
+
+Sama yhtälöpari (1) on matriisimuodossa
+
+x1
+cos α
+=
+y1
+− sin α
+
+sin α
+cos α
+
+Kerroinmatriisi A =
+
+cos α
+− sin α
+
+(1)'
+
+x
+.
+y
+sin α
+on ns.
+cos α
+
+.
+
+Matriisin A determinantti on det A = cos2 α + sin 2 α = 1. Koska A on
+säännöllinen eli det A ≠ 0 , niin A:lla on
+A−1 . Se on
+
+A −1 =
+
+cos α
+sin α
+
+− sin α
+cos α
+
+sillä AA −1 = I (suorita kertominen). Toinen laskutapa (kertaa adj A):
+
+A
+
+−1
+
+1
+1 cos α
+adj A = ⋅
+=
+det A
+1 − sin α
+
+sin α
+cos α
+
+T
+
+=
+
+cos α
+sin α
+
+− sin α
+= AT .
+cos α
+
+Kiertomatriisi A on siis siinä mielessä erikoinen matriisi, että sen käänteismatriisi saadaan vaihtamalla A:n vaakarivit pystyriveiksi, ts.
+A. Tällaista neliömatriisia sanotaan
+.
+Esim. 1
+
+Määritä pisteen (2,3) uudet koordinaatit, kun koordinaatistoa
+kierretään kulman –π/6 verran.
+
+x1
+
+=
+
+y1
+=
+
+cos( −π / 6)
+
+sin( −π / 6) 2
+
+− sin( −π / 6) cos( −π / 6) 3
+3 − 3/ 2
+1+ 3 3 / 2
+
+∴
+
+=
+
+3/ 2
+1/ 2
+
+x1 = 3 − 3 / 2 ≈ 0,23
+y1 = 1 + 3 3 / 2 ≈ 3,6
+
+.
+
+−1 / 2 2
+3/ 2 3
+
+33
+5.2
+
+Tasokuvion kierto
+
+-koordinaatiston origon ympäri
+y
+
+Pidetään nyt xy-koordinaatisto paikallaan, mutta kierretään kuviota xy-tasossa origon ympäri kulman α verran.
+
+Q
+
+Kierrossa
+kuvion
+jokainen
+piste
+P( x P , y P ) muuttuu uudeksi pisteeksi
+Q( xQ , yQ ) . Mikä yhteys on pisteiden P
+
+P
+α
+x
+
+ja Q välillä?
+
+Muutos on sama kuin jos kuvio pysyisi
+paikallaan ja koordinaatistoa kierrettäisiin vastakkaiseen suuntaan, kulman –
+α verran. Näinollen Q:n koordinaatit saadaan kiertomatriisin avulla, kun
+kiertokulmana käytetään kulman α sijaan kulmaa –α. Siis
+
+xQ
+yQ
+
+=
+
+cos( −α )
+
+sin( −α ) x P
+
+− sin( −α ) cos( −α ) y P
+
+=
+
+cos α
+
+− sin α
+
+xP
+
+sin α
+
+cos α
+
+yP
+
+= AT
+
+xP
+yP
+
+: Pisteen P vanhojen ja uusien koordinaattien
+
+1)
+välillä on yhteys
+1
+
+=
+
+, missä A =
+
+1
+
+cos α
+− sin α
+
+sin α
+on ns.
+cos α
+
+x
+x
+x
+= A −1 1 = AT 1
+y
+y1
+y1
+matriisi A on ortogonaalimatriisi).
+
+.
+
+( A −1 = AT , sillä kierto-
+
+*Käänteiskaavat ovat
+
+2)
+: Alkuperäisen kuvion yleisen pisteen P ja kierretyn kuvion
+vastaavan pisteen Q xy-koordinaattien välillä on yhteys
+
+=
+
+(ja kääntäen
+
+xP
+yP
+
+=A
+
+xQ
+yQ
+
+).
+
+34
+5.3
+
+Vastaavat tulokset avaruudessa
+
+1)
+Kun
+avaruudessa, niin kiertokulman α tilalla
+on yhdeksän kiertokulmaa:
+
+z
+
+α 1 , β 1, γ 1 = x1 − akselin ja alkuperäisten z
+
+y1
+
+1
+
+akselien väliset kulmat.
+
+γ
+
+α 2 , β 2 , γ 2 = y1 − akselin ja alkuperäisten
+
+1
+
+akselien väliset kulmat.
+
+α1
+
+α 3 , β 3 , γ 3 = z1 − akselin ja alkuperäisten
+akselien väliset kulmat.
+
+x1
+β1
+y
+
+x
+
+Nämä kulmat tosin eivät kaikki ole
+vapaasti valittavissa, sillä esim. z1 -akselin täytyy olla muita vastaan
+kohtisuorassa. Voidaan todistaa, että kiertomatriisi muodostuu näiden
+kulmien kosineista:
+
+cos α 1
+
+cos β 1
+
+cos γ 1
+
+= cos α 2
+cos α 3
+
+cos β 2
+
+cos γ 2
+
+cos β 3
+
+cos γ 3
+
+=
+
+.
+
+1
+
+ja että kiertokaavat ovat nytkin
+
+1
+1
+
+*Kuten edellä, matriisi A on ortogonaalimatriisi ts. A −1 = AT .
+2)
+varten ajatellaan, että kappaleen mukana kiertyy
+myös kappaleen "sisäinen" akselisto, jonka akselit ennen kiertoa yhtyivät x-,
+y- ja z-akseliin.
+Jos sisäinen 1-akseli muodostaa kierron jälkeen paikallaan pysyviin x-, y- ja zakseleihin nähden kulmat
+α 1 , β 1, γ 1
+ja
+2-akseli
+kulmat α 2 , β 2 , γ 2 sekä 3akseli kulmat α 3 , β 3 , γ 3 ,
+niin kappaleen yleinen
+
+35
+piste P( x P , y P , z P ) kiertyy pisteeksi Q( xQ , yQ , zQ ) , jonka koordinaatit
+saadaan yhtälöstä
+
+=
+
+5.4
+
+.
+
+Napakoordinaatisto avaruudessa
+
+Pisteen P paikka avaruudessa on
+täysin määrätty, jos tavallisten xyzkoordinaattien sijaan tunnetaan P:n
+avaruusnapakoordinaatit ( r , ψ , ϕ ) ,
+missä
+= P:n etäisyys origosta,
+
+ψ
+
+= P:n perusprojektion
+vaihekulma xy-tasossa.
+
+P'
+
+ϕ = P:n "korkeuskulma" (kuva).
+Koska ψ on xy-tason vaihekulma, se rajoitetaan tavallisesti välille 0...2π.
+Poikkeuksena ovat esim. spiraalit ja ruuviviiva, joissa ψ voi saada suurempiakin arvoja sekä negatiivisia arvoja.
+Jos piste P on xy-tason yläpuolella, niin korkeuskulma ϕ on positiivinen.
+Kulma ϕ on suurimmillaan silloin, kun P on positiivisella z-akselilla, jolloin
+ϕ = π/2. Jos piste P on negatiivisella z-akselilla, niin ϕ = –π/2, joka on ϕ:n
+pienin arvo. Siis
+
+−π / 2 ≤ ϕ ≤ π / 2 .
+Merkitään projektiopisteen P' etäisyyttä origosta ρ:lla (roo). Koska ρ ja ψ
+ovat P':n napakoordinaatit xy-tasossa, niin P':n suorakulmaiset koordinaatit
+ovat (napakoordinaatiston muunnoskaavojen mukaan)
+
+x = ρ cosψ
+(vrt. kuva).
+y = ρ sin ψ
+Nämä ovat myös pisteen P x- ja y-koordinaatit. Kuvan pystysuorasta suorakulmaisesta kolmiosta nähdään, että P:n z-koordinaatti on z = r sin ϕ ja että
+ρ = r cos ϕ . Kun tämä ρ:n arvo sijoitetaan edelliseen yhtälöpariin, saadaan
+
+36
+P:n kaikki suorakulmaiset koordinaatit x, y ja z lausuttua napakoordinaattien
+r, ψ ja ϕ avulla. Nämä muunnoskaavat ovat seuraavat:
+
+= cos ϕ cosψ
+= cos ϕ sin ψ
+= sin ϕ
+Kääntäen avaruusnapakoordinaatit voidaan lausua suorakulmaisten koordinaattien avulla:
+
+r = x 2 + y 2 + z 2 (pisteen (x,y,z) etäisyys origosta),
+y
+
+tan ψ = x
+
+(tästä saadaan laskettua ψ, oikea neljännes kuviosta),
+
+sin ϕ = rz
+
+(tästä saadaan laskettua ϕ, joka on välillä [−π / 2, π / 2] ).
+
+*Koska ϕ on välillä [−π / 2, π / 2] , niin ϕ = arcsin rz . Sen sijaan ψ:n arvo ei
+ole aina arkustangentin arvo, koska ψ:n arvo ei aina ole tällä välillä.
+Esim. 2
+
+Pisteen ( −1, 2,−3) avaruusnapakoordinaatit ovat
+
+r = 14 , tan ψ = −21 , II neljännes ∴ψ ≈ 116,6o , sin ϕ = −3 ∴ϕ ≈ −53,3o .
+14
+
+5.5
+
+Pallokoordinaatisto
+
+*Pallokoordinaatit ovat muuten samat
+kuin avaruusnapakoordinaatit, mutta
+korkeuskulman ϕ tilalla on z-akselista
+laskettu kulma θ ("teetta", vrt. kuva),
+jolloin
+
+θ = π2 − ϕ , 0 ≤ θ ≤ π .
+Täten sin ϕ = cos θ ja cos ϕ = sin θ
+ja muunnoskaavat saavat muodon
+
+37
+
+r = x2 + y2 + z2
+
+x = r sin θ cosψ
+
+y
+
+y = r sin θ sin ψ , kääntäen tan ψ = x
+z = r cos θ
+Esim. 3
+
+.
+
+cos θ = rz
+
+1) Yhtälön θ = π6 kuvaaja on kartio, jonka akselina on z ja
+akselin ja sivuviivan välinen kulma on π6 , sillä tämän pinnan
+jokaisella pisteellä on θ:lla arvo π6 , kun taas r:lle ei aseteta
+mitään ehtoa, ts. r saa olla miten suuri ei-negatiivinen luku
+tahansa, ja ψ:lle ei aseteta mitään ehtoa, ts. piste voi olla millä
+puolella z-akselia tahansa. Piirrä kuva!
+2) Yhtälöpari
+
+θ =π /6
+
+esittää edellisen kartion ja pallon r
+r=2
+= 2 leikkausviivaa eli vaakasuoraa ympyrää, jonka säde on 1 ja
+joka on korkeudella 3 xy-tason yläpuolella. Piirrä kuva!
+Tavallisessa xyz-koordinaatistossa sama pinta voidaan esittää
+lieriön ja tason leikkausviivana:
+
+x2 + y2 = 4
+
+.
+
+z= 3
+Huomaa, että yleisesti
+(viiva on kahden pinnan leikkaus).
+5.6
+
+Lieriökoordinaatisto
+
+*Pisteen P paikka on määrätty myös, jos
+tunnetaan P:n perusprojektion P' napakoordinaatit ρ ja ψ sekä P:n "korkeus" z.
+Näiden lieriö- eli sylinterikoordinaattien ja
+tavallisten karteesisten (suorakulmaisten)
+koordinaattien väliset muunnoskaavat ovat
+
+x = ρ cosψ
+
+ρ = x2 + y2
+
+y = ρ sin ψ ja kääntäen
+
+tan ψ = x
+
+z=z
+
+z=z
+
+y
+
+.
+
+38
+Esim. 4
+
+Lieriöpinnan osan
+
+ρ =1
+0 ≤ψ ≤π / 2
+0 ≤ z ≤1
+pinta-ala on π / 2.
+
+HARJOITUKSIA
+A, B
+5.1
+
+5.2
+
+Laske a )
+
+−6
+2 4 −6
+2 4
+⋅
+⋅
+, b)
+−3 −3 5
+−3 5 −3
+
+2
+
+4 3
+
+Laske matriisin A = 3
+
+0 0
+
+käänteismatriisista A−1 toinen
+
+−1 2 1
+vaakarivi. (Mikä rivi adjungoidusta matriisista täytyy laskea?)
+5.3
+
+Tarkastellaan kolmiota A(0,0) B(5,0) C(3,7). Koordinaatistoa
+kierretään +20,0o (origon ympäri). Määritä kärkien B ja C uudet
+koordinaatit matriisilaskentaa käyttäen. Piirrä kuva ja tarkista
+tulokset siitä mittaamalla.
+
+5.4
+
+Edellisen harjoituksen kolmiota kierretään +20,0o kolmioksi ADE.
+Määritä uusien kärkien D ja E koordinaatit (matriisilaskentaa
+käyttäen). Piirrä kuva ja tarkista tulokset siitä mittaamalla.
+
+5.5
+
+a) Miksi pisteeksi muuttuu kappaleen piste
+1 1
+1
+( 2,−3, 4 ) , kun kappaletta kierretään origon A =
+0 0
+2
+ympäri ja (koordinaatiston) kiertomatriisi on
+1 −1
+viereinen matriisi A?
+
+0
+2
+0
+
+*b) Osoita, että A on sopiva kiertomatriisiksi eli että A on ortogonaalimatriisi.
+5.6.
+
+1
+Kappale kiertyy origon ympäri. Kiertomatriisi
+2
+A on viereisen mukainen. a) Miksi pisteeksi
+1
+muuttuu kappaleen piste P(2,4,3)? b) Kuinka A = − 2
+0
+suuren kulman x-akseliin nähden muodostaa
+kierron jälkeen se kappaleen akseli, joka ennen
+kiertoa yhtyi y-akseliin?
+
+0
+0
+1
+
+1
+2
+1
+2
+
+0
+
+39
+5.7
+
+Kappaleen sisäinen 1-akseli (ts. vektori i = 1, 0, 0 ) kiertyy vektorin
+
+a = 1, 1, 0
+
+suuntaiseksi ja 2-akseli (ts.
+
+j = 0, 1, 0 ) vektorin
+
+b = −1, 1, 2 suuntaiseksi ( a ⊥ b , sillä a ⋅ b = 0 ).
+
+5.8
+
+a)
+
+Mihin suuntaan kiertyy 3-akseli (ts. vektori k = 0, 0, 1 )?
+
+b)
+
+Määritä kiertomatriisi A (ohje: esim. cos α 1 =
+
+c)
+
+Miksi pisteeksi Q muuttuu kappaleen piste P(2,3,-4) kierrossa?
+
+i ⋅a
+).
+ia
+
+ρ=3
+Laske alueen 0 ≤ ψ ≤ π / 2 pinta-ala.
+0≤ z≤2
+
+5.9
+
+Laske pisteen ( −2,−1, 3)
+a) avaruusnapakoordinaatit,
+pallokoordinaatit, c) lieriökoordinaatit.
+
+5.10
+
+Millainen on a) avaruusnapakoordinaatistoyhtälön ϕ = − π3 kuvaaja,
+
+b)
+
+b) lieriökoordinaatistoyhtälön z = ρ 2 kuvaaja, c) lieriökoordinaatistossa yhtälöparin ρ = 1, z = ψ kuvaaja. Piirrä kuvat.
+5.11
+
+Suorakulmainen xyz-koordinaatisto siirretään (yhdensuuntaisesti)
+pisteeseen A(a,b,c), ts. uuden x1 y1z1 -koordinaatiston origo tulee
+pisteeseen A. Johda vektorilaskentaa käyttäen
+
+=
+
+1+
+
+=
+
+1+!.
+
+= 1+"
+−→
+
+−→
+
+−→
+
+(Ohje: OP = OA+ AP )
+5.12
+
+Kun koordinaatisto siirretään sopivaan pisteeseen, yhtälöstä
+
+x2 + y 2 + z2 − 4x − 6 y − 8z = 3
+häviävät 1. asteen termit. Määritä tämä piste.
+
+40
+
+6
+
+Osittaisderivaatat ja kokonaisdifferentiaali
+
+6.1
+
+Kahden muuttujan funktio ja sen derivointi
+
+Esim. 1 Yhtälö z = x 2 + y 2 on muotoa z = f ( x, y ) ja
+se määrittelee erään
+f. Funktion
+on paraboloidi.
+Tässä x ja y voivat olla mitä reaalilukuja
+tahansa, kun taas z voi olla vain einegatiivinen reaaliluku. Täten funktion (laajin
+mahdollinen reaalinen)
+on
+koko xy-taso eli kaikkien reaalilukuparien
+(x,y) joukko R 2 ja arvojoukko on ei negatiivisten reaalilukujen
+joukko. Tämä funktio on koko määrittelyalueessaan
+(pinta
+on jatkuva pinta, ilman hyppäyskohtia).
+x:n ja y:n suhteen ovat raja-arvoja:
+
+Funktion z = f ( x, y )
+
+= lim
+
+( + , )− ( , )
+
+,
+
+= lim
+
+→0
+
+( , + )− ( , )
+
+.
+
+→0
+
+Täten
+. Joskus osittaisderivaatan merkissä
+käytetään yläpilkkua, vaikka standardien mukaan osittaisderivaatan merkkiin
+sitä ei kuulu. Tämä siksi, että esim. V x tarkoittaa usein pyörähdyskappaleen
+tilavuutta, kun akselina on x, eikä tilavuusfunktion derivaattaa. M x taas voi
+tekniikassa olla taivutusmomentti kohdassa x.
+Osittaisderivaatoilla on monta muutakin merkitsemistapaa, mm.
+
+f y = f y′ = z y =
+Merkintä
+
+∂z ∂f ∂
+=
+=
+f ( x, y ) ( ∂ = "
+∂y ∂y ∂y
+
+∂z
+luetaan doo z doo x tai
+∂x
+
+(
+
+)
+
+").
+.
+
+Kun ensimmäisen kertaluvun osittaisderivaatat derivoidaan uudelleen, saadaan seuraavat neljä toisen kertaluvun osittaisderivaattaa:
+
+∂ 2z
+∂ 2z
+∂ 2z
+∂ 2z
+z xx = f xx = 2 , z xy = f xy =
+, z = f yx =
+, z = f yy = 2 .
+∂x∂y yx
+∂y∂x yy
+∂x
+∂y
+
+41
+Esim. 2
+
+Jos z = x 2 y + sin xy , niin
+
+z x = 2 xy + y cos xy , z y = x 2 + x cos xy
+z xx = 2 y − y 2 sin xy
+z xy = 2 x + cos xy − xy sin xy = z yx
+z yy = − x 2 sin xy
+Esim. 3 Ihannekaasulla on pV = nRT (n, R vakioita). Muuttujista p, V ja
+T voidaan mitkä tahansa kaksi ottaa riippumattomiksi muuttujiksi
+ja kolmas näiden funktioksi, esim.
+
+p = nR
+
+T
+( = f (V , T ) ).
+V
+
+Se muuttuja, joka osittaisderivaattaa muodostettaessa pidetään
+vakiona, merkitään joskus näkyviin alakulmaan, esim.
+
+∂p
+T
+nRT
+= nR( − 2 ) = − 2 .
+∂V T
+V
+V
+6.2
+
+Kokonaisdifferentiaali
+
+Funktion z = f ( x, y ) kokonaisdifferentiaalista
+
+=
+
+⋅
+
++
+
+⋅
+
+on jo puhuttu yhden muuttujan funktion yhteydessä. Siellä sitä käytettiin
+lähinnä funktion muutoksen z likiarvona, jos x:n ja y:n muutokset x = dx
+ja y = dy ovat itseisarvoiltaan pieniä:
+
+≈
+
+=
+
+⋅
+
++
+
+⋅
+
+,
+
+≈0
+
+≈ 0.
+
+Mikäli virheiden suuntaa (etumerkkiä) ei tunneta, vaan tunnetaan ainoastaan
+virheiden itseisarvojen ylärajat, niin laskuissa piti käyttää itseisarvoja
+seuraavasti:
+Jos esim. | | ≤ 0, 02 , ts. −0,02 ≤ dx ≤ 0,02 (eli x:n virhe dx on
+välillä −0,02 ... 0,02 ) ja | | ≤ 0,03 , niin
+
+| z| ≈| dz| ≤ | f x |⋅| dx| + | f y′ |⋅| dy| ≤ | f x |⋅0,02 + | f y |⋅0,03 =...
+Seuraava esimerkki kuvaa
+, ts. differentiaalin tai kokonaisdifferentiaalin käyttämistä toisenlaisessa yhteydessä.
+
+42
+Esim. 4 Vääntövarsijousella ns. jousto ja joustokulma ϕ riippuvat jousta
+kuormittavasta voimasta seuraavien yhtälöiden mukaisesti:
+
++ a cos ϕ = a cos δ
+ϕ − b sin ϕ = δ
+
+(muut suureet ovat vakioita).
+
+Johda hetkelliselle jäykkyydelle
+
+d
+laskukaava ϕ:n funktiona.
+dz
+
+Differentioidaan kumpikin yhtälö termi termiltä. Oikeat puolet
+ovat vakioita, joten niiden differentiaalit ovat = 0. Termissä
+b sin ϕ on kaksi muuttujaa, joten sen differentiointi merkitsee
+kokonaisdifferentiaalin muodostamista. Muissa termeissä on vain
+yksi muuttuja, joten ne differentioidaan yhden muuttujan funktioina ("derivaatta kertaa muuttujan differentiaali"). Siis
+
+1 ⋅ d − a sin ϕ ⋅ dϕ = 0
+.
+1 ⋅ dϕ − ( b sin ϕ ⋅ d + b cos ϕ ⋅ dϕ ) = 0
+Jälkimmäisestä yhtälöstä voidaan ratkaista d :n lauseke ja
+ensimmäisestä d :n lauseke. Kun nämä jaetaan keskenään, niin
+dϕ:t supistuvat pois. Toisesta alkuperäisestä yhtälöstä saadaan
+ratkaistua :n lauseke. Kun se sijoitetaan edelliseen lausekkeeseen, jäljelle jää vain muuttujaa ϕ. (Harj. Suorita laskut.)
+6.3
+
+Yhdistetyn funktion derivointi
+
+Yhden muuttujan yhdistetty funktio y = f ( u( x )) eli funktio
+
+y = f ( u ), missä u = u( x )
+derivoitiin ns.
+
+:
+
+dy dy du
+=
+⋅ .
+dx du dx
+Yleistetään tämä siihen tapaukseen, että ulkofunktio f on kahden muuttujan u
+ja v funktio. Derivoitavana on siis seuraava funktio:
+
+= ( , ), missä
+
+= ( )
+.
+= ( )
+
+43
+Jos ajatellaan, että u:n ja v:n lausekkeet sijoitetaan f:n lausekkeeseen, siitä
+tulee pelkästään x:n lauseke, ts. z on vain yhden muuttujan x funktio
+. Differentiz = z ( x ) . Täten
+oidaan ensin ulkofunktio z = f ( u, v ) :
+
+dz = f u ⋅ du + f v ⋅ dv
+∴
+
+=
+
+⋅
+
++
+
+⋅
+
+: dx
+(
+
+)
+
+Esim. 5 Jos z = u2 + 3uv , missä u = sin x, v = x 2 , niin
+
+dz
+= ( 2u + 3v ) ⋅ cos x + 3u ⋅ 2 x ( missä u = sin x , v = x 2 ) .
+dx
+Yleensä riittää, että derivaatta jätetään tähän muotoon. Jos esim.
+dy
+x = π , niin u = sin π = 0, v = π 2 ∴ = 3π 2 cos π = −3π 2 .
+dx
+Esim. 6
+
+Jos s = x 3 ln y , missä x = cos 2t , y = t 2e5t , niin
+
+x3
+ds
+2
+= 3x ln y ⋅ ( −2 sin 2t ) + ⋅ ( 2te5t + 5t 2e5t ) .
+y
+dt
+(Mikä on derivaatan arvo esim. hetkellä t = 2,34?)
+
+x = t / 2u
+, niin kaikenkaikkiaan z on t:n
+y = u sin 2t
+ja u:n funktio ja siten tässä esimerkissä
+t:n ja u:n suhteen. Jos ajatellaan
+u vakioksi, saadaan
+
+*Esim. 7 Jos z = x 2 ln y , missä
+
+1 x2
+∂z
+= 2 x ln y ⋅ + ⋅ 2u cos 2t .
+2u y
+∂t
+Vastaavasti, kun t pidetään derivoitaessa vakiona, saadaan
+
+t
+x2
+∂z
+= 2 x ln y ⋅ ( − 2 ) + ⋅ sin 2t .
+y
+∂u
+2u
+
+44
+6.4
+
+Ratkaisemattoman funktion derivointi
+
+Esimerkiksi yhtälö
+
+x2 + y2 − 5 = 0
+
+määrittelee
+
+kaksi funktiota y = ± 5 − x 2 . Jos rajoitutaan vain
+esim. pisteen (1, 2) lähiympäristöön, jäljelle jää
+yksi funktio y = 5 − x 2 .
+Oletetaan yleisesti, että yhtälö
+(1)
+
+( , )= 0
+
+määrittelee jossakin alueessa funktion = ( ) . Lasketaan tämän derivaatta
+seuraavasti. Differentioidaan yhtälö (1), jolloin saadaan
+
+=−
+
+Fx ⋅ dx + Fy ⋅ dy = 0 ∴
+
+.
+
+Esim. 8 Määritä edellä olleen käyrän x 2 + y 2 − 5 = 0 pisteeseen (1, 2)
+piirretyn tangentin yhtälö.
+
+F = x 2 + y 2 − 5.
+2
+1
+Pisteessä (1,2) Fx = 2 x = 2, Fy = 2 y = 4 ∴ k = − = −
+4
+2
+1
+∴ tangentti on y − 2 = − ⋅ ( x − 1) eli x + 2 y − 5 = 0.
+2
+Yleisemmin käyrän F ( x , y ) = 0 pisteeseen ( xo , yo )
+piirretyn
+on
+
+y − yo = −
+
+Fx ( xo , yo )
+⋅ ( x − xo )
+Fy ( xo , yo )
+
+eli sievennettynä
+
+( o, o )(
+⋅ −
+Esim. 9
+
+o )+
+
+( o, o )(
+⋅ −
+
+o )= 0 .
+
+Edellisen tehtävän mukaiseksi tangentiksi saadaan
+
+2 ⋅ ( x − 1) + 4 ⋅ ( y − 2 ) = 0 :2
+x + 2 y − 5 = 0.
+
+45
+Edellä olleet tulokset yleistyvät avaruuteen seuraavasti.
+1) Jos yhtälö ( , , )= 0 määrittelee funktion z = f ( x, y ) jossakin
+pisteen ( xo , yo , zo ) lähiympäristössä, niin tässä alueessa
+
+∂
+=−
+∂
+
+,
+
+∂
+=−
+∂
+
+.
+
+2) Pinnan F ( x , y , z ) = 0 pisteeseen ( xo , yo , zo ) piirretyn
+yhtälö on
+( o, o, o )(
+⋅ −
+
+o )+
+
+( o, o, o )(
+⋅ −
+
+o )+
+
+( o, o, o )(
+⋅ − o )= 0
+
+Koska tason yhtälössä tuntemattomien x, y ja z
+kertoimina ovat tason normaalin suuntaluvut, niin
+edellisestä seuraa, että pinnan F ( x , y , z ) = 0 eräs
+pisteessä (x,y,z) on
+
+=[
+
+, , ].
+
+Tätä vektoria sanotaan pinnan F ( x , y , z ) = 0
+
+.
+
+HARJOITUKSIA
+A
+6.1
+
+x4
+, b) z = 2 x 3 sin 2 y , c) z = x 3 ( 2 x + y )3 .
+Derivoi a) z =
+2y
+
+u = e x ln y + z 2 cos y
+
+6.2
+
+Muodosta kolmen muuttujan funktiolle
+ensimmäisen kertaluvun osittaisderivaatat.
+
+6.3
+
+Differentioi funktiot a) z = e x sin 2 y , b) V = nR
+
+6.4
+
+Derivoi (ketjusäännöllä)
+a) z = x 3 ln y , missä x = cos 2t , y = t 2 et ,
+
+T
+.
+p
+
+46
+b) z = 3x 2 − 5 y 2 , missä x = r sin 2ϕ , y = r cos( 2ϕ − π ) (missä r ja ϕ
+ovat muuttujia).
+6.5
+
+Määritä käyrän 2 x 2 + sin( x − y ) = 0 pisteeseen (0,0) piirretyn
+tangentin yhtälö.
+
+6.6
+
+Määritä pinnan xe2 z − y sin x + z = 0 pisteeseen (0,3,0) piirretyn a)
+tagenttitason yhtälö, b) normaalin yhtälöt.
+
+B
+6.7
+
+Derivoi
+
+a) z = arctan
+
+ℓ
+x
+p
+= f ( ℓ, g ) , c) v = vo o (1 + αt ) = f ( p, t ) .
+, b) T = 2π
+g
+y
+p
+
+∂p ∂V ∂T
+⋅
+⋅
+= −1 .
+∂V ∂T ∂p
+
+6.8
+
+Osoita, että ihannekaasulla
+
+6.9
+
+Laske funktiolle f ( x , y , z ) = 2 x 2 y + y 2 + z 3
+osittaisderivaatat.
+
+6.10
+
+Muodosta funktion a) z =
+
+1. ja 2. kertaluvun
+
+x+ y
+x+ y
+toisen kertaluvun
+, b) z = ln
+x− y
+x− y
+
+osittaisderivaatat.
+6.11 Laske z , z ja dz , kun x = 3,01, dx = 0,07, y = 5,0 ja dy = 0,2 .
+6.12 Laske z virherajoineen, kun z = arcsin xy , missä
+
+x = 0,25 ± 0,01
+y = 0,33 ± 0,02
+
+6.13 Derivoi ketjusäntöä käyttäen
+a) z = ln( u2 + uv ), missä u = e3x , v = cos( 2 x + π / 4 ) ,
+b) arcsin xy, missä x = s2 + 2 st , y = st − t 3 .
+6.14 Derivoi (ketjusäännöllä)
+
+2
+a) z = e x +2 y , missä x = sin 2t , y = ,
+t
+
+47
+
+x2 + y2
+, missä x = et cos t , y = et sin t , z = e2t ,
+b) f ( x , y , z ) =
+z
+c) z = sin uv, missä u = ln xy , v =
+
+x
+.
+y
+
+6.15
+
+Määritä pinnan z = x 2 − 3xy pisteeseen (2,2,–8) piirretyn tangenttitason yhtälö.
+
+6.16
+
+Pisteestä (5,5,0) piirretää pinnalle z = x 2 + y 2 normaali. Määritä
+normaalin kantapiste eli se piste ( xo , yo , xo 2 + yo 2 ) , josta piirretty
+normaali kulkee kyseisen pisteen kautta.
+
+C
+6.17
+
+Kolmion sivuja a ja b jatketaan 1 % ja 2%. Laske kokonaisdifferentiaalia käyttäen, paljonko kulmaa γ = 45° pitäisi muuttaa,
+jotta ala A = 12 ab sin γ ei muuttuisi.
+
+pV κ = vakio
+
+dF
+pA2
+6.18 Kaasujousella F = ( p − po ) A . Osoita, että
+=κ
+.
+df
+V
+V = ( h1 − f ) A
+6.19
+
+Funktioon z = f ( x, y ) tehdään muunnos
+
+∂z 2 1 ∂z
++ 2
+∂r
+r ∂ϕ
+6.20
+
+2
+
+x = r cos ϕ
+. Osoita, että
+y = r sin ϕ
+
+∂ z 2 ∂z
++
+=
+∂x
+∂y
+
+2
+
+.
+
+Kun a, b ja c valitaan sopivasti, pinnoilla
+
+x2 + 4 y2 − 4z2 = 4
+
+ja
+
+x 2 + y 2 + z 2 + ax + by + cz + 10 = 0
+
+on yhteinen normaali pisteessä (2,1,1). Määritä nämä kertoimet a, b
+ja c.
+6.21
+
+Pinnan z = x + y 2 eräästä pisteestä, jonka koordinaatit ovat kokonaislukuja, piirretään normaali. Se leikkaa yz-tason pisteessä (0,1,3).
+Määritä normaalin yhtälöt.
+
+48
+
+7
+
+Ääriarvot
+
+7.1
+
+Maksimi ja minimi
+
+Jos funktion z = f ( x, y ) arvo z on kohdassa
+( a , b ) pienempi kuin ( a , b ) :n lähipisteissä, niin
+( a , b ) on funktion paikallinen
+.
+Vastaava z:n arvo f ( a , b ) on funktion
+.
+Maksimi- ja minimikohdat ovat nimeltään
+funktion
+.
+Maksimija
+minimiarvot (z:n arvot) ovat funktion
+.
+Jos pinnalla z = f ( x, y ) on ääriarvopisteessä tangenttitaso, tämä taso on
+vaakasuora eli pinnan normaalivektori on z-akselin suuntainen. Tämä
+merkitsee, että pinnan normaalivektorin kaksi ensimmäistä komponenttia
+f x ja f y ovat = 0.
+Kaikki tällaiset pisteet eivät ole ääriarvopisteitä,
+sillä esim. satulapinnan z = x 2 − y 2 satulapisteessä (0,0) osittaisderivaatat ovat nollia, mutta tämä
+piste ei ole ääriarvopiste (vaan eräänlainen
+käännepiste). Ne pisteet taas, joissa f x tai f y ei
+ole olemassa, ovat jonkinlaisia erikoispisteitä (esim. kärkiä) ja voivat antaa
+ääriarvon. Nämä geometriset tarkastelut ovat seuraavan tuloksen pohjana:
+Lause 1
+
+Funktion f ( a , b ) ääriarvokohdat ( x , y ) ovat niiden ( x , y ) parien joukossa, joissa osittaisderivaatat ovat = 0:
+
+=0
+=0
+
+(tai f x tai f y ei ole olemassa).
+
+Lause 1 yleistyy useammankin kuin kahden muuttujan funktiolle.
+Yhden muuttujan funktiolla ääriarvon laatu voitiin tutkia mm. y ′′ :n avulla
+(esim. y ′ = 0, y ′′ > 0 ⇒ min. ). Seuraava tulos on tämän yleistys (ei tod.).
+Lause 2
+
+Oletetaan, että kohdassa (a,b) on f x′ = f y′ = 0 (joten ( a , b ) on
+mahdollinen ääriarvokohta). Merkitään
+
+49
+
+H = f xx
+′′ ⋅ f yy
+′′ − ( f xy
+′′ )2 .
+Jos kohdassa ( a , b ) on
+1) H > 0 ja f xx > 0 , niin (a,b) on minimikohta,
+2) H > 0 ja f xx < 0 , niin (a,b) on maksimikohta,
+3) H < 0 , niin kyseessä ei ole ääriarvokohta (vaan satulapiste
+tms.)
+4) H = 0 , niin kyseessä voi olla ääriarvokohta, mutta sen laatu
+on tutkittava muilla keinoin, esim. ( a , b ) :n lähipisteiden avulla).
+Esim. 1 Määritä funktion z = x 2 + y 3 − 6 xy + 50 a) mahdolliset ääriarvokohdat, b) ääriarvon laatu, c) ääriarvot.
+
+a)
+
+z x′ = 2 x − 6 y = 0
+2
+
+z ′y = 3 y − 6 x = 0 :3
+
+⇔
+
+2x − 6 y = 0
+−2 x + y 2 = 0
+
+∴
+
+x1 = 0
+
+x2 = 18
+.
+,
+y1 = 0 y2 = 6
+
+b) z xx = 2, z yy = 6 y , z xy = −6 ∴ H = 12 y − 36 .
+Kohta (0,0):
+
+H <0
+
+∴ ei ääriarvokohta.
+
+Kohta (18,6):
+
+H > 0, z xx > 0
+
+∴ minimikohta.
+
+c) Minimiarvo z min = z (18,6 ) = −58 .
+Teknillisissä tehtävissä Lausetta 2 ei tavallisesti tarvita, sillä ääriarvon laatu
+selviää yleensä suoraan tehtävän luonteen perusteella samaan tapaan kuin
+yhden muuttujan funktiolla.
+Esim. 2
+
+Suorakulmaisen särmiön muotoisen kannettoman laatikon yksi
+sivu vahvistetaan kaksinkertaiseksi. Optimoi laatikon muoto
+materiaalimenekin kannalta.
+Merkitään laatikon tilavuutta V:llä. Jos
+yz-pääty vahvistetaan (vrt. kuva), niin
+kokonaispinta-ala on
+
+A = xy + 2 xz + 3 yz .
+
+z
+y
+x
+
+Laatikon muoto on optimaalinen silloin, kun tämä kokonaispintaala A = xy + 2 xz + 3 yz on pienimmillään.
+
+50
+Pinta-ala A on kolmen muuttujan funktio, mutta muuttujia sitoo
+toisiinsa se tieto, että laatikon tilavuuden tulee olla V, ts. että
+xyz = V
+
+(
+
+)
+
+Side-ehto muuttaa A:n kahden muuttujan funktioksi, sillä sen
+mukaan xz = V/y ja yz = V/x, joten
+
+A = xy +
+
+2V 3V
+.
++
+y
+x
+
+Lähdetään etsimään pinta-alan mahdollisia ääriarvokohtia:
+
+Ax = y −
+Ay = x −
+
+3V
+
+=0
+
+x2
+2V
+y
+
+⇔
+=0
+
+2
+
+x 2 y = 3V
+2
+
+V = xyz
+
+⇔
+
+x 2 y = 3xyz
+
+.
+
+2
+
+xy = 2 xyz
+
+xy = 2V
+
+Kun kumpikin yhtälö jaetaan tulolla xyz ≠ 0 , saadaan yhtälöpari
+
+3
+x
+=3= ,
+z
+1
+7.2
+
+2
+y
+=2=
+∴
+z
+1
+
+= 3 : 2 :1 .
+
+Pienimmän neliösumman menetelmän sovelluksia
+
+1. Otsikossa mainitun menetelmän ehkä tavallisin sovellus on annettuun
+pistejoukkoon ( x1, y1 ), ..., ( x n , y n ) mahdollisimman hyvin liittyvän suoran
+y = kx + b , ns.
+määrittäminen (seuraava kuva).
+
+(xi,y i)
+iy
+(x1,y 1)
+
+y = kx + b
+(xn ,y n )
+
+(x2,y 2)
+xi
+
+= +
+kertoimille k ja b laskukaavat
+Johdetaan regressiosuoran
+pienimmän neliösumman menetelmällä. Kohdassa xi pisteellä on ykoordinaatti yi ja suoran pisteellä on y-koordinaatti y = kxi + b . Näiden
+
+51
+erotus on ns.
+kuva). Siis
+
+, jota voidaan merkitä
+
+i y :llä (vrt. edellinen
+
+( i = 1, 2, ..., n ) .
+
+i y = yi − ( kxi + b ) = yi − kxi − b
+
+Osa näistä poikkeamista on positiivisia, osa negatiivisia. Suoran pitäisi
+kulkea niin, että poikkeamien yhteismäärä, tarkemmin sanoen poikkeamien
+itseisarvojen summa olisi mahdollisimman pieni. Käytetään itseisarvojen
+sijasta poikkeamien
+summaa, ts. funktiota
+n
+
+f ( k , b ) = ∑ [ yi − kxi − b]2 .
+i =1
+
+Etsitään sellaiset k:n ja b:n arvot, että tämä funktio on pienimmillään.
+
+f k′ = ∑ 2[ yi − kxi − b] ⋅ ( − xi ) = 0 :2
+
+∑ [− xi yi + kxi2 + bxi ] = 0 .
+∑ [− yi + kxi + b] = 0
+
+⇔
+
+f b = ∑ 2[ yi − kxi − b] ⋅ ( − 1 ) = 0 :2
+
+Vaihdetaan summausjärjestystä niin, että lasketaan ensin yhteen kaikki
+xi yi -termit, sitten kaikki kxi 2 - termit jne.
+
+∑ ( − xi yi ) + ∑ kxi 2 + ∑ bxi = 0 ⇔
+∑ ( − yi ) + ∑ kxi + ∑ b = 0
+
+− ∑ xi yi + k ∑ xi 2 + b∑ xi = 0
+− ∑ yi + k ∑ xi + nb
+
+=0
+
+.
+
+Tämä on lineaarinen yhtälöpari, tuntemattomina k ja b. Kun ensimmäinen
+yhtälö kerrotaan n:llä ja toinen ( − ∑ xi ) :llä ja yhtälöt lasketaan sitten
+yhteen, niin b eliminoituu ja k:lle saadaan lauseke
+
+=
+
+⋅∑
+
+− (∑
+2
+
+⋅∑
+
+)( ∑
+
+− (∑
+
+)2
+
+) − (∑
+
+)( ∑
+
+)
+
+.
+
+Vastaavasti saadaan ratkaistua b:
+
+=
+
+(∑
+
+)( ∑
+⋅∑
+
+2
+
+2
+
+− (∑
+
+)
+
+2
+
+)
+
+.
+
+Nämä kaavat löytyvät kaavastosta. Myös useissa laskimissa on ohjelmoituna
+menetelmä, jolla kertoimien k ja b arvot voidaan laskea, kun ( xi , yi ) -parit
+
+52
+näppäillään laskimen muistiin. Menetelmän englanninkielinen nimi on linear
+regression.
+2. Regressiosuora on vain yksi esimerkki
+menetelmän käyttämisestä. Samantapaisesti voidaan laskea johonkin
+pistejoukkoon mahdollisimman hyvin liittyvä paraabeli, hyperbeli tms., tai
+myös esim. avaruuspisteisiin liittyvä taso.
+3. Eräs sovellus on annettuihin pisteisiin ( xi , yi )
+(i = 1, 2, ..., n) mahdollisimman hyvin liittyvän
+määrittäminen. Tämä tehtävä
+muuttuu
+regressiosuoran
+määrittämiseksi
+seuraavalla tavalla:
+
+y = a ekx
+
+Etsittävä yhtälö on muotoa
+
+= ⋅
+
+(a, k = ?).
+
+Otetaan kummastakin puolesta logaritmi:
+
+ln y = ln a + ln e kx
+ln y = ln a + kx ln e
+ln y = kx + ln a
+Y
+
+merk. ln y = Y , ln a = b
+
+b
+
+Y = kx + b.
+Koska ( xi , yi ) -parit tunnetaan, niin ( xi , Yi ) -parit eli ( xi , ln yi ) -parit
+voidaan laskea (ja näppäillä suoraan esim. laskimen muistiin).
+
+( , ln )
+. Näin saadaan ensin kertoimet
+ln a = b ∴ = .
+4. Joskus on tarpeen linearisoida
+jokin käyrä jollakin välillä eli määrittää tämän käyränosan äärettömän
+moneen pisteeseen mahdollisimman
+hyvin liittyvä suora y = kx + b. Tehtävä on muuten lähes samanlainen kuin
+regressiosuoran kertoimien johtaminen
+paitsi että summien tilalle tulevat integraalit.
+
+ja
+
+ja sitten a, sillä
+
+53
+*Esim. 3 Määritä käyränosaan y = ln x , 1 ≤ x ≤ e mahdollisimman hyvin
+liittyvä suora y = kx + b (edellinen kuva).
+Kohdassa x käyrän ja suoran välinen pystypoikkeama on
+
+ln x − ( kx + b) .
+Poikkeamien neliöiden "summa" on
+e
+
+f ( k , b) =
+
+1
+
+[ln x − kx − b]2 dx ,
+
+mikä pitäisi minimoida. Derivoidaan f "termi termiltä" k:n ja b:n
+suhteen ja merkitään derivaatat 0:ksi:
+
+fk =
+fb =
+−
+
+e
+
+e
+1
+e
+1
+
+2 ⋅ [ln x − kx − b] ⋅ ( − x ) dx = 0 :2
+2 ⋅ [ln x − kx − b] ⋅ ( −1) dx = 0 :2
+
+e
+
+e 2
+e
+x dx + b x dx = 0
+1
+1
+e
+e
+
+1
+
+1
+
+1
+
+x ln x dx + k
+
+− ln x dx + k
+
+x dx + b
+
+1
+
+dx = 0
+
+6,362 k + 3195
+, b = 2,097 ⋅1,718
+3195
+, k + 1,718b = 1
+
+⋅ ( −3195
+, )
+
+k ≈ 0,565, b ≈ −0,468 .
+
+HARJOITUKSIA
+A, B
+7.1
+
+Määritä funktion z = x 2 + y 3 − 12 y + 5 ääriarvopisteet.
+
+7.2
+
+Määritä funktion z = x 2 + y 2 + xy − 6 x − 4 y + 5 ääriarvokohta, ääriarvo ja sen laatu.
+
+7.3
+
+Pisteestä A(3,0) piirretään paraabelille y = x 2 normaali. Määritä
+normaalin kantapiste P. Ohje: P( x , y ) = P ( x , x 2 ) on sellainen
+paraabelin piste, että sen etäisyys A:sta (tai etäisyyden neliö) on
+
+54
+pienimmillään. Saat 3. asteen yhtälön, jonka ratkaisu löytyy helposti
+kokeilemalla.
+7.4
+
+Kuten edellinen, mutta A = (5,5,0) ja paraabelin tilalla perusparaboloidi.
+
+7.5
+
+Suorakulmaisen särmiön muotoisen kannellisen astian pohja ja
+kumpikin pääty on vahvistettu kaksinkertaisiksi. Mikä on ainemenekiltään edullisin astian muoto.
+
+7.6
+
+Kaurahiutalepakkauksen kansi ja pohja ovat kaksinkertaiset. Määritä
+pahvimäärältään edullisin muoto.
+
+7.7
+
+Määritä pisteisiin (0,1), (1,3), (2,2), (3,4), (4,5) liittyvä regressiosuora a) edellä johdetuilla laskukaavoilla (laske ensin paperilla
+summien ∑ x , ∑ x 2 , ∑ y ja ∑ xy arvot), b) käyttämällä apuna
+laskimen tilastollisia ominaisuuksia.
+
+7.8
+
+Määritä pisteisiin (–2,5), (0,3), (2,2), (4,1) parhaiten liittyvä
+eksponenttifunktio y = ae kx .
+
+7.9
+
+Laske pienimmän neliösumman menetelmällä pisteisiin (1,4), (2,2),
+(3,2), (4,1) parhaiten liittyvä hyperbeli y = kx .
+
+7.10
+
+Kuten edellinen, mutta hyperbelinä y = kx + b . Huomaa: tämä tehtävä
+voidaan palauttaa regressiosuoran määrittämiseksi (mutta edellistä
+ei).
+
+7.11
+
+*Määritä käyrään y = x 3 välillä 0...3 mahdollisimman hyvin liittyvä
+suora y = kx + b .
+
+C
+7.12.
+
+Mikä pinnan z = xy −1 piste on lähinnä origoa?
+
+55
+7.13.
+
+Laske ristikkäisten suorien
+
+x = t −1
+y = 2t
+z = t +3
+
+x = 3s
+ja
+
+y = 2+ s
+z = −1 + 2 s
+
+välinen lyhin etäisyys.
+7.14
+
+Vesikourun poikkileikkaus on tasakylkinen puolisuunnikas, jonka ala on
+A. (A määrää kourun vedenkuljetuskapasiteetin.)
+Laske
+ääriarvotehtävänä, minkä muotoinen
+kourun tulisi olla, jotta siihen tarvittava peltimäärä olisi
+mahdollisimman pieni. (Ohje: esitä leikkausviivan pituus 2a + b
+muuttujien a ja h avulla ja minimoi tämä funktio. Lopputulos on aika
+itsestään selvä: poikkileikkaus on puolet säännöllisestä 6-kulmiosta,
+ts. a = b ja α = 60° .)
+
+7.15
+
+Määritä käyrään y = e x välillä –1...1 mahdollisimman hyvin liittyvä
+suora y = kx + b .
+
+7.16
+
+a) Määritä yhtälöpari, josta saadaan laskettua pisteisiin (1,1), (2,2) ja
+(2,3) parhaiten liittyvä käyrä y = ax 3 + b .
+b) Ratkaise tämä yhtälöpari, jolloin saat a:n ja b:n arvon.
+c) Miten saat a:n ja b:n laskettua helpommin?
+
+7.17
+
+a) Johda yhtälöryhmä, josta saadaan tarvittaessa laskettua pisteisiin
+( xi , yi ) parhaiten liittyvän paraabelin y = ax 2 + bx + c kertoimet.
+(Tehtävä on samanlainen kuin regressiosuoran johto, mutta yhtälöitä
+tulee nyt 3 kpl.)
+b) Sovella tulos pisteisiin (0,0), (–1,–1), (1,1), (2,1) ja ratkaise
+yhtälöryhmä.
+
+56
+
+8
+
+Integraalilaskentaa
+
+8.1
+
+Viivaintegraali
+
+Oletetaan, että on annettu
+
+∆s
+
+B
+
+(xn , yn )
+
+1. funktio f ( x, y )
+2. xy-tason käyrä AB .
+
+∆s
+
+∆s
+
+Jaetaan AB n:ään osaan, joiden
+pituudet ovat
+s, ja keskipisteet
+( xi , yi ) .
+
+A
+
+(x1 , y1 ) (x2 , y2 )
+
+Muodostetaan summa
+
+f ( x1, y1 ) ⋅ s + .... + f ( x n , y n ) ⋅ s .
+Kun n → ∞ , saadaan ns.
+
+A:sta B:hen pitkin käyrää AB :
+
+( , )
+
+= lim ∑ (
+→ ∞ =1
+
+,
+
+)⋅
+
+.
+
+Osavälien s ei tarvitsisi olla yhtä pitkiä ja pisteiden ( xi , yi ) välien keskipisteitä. Viivaintegraali lasketaan tavallisesti palauttamalla se määrätyksi
+integraaliksi seuraavien esimerkkien 1 ... 4 mukaisesti.
+Esim. 1
+
+Laske paraabelinkaaren y = x 2 , 0 ≤ x ≤ 1
+neliömomentti x-akselin suhteen.
+Kohdassa x olevan kaarialkion ds neliömomentti x-akselin suhteen on
+
+dI x = y 2 ds
+ja koko kaaren AB neliömomentti on "summa"
+
+Ix =
+=
+
+B
+A
+
+2
+
+y ds
+
+1 4
+x
+0
+
+ds = 1 + f ′( x )2 dx = 1 + ( 2 x )2 dx
+y = x2
+
+1 + 4 x 2 dx ≈ 0,390.
+
+Tässä esimerkissä integroitava funktio f ( x, y ) ei sisältänyt
+ollenkaan x:ää, vaan se oli pelkästään y:n funktio: f ( x, y ) = y 2 .
+
+57
+Palauttaminen "tavalliseksi" integraaliksi tapahtui siten, että y ja
+ds esitettiin x:n lausekkeina.
+8.2
+
+Työ voimakentässä
+
+Esim. 2
+
+Kappale liikkuu voimakentässä
+
+(1)
+
+= ( , ) + ( , )
+
+F
+ds
+
+viivan AB osoittaman
+tien. Laske kentän tekemä työ.
+
+Se, että xy-tasossa vaikuttaa tällainen voimakenttä, merkitsee, että tason jokaisessa pisteessä voimalla on
+tietty suuruutensa ja suuntansa, jotka määräytyvät funktioiden
+u(x,y) ja v(x,y) mukaisesti.
+Jos pisteestä (x,y) siirrytään käyrää pitkin "äärettömän lyhyt"
+matka pisteeseen ( x + dx , y + dy ) , niin voimalla on koko tällä
+matkalla ds = dx i + dy j sama arvo (1). Vastaava työ saadaan
+voima- ja matkavektorien pistetulona:
+
+dW = F ⋅ ds = u( x , y ) dx + v ( x , y ) dy .
+Koko työ on osatöiden "summa" eli
+(2)
+
+=
+
+⋅
+
+=
+
+[ ( , )
+
++ ( , )
+
+].
+
+Kyseessä on vektorifunktion F ( x , y ) viivaintegraali, joka
+muuttui differentiaalilausekkeen u( x , y ) dx + v ( x, y ) dy viivaintegraaliksi.
+Jos käyrän AB yhtälö y = f ( x ) tunnetaan, niin vm.
+viivaintegraali palautuu tavalliseksi integraaliksi esim. siten, että
+y:n ja dy:n tilalle sijoitetaan niiden lausekkeet f(x) ja f ′( x ) dx .
+Seuraava esimerkki havainnollistaa tätä menettelyä.
+
+58
+Esim. 3
+
+Laske voimakentän F = ( xy + 1) i + ( x + y ) j tekemä työ, kun
+tienä on paraabelinkaari y = x 2 , 0 ≤ x ≤ 1.
+
+W=
+=
+=
+=
+Esim. 4
+
+B
+A
+
+F ⋅ ds
+
+F = ( xy + 1) i + ( x + y ) j
+ds = dx i + dy j
+
+B
+A
+1
+
+[( xy + 1) dx + ( x + y ) dy ]
+
+y = x 2 , dy = 2 x dx
+
+[( x ⋅ x 2 + 1) dx + ( x + x 2 ) ⋅ 2 x dx ]
+
+0
+1
+0
+
+5.
+(3x 3 + 2 x 2 + 1) dx = 34 + 23 + 1 = 2 12
+
+Jos voimakenttä on sama kuin edellä, siis
+F = ( xy + 1) i + ( x + y ) j , mutta kappale
+liikkuu pisteestä A(0,0) pisteeseen B(1,1)
+suoraa y = x eikä paraabelinkaarta pitkin,
+niin työlle saadaan eri arvo:
+
+W=
+=
+
+B
+A
+1
+0
+
+[( xy + 1) dx + ( x + y ) dy ]
+
+y = x , dy = dx
+
+[( x 2 + 1) dx + 2 x dx ] = 13 + 12 + 1 = 2 13 .
+
+Esimerkkien 3 ja 4 voimakenttä on siis sellainen, että työ pisteestä A(0,0)
+pisteeseen B(1,1) riippuu käytetystä tiestä.
+Yleisesti voidaan todistaa, että kun kappale liikkuu voimakentässä
+F = u( x , y ) i + v ( x, y ) j annetusta pisteestä A toiseen annettuun pisteeseen
+B, niin kyseinen työ on riippumaton käytetystä tiestä, jos ja vain jos
+
+∂
+∂
+=
+.
+∂
+∂
+Tällaista voimakenttää sanotaan
+(työn säilyttäväksi).
+
+tai myös
+
+Jos integroimistie on
+C, ts. alku- ja loppupisteet yhtyvät, niin
+( , ) .
+viivaintegraalista käytetään merkintää
+
+59
+8.3
+
+Pintaintegraali
+
+Olkoon annettu
+1. funktio f ( x, y ) ,
+
+A
+(xi,y i)
+
+2. xy-tason alue T.
+Jaetaan T osa-alueisiin, joiden pinta-alat ovat 1 A ,
+2 A, ..., n A . Valitaan jokaisesta osa-alueesta yksi
+piste ( xi , yi ) .
+Määritelmä. Funktion f
+
+yli alueen T on raja-arvo
+
+=
+
+( , )
+
+lim
+
+∑ (
+
+→∞
+=1
+→0
+
+,
+
+)
+
+.
+
+Pintaintegraalin laskeminen tapahtuu yleensä kaksinkertaisena integrointina
+sillä tavoin kuin jo monisteen I osassa on esitetty. Jos erityisesti f(x,y) on ≥
+0 koko alueessa T, niin pintaintegraali antaa pinnan z = f ( x, y ) ja xy-tason
+alueen T välisen kappaleen tilavuuden V, sillä f(x,y) dA = sellaisen pilarin
+tilavuus, jonka pohjan ala on dA ja korkeus on f(x,y).
+Esim. 5
+
+Kappaletta rajoittaa pinta z = xy ja xytason alue T, jonka rajoina ovat paraabeli y = x 2 sekä suorat x = 0 ja y = 1 .
+Laske tilavuus V.
+
+y = x2
+1
+
+Alueessa T
+
+x2
+
+0 ≤ x ≤1
+T:
+
+x2 ≤ y ≤ 1
+
+. Siten
+
+.
+
+Koska lisäksi xy ≥ 0 kaikissa T:n pisteissä ja dA = dy ⋅ dx , niin
+
+V=
+
+xy dA =
+T
+
+=
+
+1
+
+1
+
+0
+
+x
+
+2 xy dy
+
+dx =
+
+1
+0
+
+x
+
+1
+
+y2
+x2 2
+
+dx
+
+1x
+4
+1 1( x − x 5 ) dx = 1 ( 1 − 1 ) = 1 .
+(
+1
+−
+x
+)
+dx
+=
+2 0
+2 2 6
+6
+02
+
+60
+
+HARJOITUKSIA
+A
+8.1
+
+Laske voiman F = y i − 2 x j tekemä työ pitkin paraabelinkaarta
+
+y = 3x 2 , 0 ≤ x ≤ 1 .
+8.2
+
+a) Osoita, että voimakenttä F = (3x − xy 2 ) i − x 2 y j on konservatiivinen (työn säilyttävä). b) Laske työ tässä kentässä pisteestä (0,2)
+pisteeseen (2,–2).
+
+8.3
+
+Kappaletta rajoittavat pinta z = x 2 + y 2 ja xy-tason kolmio, jonka
+kärjet ovat (0,0), (1,0) ja (1,2). Laske tilavuus.
+
+B
+8.4
+
+Laske [ xdy − ydx ] pitkin ellipsiä
+
+x = 5 cos t
+.
+y = 3 sin t
+
+( 2,1)
+
+8.5
+
+[ xy 2 dx + x 2 y dy ] arvo ei riipu tiestä
+
+Osoita, että viivaintegraalin
+
+( 0,0 )
+
+ja laske tämä arvo.
+B
+
+8.6
+
+Laske
+
+[ y 2 dx + ( x 2 − 2 x ) dy ] , missä A = ( 0,0 ) ja b = (1, 1) pitkin a)
+
+A
+
+janaa AB,
+
+b) murtoviivaa AEB, missä E = (1, 0) , c) E-keskistä
+
+ympyränkaarta x 2 + y 2 = 2 x .
+8.7
+
+Laske pinnan z =
+
+y +1
+x2
+
+ja kolmion (1,0) (4,0) (4,6) välisen
+
+kappaleen tilavuus.
+8.8
+
+Laske pinnan z = x 2 y 2 ja xy-tason kolmion (0,0) (2,–2) (2,4)
+välisen kappaleen tilavuus.
+
+8.9
+
+Voima F = y i − x j kuljettaa massapistettä origosta positiiviselle yakselille pitkin spiraalinkaarta r = 2ϕ . Laske työ. Ohje: esitä spiraali
+parametrimuodossa.
+
+61
+
+C
+f ( x , y , z ) dV määritellään vastaavasti kuin
+
+8.10
+K
+
+pintaintegraali. Jos erityisesti f(x,y,z) = 1, saadaan kappaleen K tilavuus.
+a) Laske sovelluksena pinnan z = x 2 + y 2 ja xy-tason kolmion (0,0)
+(1,0) (1,2) välisen kappaleen tilavuus. (Ohje: Kappaleessa K x
+muuttuu ..., kullakin kiinteällä x:n arvolla y muuttuu ... ja kullakin
+kiinteällä (x,y)-arvoparilla z muuttuu ...)
+b) Kappaletta K rajoittavat tasot z = 0 ja x = 1 sekä satulapinta
+z = x 2 − y 2 . Laske K:n neliömomentti xy-tason suhteen eli integraali
+
+z 2 dV .
+K
+
+Ohje: satulapinta leikkaa
+xy-tason pitkin viivaa
+x 2 − y 2 = 0 eli suoria
+y = ± x . Siten K:ssa
+
+0 ≤ x ≤1
+−x ≤ y ≤ x
+0 ≤ z ≤ x2 − y2
+8.11
+
+x = r cos ϕ
+eli xy-koordiy = r sin ϕ
+naattien sijaan otetaan käyttöön napakoordinaatit, niin pinta-alkio
+saa muodon
+Jos pintaintegraaliin tehdään sijoitus
+
+dA = rdϕdr .
+1
+
+dA , kun T:nä
+2
+2
+x
+y
++
+T
+on origokeskisten 1- ja 2-säteisten ympyröiden välinen alue.
+Laske sovelluksena
+
+62
+
+9
+
+-muunnos
+
+9.1
+
+-muunnos eli
+
+muunnos
+
+Derivoinnissa on oikeastaan kyse ns.
+muuntaa funktion f ( t ) uudeksi funktioksi f ′( t ) :
+
+D, joka
+
+D[ f ( t )] = f ′( t )
+(sovelluksissa muuttujana on usein aika t). D-operaattori on luonteeltaan ns.
+, ts. se täyttää seuraavat kaksi ehtoa:
+
+D[a ⋅ f ( t )] = a ⋅ D[ f ( t )]
+
+( a = vakio ),
+
+D[ f ( t ) + g( t )] = D[ f (t )] + D[ g(t )].
+Tämän käänteisoperaattori on
+
+I:
+x
+
+I [ f ( t )] =
+
+( a = vakio ) .
+
+f ( t ) dt
+
+a
+
+Se muuntaa f ( t ) :n uudeksi funktioksi F ( x ) − F ( a ) , missä F on f:n
+integraalifunktio. Myös I-operaattori on lineaarinen.
+Myös
+
+on eräs integraalioperaattori:
+
+[ ( )] =
+
+∞ −
+0
+
+( )
+
+=
+
+( ).
+
+L-operaattori kertoo siis funktion f ( t ) "vaimennustekijällä" e − st ja integroi
+tulon t:n suhteen 0:sta ∞:ään, jolloin lopputulos on eräs parametrin s funktio
+F ( s ) . Lyhyesti sanottuna L-operaattori muuntaa funktion f ( t ) erääksi
+uudeksi funktioksi F ( s ) . Siksi puhutaan myös
+.
+Tällä integraalilla ei yleensä ole äärellistä arvoa eli integraali ei suppene s:n
+negatiivisilla arvoilla, mutta suppenee, kun s on positiivinen (tai kun s > a).
+L-operaattorilla on käyttöä mm. säätötekniikassa ja differentiaaliyhtälöiden
+ratkaisemisessa (virtapiirit, lujuusoppi yms.).
+
+Esim. 1
+
+a) Laske funktion f ( t ) = a ( a = vakio) L-muunnos F ( s ) .
+Kun s > 0, niin
+
+[ ]=
+
+∞ e − st
+∞ − st
+a
+a ∞ 1
+=− ⋅
+= − ( 0 − 1) =
+e ⋅ a dt = a ⋅
+st
+0 −s
+0
+s
+s 0 e
+
+.
+
+63
+
+Siis
+
+[ ]=
+
+( s > 0) eli
+( )=
+
+⇒
+
+.
+
+( )=
+
+Voidaan myös sanoa, että L-muunnos tai L-operaattori muuntaa
+vakiofunktion a hyperbeliksi as .
+
+"t-alue"
+
+"s-alue"
+
+b) Funktion f ( t ) = t L-muunnos saadaan vastaavaan tapaan,
+mutta osittaisintegroinnilla (harj.):
+
+[ ]=
+
+1
+2
+
+eli
+
+( )= ⇒ ( )=
+
+1
+2
+
+.
+
+c) Yleinen potenssifunktiota koskeva tulos on
+
+[ ]=
+
+!
++1
+
+= 0, 1, 2, ....) .
+
+( > 0,
+
+*Se voitaisiin todistaa tekemällä integraaliin sijoitus − st = u ja
+käyttämällä kaavaa x n e x dx =... .
+d) Lasketaan nyt funktion f ( t ) = eat L-muunnos:
+
+[
+
+]=
+=
+
+∞ − st at
+∞
+e ⋅ e dt = e( a − s )t dt
+0
+0
+∞ e( a − s )t
+1 ∞ 1
+
+=
+
+a−s
+
+0
+
+Siis
+
+( )=
+
+Täten esim. L[e −2t ] =
+
+⇒
+
+( s − a )t
+
+a−s 0 e
+
+( )=
+
+1
+−
+
+=
+
+oletetaan, että s > a
+1
+( 0 − 1) =
+.
+a−s
+−
+
+(kun s > a).
+
+2! 2
+1
+1
+(kun s > −2 ) ja L[t 2 ] = 3 = 3 .
+=
+s − ( −2 ) s + 2
+s
+s
+
+64
+Koska integroinnissa vakio a voidaan siirtää integraalimerkin eteen ja
+summa voidaan integroida termi termiltä, niin
+,
+ts.
+
+[ ⋅ ( )] = ⋅ [ ( )]
+[ ( ) + ( )] = [ ( )] + [ ( )]
+Esim. 2
+
+a) L[3et + 5t 2 − 2] = 3 ⋅
+
+b)
+
+9.2
+
+2! 2
+1
++ 5⋅ 3 − .
+s
+s −1
+s
+
+eat − e − at
+1
+1
+] = L[
+]= 1(
+−
+)
+2 s−a s+a
+2
+s + a − (s − a)
+=
+( s > a ).
+= 2
+2( s2 − a 2 )
+− 2
+
+[sinh
+
+Käänteismuunnos
+
+Laplace-operaattori L muuntaa funktion f ( t ) uudeksi (s-avaruuden) funk−1
+
+tioksi F ( s ) . Operaattorin L
+takaisin f ( t ) :ksi, ts.
+
+muuntaa F ( s ) :n
+
+−1
+
+[ ( )] = ( ) .
+
+Koska L-operaattori on lineaarinen, samoin on L−1 .
+Esim. 3
+
+a ) L−1
+
+1
+= 1 ( s > 0),
+s
+
+b) L−1
+
+2 + 3s
+
+c ) L−1
+
+2
+s( s + 2 )
+
+= L−1
+
+1
+1
+−
+= 1 − e −2t .
+s s+2
+
+s
+
+2
+
+L−1
+
+1
+s
+
+2
+
+= t,
+
+L−1
+
+1
+= e3t
+s−3
+
+( s > 3).
+
+1
+1
+= L−1 2 ⋅ 2 + 3 ⋅ = 2t + 3.
+s
+s
+
+2 ≡ A + B jne., kertaa!
+s( s + 2) s s + 2
+
+*Osamurtokehitelmä löytyy myös seuraavasti:
+
+2
+( s + 2) − s ( s + 2)
+s
+1
+1
+.
+=
+−
+= −
+=
+s( s + 2 )
+s( s + 2 )
+s( s + 2) s( s + 2) s s + 2
+
+65
+Joissakin tehtävissä voit tarvita tietoa, että ns.
+δ ( t ) L-muunnos on = 1, ts.
+
+Huom.
+
+[δ ( )] = 1 ∴
+
+−1
+
+[1] = δ ( ) .
+
+Tätä funktiota käsitellään tarkemmin myöhemmin.
+9.3
+
+Derivaatan ja integraalin
+
+Lause 1
+
+muunnos
+
+Jos f ( t ) :n L-muunnos on F ( s ) , niin
+
+[ ′ ( )] = ⋅ ( ) − ( 0+ )
+[ ′′( )] =
+
+2
+
+⋅ ( ) − ⋅ ( 0+ ) − ′ ( 0+ )
+
+.
+
+missä esim. f ( 0+ ) = lim f ( t ) (vrt. seuraavat kuvat).
+t → 0+
+
+Kummassakin kuvassa f ( 0 − ) = 0, f ( 0 + ) = a . Jos funktiolla f ( t ) ei ole
+hyppäystä kohdassa t = 0 , vaan f ( t ) on jatkuva kohdassa t = 0 , niin
+kumpikin näistä toispuoleisista raja-arvoista on = f ( 0 ) .
+
+*Tod. 1) L[ f ′( t )] =
+=
+
+u = e − st
+u′ = − se − st
+
+∞ − st
+e f ′( t ) dt
+0
+
+v ′ = f ′( t )
+v = f (t )
+
+∞ − st
+∞
+e f ( t ) + s e − st f ( t ) dt
+0
+0
+
+= 0 − f ( 0+ ) + sL[ f ( t )] = sF ( s) − f ( 0+ ).
+2) Sovelletaan kohtaa 1) funktioon f ′( t ) . Sen mukaan tämän
+funktion derivaatan eli f ′′( t ) :n L-muunnos on
+
+L[ f ′′( t )] = s ⋅ L[ f ′( t )] − f ′( 0+ )
+= s ⋅ s ⋅ F ( s ) − f ( 0 + ) − f ′( 0 + )
+= s2 ⋅ F ( s ) − s ⋅ f ( 0 + ) − f ′( 0+ ).
+Esim. 4
+
+Oletetaan tunnetuksi funktion sin at L-muunnos
+funktion cos at L-muunnos.
+a cos at , niin Lauseen 1 mukaan
+
+a
+
+. Laske
+s2 + a 2
+Koska sin at :n derivaatta on
+
+66
+
+a
+as
+L[a cos at ] = s ⋅ 2
+− sin( 0+ ) = 2
+2
+s +a
+s + a2
+a ⋅ L[cos at ] =
+
+as
+
+:a
+
+s2 + a 2
+
+lineaarisuus
+
+∴ L[cos at ] =
+
+s
+s2 + a 2
+
+.
+
+Seuraavassa taulukossa on eräitä tavallisimpia L-muunnoksia, myös
+. Laajempi taulukko löytyy kaavastosta.
+
+( )
+
+( )
+
+a
+, s>0
+s
+n!
+, s > 0, n = 1, 2, ...
+s n +1
+
+a
+
+tn
+
+1
+,
+s−a
+a
+
+eat
+
+sin at
+
+s2 + a 2
+a
+
+sinh at
+
+s2 − a 2
+
+s
+
+cosh at
+
+s2 − a 2
+sF ( s ) − f ( 0+ )
+
+f ′( t )
+f ′′( t )
+0
+
+s 2 F ( s ) − sf ( 0+ ) − f ′ ( 0+ )
+F ( s)
+s
+1
+
+f ( t ) dt
+
+δ (t )
+f (t − a )
+
+t sin at
+t cos at
+t n eat
+
+s>a
+
+s2 + a 2
+s
+
+cosat
+
+t
+
+[ ( )]
+
+(viive a)
+
+e − as F ( s )
+2as
+( s + a 2 )2
+2
+
+s2 − a 2
+( s 2 + a 2 )2
+
+n!
+( s − a ) n +1
+
+:
+Kun derivaatan
+L-muunnosta
+laskettaessa F ( s )
+kerrotaan s:llä ja
+tuloksesta
+vähennetään f ( 0+ ) ,
+joka on usein = 0,
+niin integraalin
+L-muunnosta laskettaessa taas F ( s )
+jaetaan s:llä (kuten
+voidaan todistaa).
+
+67
+9.4
+
+muunnoksen käyttäminen diff.yhtälöiden ratkaisemiseen
+
+L-muunnos sopii hyvin lineaaristen diff.yhtälöiden ja diff.yhtälöryhmien
+ratkaisemiseen. Perusajatus on, että ottamalla diff.yhtälön kummastakin
+puolesta L-muunnos, funktion y ( t ) diff.yhtälö muuttuu funktion Y ( s )
+tavalliseksi lineaariseksi yhtälöksi. Huomaa seuraavassa myös alkuehtojen
+käsittely ja osamurtoihin jako.
+Esim. 5
+
+Ratkaise diff.yhtälö y ′ + 3 y = 0 , alkuehtona y( 0 ) = 2 .
+Otetaan DY:n kummastakin puolesta L-muunnos, käytetään
+muunnoksen lineaarisuutta, derivaatan L-muunnoksen lauseketta
+ja tietoa, että L[0] = 0s = 0 :
+
+L − muunnos
+
+y′ + 3y = 0
+sY ( s ) − y ( 0+ ) + 3Y ( s) = 0
+=2
+
+( s + 3)Y ( s) = 2
+Y ( s) =
+
+2
+s+3
+
+y ( t ) = L−1
+Esim. 6
+
+L−1
+1
+2
+= 2 ⋅ L−1
+= 2 ⋅ e −3t .
+s+3
+s+3
+
+Ratkaise seuraava DY, alkuehtoina y ( 0 ) = 2, y ′( 0 ) = −2 .
+
+y ′′ + 2 y ′ + y = 1
+
+L − muunnos
+
+s 2 ⋅ Y ( s) − s ⋅ y ( 0+ ) − y ′ ( 0+ ) + 2 ⋅ ( s ⋅ Y ( s ) − y ( 0+ )) + Y ( s ) =
+=2
+
+=−2
+
+=2
+
+1
+s
+
+2
+
+1 2s + 2 s + 1
+( s2 + 2s + 1)Y ( s ) = 2s + 2 + =
+s
+s
+Y ( s) =
+
+2 s 2 + 2s + 1
+
+=
+
+2
+
+s( s + 2s + 1)
+
+2 s 2 + 2s + 1
+s( s + 1)
+
+1
+1
+1
+Y ( s) = +
+−
+s s + 1 ( s + 1)2
+
+2
+
+osamurtoihin jako 1)
+
+L−1, L[te − t ] =
+
+1!
+( s + 1)2
+
+y ( t ) = 1 + e − t − te − t .
+1) Osamurtokehitelmä on seuraavaa muotoa, koska nimittäjässä on 2-kertainen
+lineaarinen tekijä:
+
+2s2 + 2s + 1
+s( s + 1)2
+
+≡
+
+A
+B
+C
++
++
+.
+s s + 1 ( s + 1)2
+
+68
+*Esim. 7 Ratkaise seuraava DY, alkuehtoina y ( 0 ) = 1, y (π / 2 ) = −1 :
+
+y ′′ + 9 y = cos 2t
+s 2Y ( s ) − s y ( 0+ ) − y ′( 0+ ) + 9Y ( s ) =
+=1
+
+a
+
+s
+2
+
+s +4
+
+L − muunnos
+merk. y ′( 0 ) = a
+
+s
+( s2 + 9)Y ( s ) = s + a + 2
+s +4
+s
+a
+s
++ 2
++ 2
+Y ( s) = 2
+s + 9 s + 9 ( s + 4)( s 2 + 9 )
+Jaetaan viimeinen termi osamurtoihin. Kehitelmä on muotoa
+
+s
+( s2 + 4)( s 2 + 9)
+
+≡
+
+As + B
+s2 + 4
+
++
+
+Cs + D
+s2 + 9
+
+ja sen kertoimiksi saadaan A = 15 , C = − 15 , B = D = 0 . Siten
+
+Y ( s) =
+
+s
+s2 + 9
+
++
+
+a
+s2 + 9
+
++
+
+s
+5( s2 + 4)
+
+−
+
+s
+5( s 2 + 9)
+
+L−1
+
+y( t ) = cos 3t + a ⋅ 13 ⋅ sin 3t + 15 cos 2t − 15 cos 3t .
+Sijoitetaan tähän alkuehto y(π / 2 ) = −1 , jolloin saadaan a:lle
+arvo a = 12 / 5 . Lopputulos on
+
+y ( t ) = 45 sin 3t + 45 cos 3t + 15 cos 2t .
+9.5
+
+Virtapiirin vastinpiiri
+
+muunnoksessa
+
+Kun oheinen RCL-piiri suljetaan hetkellä
+t = 0 , kondensaattori alkaa varautua ja pienellä aikavälillä t ... t + dt se saa varauksen
+dq = i( t ) ⋅ dt . Hetkeen t mennessä varaus on
+kasvanut arvoon
+
+q( t ) =
+
+t
+0
+
+i( t ) dt (osavarausten "summa").
+
+Virtapiirin jännitehäviöt ovat
+
+uR = R ⋅ i( t ), uL = L ⋅
+
+t
+di
+, uC = C1 q( t ) = C1 i( t ) dt .
+0
+dt
+
+69
+Virranvoimakkuudelle i( t ) saadaan jännitehäviöiden summasta diff.-int.
+yhtälö (Kirchhoff)
+(1)
+
+L
+
+t
+di
++ Ri( t ) + C1 i( t ) dt = U .
+0
+dt
+
+Tästä yhtälöstä saadaan L-muunnetuksi yhtälöksi (koska i( 0 ) = 0)
+
+sL ⋅ I ( s ) + R ⋅ I ( s ) + C1 ⋅
+
+I ( s) U
+=
+s
+s
+
+1 ⋅ I ( s) =
+sL ⋅ I ( s ) + R ⋅ I ( s ) + Cs
+
+(1')
+
+eli
+
+U
+s
+
+Voidaan ajatella, että alkuperäinen t-alueen virtapiiri, jossa on jännite U ja
+keskenään erityyppiset R-, L- ja C-komponentit, on korvautunut s-alueessa
+, jossa jännitteen U tilalla on Us , virran i( t ) tilalla on I ( s ) ja
+piirissä on kolme ohmisen vastuksen tavoin käyttäytyvää komponenttia R, sL
+ja 1 .
+Cs
+
+Virtapiirien tilalle voidaan siis ajatella vastinpiirit, jolloin ei ole tarpeen
+kirjoittaa ollenkaan virtapiirien diff.yhtälöitä tai diff.yhtälöryhmiä, vaan
+niiden sijaan voidaan kirjoittaa suoraan vastinpiireistä saatavat lineaariset
+yhtälöt tai yhtälöryhmät. Korvautumissäännöt ovat edellisen mukaan
+R
+
+L
+
+C
+
+u(t)
+
+i(t)
+
+R
+
+sL
+
+1
+sC
+
+L[u(t)]
+
+I(s)
+
+Tasavirtapiirissä u( t ) = U ja L[u( t )] = L[U ] = Us . Vaihtovirtapiirissä
+taas u( t ) = uɵ sin ωt ja siten L[u( t )] =
+
+uɵ ω
+.
+s2 + ω 2
+
+70
+*Virtapiiritehtävissä ei aina ole tarpeen laskea virran i( t ) lauseketta, vaan
+käytännössä riittää, jos pystytään laskemaan, mitä arvoa i( t ) lähenee, kun
+t → ∞ . Tämä virran loppuarvo saadaan usein suoraan I ( s ) :n lausekkeesta
+seuraavalla
+:
+
+lim ( ) = lim ⋅ ( ) .
+→∞
+
+9.6
+
+→0
+
+Viive, yksikköaskel ja yksikköimpulssi
+
+( ) = ( − ) , niin sen arvon, jonka
+Jos
+funktio f ( t ) saa hetkellä t, funktio g ( t ) saa
+vasta hetkellä t + a , sillä
+g( t + a ) = f ( t + a − a ) = f ( t ) .
+Tämä tulos voidaan esittää seuraavassa muodossa: g-funktiossa eli f ( t − a ) -funktiossa on a:n suuruinen
+f ( t ) verrattuna.
+Esim. 8
+
+Funktiossa
+
+cos( t − π2 )
+
+funktioon
+
+on
+
+π :n suuruinen viive funkti2
+
+oon cos t verrattuna. Mutta
+trigonometrian mukaan
+
+cos( t − π2 ) = sin t ,
+joten
+
+sin t -funktiossa on
+
+π :n suuruinen viive cos t 2
+
+funktioon verrattuna. Geometrisesti tämä merkitsee, että sinifunktion kuvaaja on π2 :n verran kosinifunktion kuvaajasta
+oikealle.
+Määritelmä.
+
+!
+
+( )=
+
+funktio (unit step function)
+
+1, kun > 0
+0, kun < 0
+
+Täten esim. u( 0+ ) = 1 . Arvo u(0) voi
+vaihdella sovelluksesta riipuen.
+
+71
+
+Yksikköaskeleen avulla voidaan esittää muitakin "askelfunktioita". Esimerkiksi funktio,
+jossa on h:n korkuinen askel kohdassa a, on
+
+f ( t ) = h ⋅ u( t − a ) ,
+ts. tässä funktiossa on a:n suuruinen viive
+funktioon h ⋅ u( t ) verrattuna.
+Kun edellisen kuvan mukaisesta askelfunktiosta f ( t ) = h ⋅ u( t − a ) vähennetään kohdasta b alkava h:n suuruinen askel, saadaan
+viereisen kuvan esittämä funktio.
+Tällaista funktiota voidaan käyttää monissa
+sovelluksissa, esim. seuraavissa:
+•
+
+systeemiin syötetään vakiovirtaa tai jännitettä hetkestä a hetkeen b
+(jännite- tai virtapulssi)
+
+•
+
+systeemissä vaikuttaa vakiovoima aikavälillä a...b,
+
+•
+
+palkin osalla a...b kuormituksella on vakioarvo (tällöin t:n tilalla on x).
+
+Esim. 9
+
+Seuraavassa on neljän muun funktion esitys u( t ) :n avulla.
+
+f(t) = -u(t)
+
+f(t) = u(-t + 1)
+
+f(t) = u(-t)
+
+f(t) = 2u(-t + 1) - u(t - 1) + 2u(t - 3)
+
+72
+Koska u( t ) = vakio 1, kun t > 0, niin u( t ) :n L-muunnos on 1s . Siis
+
+[ ( )] =
+
+1
+
+.
+
+Yleisemmin
+
+[ ( − )] =
+
+*Tod. L[u( t − a )] =
+
+∞ − st
+e u( t − a ) dt
+0
+
+−
+
+1
+⋅ .
+
+u( t − a ) =
+
+1, kun t > a
+0, kun t < a
+
+tehdään sij. t − a = τ ∴ t = a + τ
+
+=
+
+∞ − st
+e ⋅1 dt
+a
+
+=
+
+∞ − s( a +τ )
+∞
+e
+dτ = e − as ⋅ e − sτ dτ
+0
+0
+
+∴ dt = dτ , t: a... ∞ ∴τ : 0... ∞
+
+1
+= e − as ⋅ L[1] = e − as ⋅ .
+s
+*Samalla periaatteella voidaan
+todistaa, että jos f ( t ) on
+funktio, jonka arvot ovat = 0,
+kun t < 0, niin
+
+f(t)
+
+f(t - a)
+
+a
+
+(1)
+
+[ ( − )] =
+
+−
+
+⋅ ( ).
+
+Jos siis esim. jokin signaali ei ala hetkellä t = 0, vaan siinä on viive a, tämä
+viive aiheuttaa s-alueella lisätekijän e − as . Vastakkaissuuntainen, samantapainen tulos on L[eat ⋅ f ( t )] = F ( s − a ) .
+*Huomaa myös, että jos jokin funktio kerrotaan u( t ) :llä, niin t:n negatiivisia
+arvoja vastaava osa funktiosta nollautuu, koska u( t ) = 0, kun t < 0.
+f(t)
+
+u(t)f(t)
+
+[u(t-a)-u(t-b)]f(t)
+
+a
+
+b
+
+73
+*Vastaavasti funktiolla u(t - a) - u(t - b) kertominen nollaa välin a...b
+ulkopuoliset funktion arvot (vrt. edellinen kuva). Sovellus: esim. signaalista
+f(t) otettu näyte.
+
+Viereisen kuvan mukaisen funktion esitys yksikköaskeleen u(t) avulla on
+
+f ( t ) = 1h u( t ) − 1h u( t − h) =
+
+u( t ) − u( t − h)
+.
+h
+
+Tämän funktion kuvaajan ja t-akselin välisen alueen
+pinta-ala on
+
+1 ⋅ h = 1,
+h
+
+∞
+
+ts.
+
+1/h
+
+−∞
+
+h
+
+f ( t ) dt = 1 . Kun
+
+annetaan h:n lähestyä 0:aa sillä tavoin, että pinta-ala (eli edellinen integraali)
+on koko ajan =1, saadaan
+eli "
+!
+
+u( t ) − u( t − h)
+.
+h
+h→0
+
+δ ( t ) = lim
+
+Pinta-alalle asetettu ehto merkitsee, että
+(2)
+
+∞
+−∞
+
+δ ( t ) dt = 1 .
+
+Lisäksi δ ( t ) = 0, kun t ≠ 0 ( ja δ ( t ) = ∞, kun t = 0 ) .
+Vaikka δ ( t ) ei täytä tavallisia funktioille asetettuja vaatimuksia, sillä on
+käyttöä mm. hetkellisen (kestoajaltaan "äärettömän lyhyen") mekaanisen tai
+sähköisen pulssin tai pistekuorman käsittelyssä. Todellisilla
+eli
+hetkellisillä pulsseilla on aina jokin lyhyt kestoaika ja δ ( t ) on siten vain
+likiarvo (approksimaatio) todelliselle tilanteelle.
+*Jos jokin funktio f ( t ) kerrotaan δ ( t ) :llä, merkitsee se, että f ( t ) :n muut
+arvot paitsi f(0) nollataan ja vastaava pinta-ala tulee f(0)-kertaiseksi eli
+(3)
+
+∞
+−∞
+
+δ ( t ) f ( t ) dt = f ( 0) .
+
+*Vastaavasti viiveellisellä funktiolla δ ( t − a ) kertominen antaa tuloksen
+(4)
+
+∞
+−∞
+
+δ ( t − a ) f ( t ) dt = f ( a ) .
+
+Diracin δ-funktiota käytetään mm. seuraavasti:
+
+74
+•
+
+Virtapiirissä δ ( t )U merkitsee hetkellä t = 0 piiriin syötettyä U:n
+suuruista jänniteimpulssia.
+
+•
+
+Funktio δ ( t − a ) ⋅ f ( t ) antaa signaalista f ( t ) hetkellä a otetun näytteen.
+
+•
+
+Palkin taivutusmomenttia tai taipumaviivaa määritettäessä
+δ ( x − a ) F1 merkitsee F1: n suuruista pistekuormaa kohdassa x = a.
+
+*Esim. 10 Viereisen ulokepalkin kuormituskorkeuden q(x) lauseke
+voidaan esittää yksikköaskeleen
+u(x) ja δ ( x ) -funktion avulla
+seuraavasti:
+
+tulo
+
+F
+
+q
+
+x
+1
+y
+
+2
+
+3
+
+4
+
+Mt
+
+q( x ) = u( x − 1) ⋅ q − u( x − 2 ) ⋅ q + δ ( x − 3) ⋅ F
+Tästä saadaan taivutusmomentille M t ( x ) ja taipumaviivalle y(x)
+diff.yhtälöt, koska
+
+M t′′= − q( x ) ja y ′′ = −
+Funktion δ ( t ) Laplace-muunnos on
+
+[δ ( − )] =
+
+−
+
+Mt
+.
+EI
+
+[δ ( )] = 1 ja yleisemmin (1):n nojalla
+
+.
+
+1 − hs 1
+−e ⋅
+u( t ) − u( t − h )
+s
+s ( lineaarisuus )
+= lim
+*Tod . L[δ ( t )] = lim L
+h
+h
+h→ 0
+h→ 0
+1
+1 − e − hs 1
+s ⋅ e − hs
+( Hospital )
+= ⋅ lim
+= ⋅ lim
+s h→ 0 h
+s h→ 0 1
+= 1.
+
+HARJOITUKSIA
+A
+9.1
+
+Laske esimerkissä 1 mainittujen tulosten avulla
+a) L[e −3t ] ,
+
+b) L[0],
+
+c) F(s), kun f ( t ) = e5t , d) L[t 3 ]
+
+9.2
+
+Laske L-muunnoksen määritelmän nojalla L[5 ⋅ e −2t ] .
+
+9.3
+
+Määritä L-muunnoksen lineaarisuutta ja kaavastoa (tai kohdan 9.3
+taulukkoa) käyttäen seuraavien funktioiden L-muunnokset:
+
+75
+b) y ( t ) = 2e3t − sin 2t + 1 .
+
+a) f ( t ) = 1 − 2t + cos 3t ,
+9.4
+
+Määritä a) L−1
+
+1− s
+2s2
+
+d) Funktion Y(s) =
+9.5
+
+s+3 s+2
+1
+, c) L−1
+−
+s − 2 s −1
+( s + 1)( s − 1)
+
+3s − 2
+käänteismuunnos y(t).
+s( s + 2 )
+
+Laske L[ f ′( t )] ja L[ f ′′( t )] , kun f ( 0) = 2, f ′( 0) = −1 ja f(t):n Lmuunnos on F ( s ) =
+
+9.6
+
+, b) L−1
+
+2 s 2 − 5s + 6
+s2 ( s − 2 )
+
+.
+
+Ratkaise seuraavat DY:t L-muunnosten avulla ja tarkista saamasi
+tulokset (derivoimalla):
+a) y ′ + y = e − t , y ( 0 ) = 1 ,
+
+b) y ′ + 3 y = 5, y ( 0+ ) = 2 .
+
+9.7
+
+Ratkaise DY y ′′ + y = 0 , kun alkuehdot ovat a) y ( 0 ) = 1, y ′( 0 ) = 0 ,
+b) y ( 0 ) = 0, y ′( 0 ) = 1 . Tarkista saamasi tulokset.
+
+9.8
+
+Ratkaise
+
+9.9
+
+"
+
+!
+
+y( t ) + 2
+
+t
+0
+
+y( t ) dt = e − t .
+
+Piirrä funktion f ( t ) = 3u( t − 1) − 2u( t − 2) − 4u( t − 4 ) kuvaaja.
+
+B
+9.10
+
+Todista
+
+Laplace-muunnoksen
+
+määritelmästä lähtien osittais1
+integroinnin avulla, että L[t ] = 2 ( s > 0 ) . Piirrä vastaavien
+s
+funktioiden f(t) ja F(s) kuvaajat, jotta näet havainnollisesti, miten
+funktio muuttuu siirryttäessä t-alueesta s-alueeseen.
+
+9.11
+
+Määritä kaavastosta löytyvien kaavojen avulla L−1
+
+4s − 1
+2
+
+2
+
+( s + 9)
+
+.
+
+9.12
+
+Todista, että L[ y ′′′( t )] = s3Y ( s) − s2 y( 0+ ) − sy ′( 0+ ) − y ′′( 0+ ) .
+
+9.13
+
+Ratkaise L-muunnoksilla y ′′ + y = t , y ( 0) = 1, y ′( 0 ) = −2 ja tarkista
+lopputulos derivoimalla.
+
+9.14
+
+Ratkaise L-muunnoksilla diff.int.-yhtälö
+
+76
+t
+
+y ′ + 3 y + 2 y (τ ) dτ = 2t , y( 0) = 0.
+0
+
+9.15
+
+Laske oheiselle piirille virran i(t) LU = 10 (V)
+muunnettu lauseke I(s) ja päättele
+siitä virran loppuarvo i∞ . KondenR=2( )
+saattori on alussa varaamaton.
+t=0
+
+9.16
+
+Määritä RL-tasavirtapiirille funktio
+i(t). Päättele tästä, mitä arvoa i(t)
+lähenee, kun t → ∞ . Totea, että
+saman tuloksen saat, kun lasket
+raja-arvon lim sI ( s ) .
+
+C = 1/5 (F)
+L = 1 (H)
+
+s→0
+
+9.17
+
+Esitä u(t)- ja δ ( t ) -funktioiden avulla
+viereisen kuvan mukainen funktio.
+
+C
+9.18
+
+Ratkaise
+diff.yhtälöryhmä
+x ′( t ) − y ( t ) = t
+, x ( 0 ) = 2, y ( 0 ) = 1 .
+x ( t ) − y ′( t ) = 1
+
+0, kun x < −1
+3, kun − 1 ≤ x < 2
+9.19 Esitä askel- ja δ-funktion avulla funktio f ( t ) = 5, kun x = 2
+.
+3, kun 2 < x < 4
+
+−2, kun x ≥ 4
+9.20 RL-piiriin syötetään impulssi U hetkellä t = 0, jolloin DY on
+
+Ri( t ) + Li ′( t ) = δ ( t )U .
+Ratkaise tämä DY.
+9.21
+
+Muodosta esimerkin 10 mukaiselle ulokepalkille diff.yhtälö
+M t′′( x ) = ... ja ota siitä L-muunnos, ts. laske M t ( s ) :n lauseke.
+Ulokepalkilla on y ( 0 ) = y ′( 0) = 0 .
+
+77
+
+10
+
+Sarjoista
+
+10.1 Lukujono ja sarja
+
+u1, u2 ,..., un ,...
+un on
+
+. Esimerkkejä:
+
+1, 2, ..., n, ....
+1, 3, 5, ..., 2 n − 1, ... ( un = 2 n − 1 → ∞, kun n → ∞ )
+1 1
+1
+1, , ,..., ,...
+( un → 0, kun n → ∞ )
+2 3
+n
+
+∞
+1+
+
+(1)
+
+2 + ...+
+
++ .... = ∑
+
+.
+
+=1
+
+un on :s
+
+. Sarjan
+
+on
+
+S n = u1 + u2 +...+ un .
+Sarjan käyttäytymisestä saadaan kuva, kun tutkitaan osasummien muodostamaa jonoa (eli lasketaan sarjasta yhä pidempi ja pidempi pätkä):
+
+S1 = u1, S 2 = u1 + u2 , S3 = u1 + u2 + u3 , S 4 = u1 + u2 + u3 + u4 , ...
+Jos jonolla S1, S 2 ,…, S n ,… on äärellinen raja-arvo S, sanotaan, että sarja (1)
+(konvergoi) ja S on sarjan
+. Muulloin sarja
+(divergoi).
+Esim. 1
+Sn =
+
+Sarja
+
+1
+1
+1
++
++
++... suppenee ja sen summa on 1, sillä
+1⋅ 2 2 ⋅ 3 3 ⋅ 4
+
+1
+1
+1
+1
++
++
++...+
+1⋅ 2 2 ⋅ 3 3 ⋅ 4
+n( n + 1)
+
+1
+1
+1
+(osamurtokehit.)
+= −
+k(k +1) k k + 1
+
+1 1
+1 1
+1 1
+1
+1
+= ( − ) + ( − ) + ( − )+…+( −
+)
+1 2
+2 3
+3 4
+n n +1
+1 1
+(termit kumoutuvat parittain)
+= −
+1 n
+→ 1, kun n → ∞.
+
+78
+Esim. 2
+
+Seuraavat sarjat hajaantuvat:
+
+1 + 2 + 3+...
+
+( S n → ∞, kun n → ∞ ) .
+
+1 1 1
+1 + + + +... Todistuksen ajatus: Toinen termi = 1/2, kahden
+2 3 4
+
+seuraavan summa on > 1/2, neljän sitä seuraavan summa on >
+1/2, kahdeksan seuraavan > 1/2 jne. Täten summa on >
+1+1/2+1/2 + ....
+1 − 1 + 1 − 1 + 1 − 1 + −...Tämä sarja hajaantuu siksi, että jokainen
+parillinen osasumma S 2 k = 0 ja jokainen pariton osasumma
+S 2 k +1 = 1 , joten S n ei lähene n:n kasvaessa mitään äärellistä
+arvoa (vaan on vuorotellen 1 ja 0).
+10.2 Aritmeettinen ja geometrinen sarja
+muutos d (difference) termistä seuraavaan siirryttäessä on aina saman suuruinen, ts. sarja on muotoa
+
++ ( + ) + ( + 2 ) + ( + 3 ) + ...
+
+(2)
+
+Koska toisessa termissä on 1⋅ d , kolmannessa 2 ⋅ d jne., niin yleinen eli n:s
+termi on
+
+= + ( − 1)
+Päättymätön aritmeettinen sarja hajaantuu aina, koska osasummien jono
+→ ∞ tai − ∞ sen mukaan, onko d > 0 vai < 0. Niinpä sarjasta (2) esiintyy
+käytännössä vain n:s osasumma. Sen arvo on
+
+= ⋅
+
++
+2
+
+("n kertaa ensimmäisen ja viimeisen termin keskiarvo")
+
+*Tod. Lasketaan S n kahdella tavalla ("etu- ja takaperin"):
+
++
+
+S n = a + ( a + d ) + ( a + 2d ) + ... + un
+S n = un + ( un − d ) + ( un − 2 d ) + .... + a
+
+2S n = ( a + un ) + ( a + un ) + ... + ( a + un ) = n( a + un )
+a + un
+∴ Sn = n ⋅
+2
+Esim. 3
+
+1 + 2 + 3+…+100 = 100 ⋅
+
+1 + 100
+= 50 ⋅101 .
+2
+
+79
+jokainen termi saadaan edeltävästä termistä samalla
+luvulla q kertomalla, ts. sarja on muotoa
+
++
+
+(3)
+
+2
+
++
+
+−1
+
++…+
+
+∞
+
+−1
+
++… = ∑
+
+( a ≠ 0 ).
+
+=1
+
+1) Jos geometrisen sarjan "suhdeluku" (quotient) q = 1 , sarja on vakioterminen a + a + a + ... ja se hajaantuu (+ tai – ääretöntä kohti sen mukaan,
+onko a > 0 vai < 0).
+Jos taas q ≠ 1, niin n:s osasumma S n = a + aq +…+ aq n −1 on
+
+S n = a (1 + q +…+ q
+
+n −1
+
+1− qn
+(1 − q )(1 + q +…+ q n −1 )
+= a⋅
+.
+) = a⋅
+1− q
+(1 − q )
+
+Tämän avulla voidaan tutkia geometrisen sarjan suppenemista jäljellä
+olevissa tapauksissa:
+1
+2) Jos | q| < 1 , niin S n → a ⋅
+, kun n → ∞ , ts. sarja suppenee ja sen
+1− q
+a
+summa on
+.
+1− q
+n
+
+3) Jos | q| > 1 , niin sarja hajaantuu, koska q → ∞, kun n → ∞ .
+4) Jos q = −1, sarja on a − a + a − a + −… ja siis hajaantuu ( S n saa vuorotellen arvon a ja 0 eli ei lähene mitään arvoa, kun n → ∞ ).
+Tulos:
+
+Geometrisen sarjan (3) osasumma
+
+= ⋅
+
+1−
+1−
+
+.
+
+Sarja suppenee vain, kun | | < 1 . Tällöin sarjan summa on
+
+=
+Esim. 4
+
+1−
+
+.
+
+1 1 1
+1
+1 + + + +...+ n −1 +...
+2 4 8
+2
+on geometrinen, suhdelukuna
+q = 12 . Sarja siis suppenee ja sen 0
+Sarja
+
+summa on S =
+
+1
+= 2.
+1− ½
+
+1
+
+1/2
+1
+
+1/4 ...
+2
+
+80
+
+. Jos nimittäin esim. q = 1,23 , niin jokainen termi on
+edeltäjäänsä nähden 1,23-kertainen eli sitä 23 % suurempi. Jos taas
+q = 0,92 , niin jokainen termi on edellistä termiään 8 % pienempi.
+Tämä ominaisuus tekee
+q, aq, aq 2 ,… käyttökelpoiseksi,
+kun valitaan välikokoja pyörötangoille, putkille, hammaspyörille, pulteille
+yms.
+Esim. 5
+
+Kahden putken halkaisijat ovat 20 mm ja 200 mm. Näiden välille
+tehdään neljä välikokoa. Mitoituksessa käytetään a) aritmeettista,
+b) geometrista porrastusta. Laske halkaisijat.
+a) Halkaisijat ovat muotoa
+
+20, 20 + d , 20 + 2 d , 20 + 3d , 20 + 4 d , 20 + 5d = 200
+Täten 20 + 5d = 200 ∴ d = 36 ja halkaisijoiden mm-koot ovat
+
+20, 56, 92, 128, 164, 200 .
+Ensimmäisestä koosta toiseen siirryttäessä halkaisija kasvaa
+lähes 3-kertaiseksi, tarkemmin sanoen n. 180 %. Kahden viimeisen koon välillä kasvu on vain n. 22 %.
+b) Halkaisijat ovat muotoa
+
+20, 20q, , 20q 2 , 20q3 , 20q 4 , 20q 5 = 200 ∴ q = 101/ 5 ≈ 1,5848
+Tästä saadaan halkaisijoille suunnilleen seuraavat koot mm:issä:
+
+20 31,7 50,2 79,6 126,2 200 .
+Koosta seuraavaan siirryttäessä putken halkaisija kasvaa n.
+1,585-kertaiseksi eli 58,5 %.
+10.3 Potenssisarja
+Muotoa
+0+ 1 +
+
+2
+
+2
+
+∞
+
++… = ∑
+=0
+
+( ak ∈ )
+
+81
+olevaa sarjaa sanotaan
+tai myös
+. Sen suppenemisalue on jokin origokeskinen
+väli −r... r . Jos erityisesti potenssisarjan jokainen kerroin on yhtä suuri,
+kyseessä on geometrinen sarja, suhdelukuna x:
+
+a + ax + ax 2 +…
+Sen suppenemisalue on origokeskinen väli −1 < x < 1 .
+Yleisemmän, ( x − xo ) :n potenssien mukaan etenevän potenssisarjan
+
++ 1( −
+
+) + 2( −
+
+)2 +…
+
+suppenemisalue on jokin xo -keskinen väli. Tällaista sarjaa sanotaan
+. Jos xo = 0 , niin Taylorin sarja on Maclaurinin sarja.
+Esim. 6
+
+on
+geometrinen,
+jonka
+Sarja
+1 + ( x − 1) + ( x − 1)2 +…
+suhdelukuna on q = x −1 . Sarja suppenee niillä x:n arvoilla,
+jotka toteuttavat ehdon −1 < x − 1 < 1 eli ehdon 0 < x < 2 . Näillä
+1
+1
+. Siis
+x:n arvoilla sarjan summa on
+=
+1 − ( x − 1) 2 − x
+
+1
+= 1 + ( x − 1) + ( x − 1)2 +…, kun 0 < x < 2 .
+2−x
+Tällä tavoin funktiolle 2−1 x on saatu ( x −1) :n potenssien mukaan
+etenevä sarjakehitelmä eli Taylorin sarjakehitelmä pisteen x = 1
+ympäristössä. Tätä kehitelmää voidaan käyttää funktion 2−1 x
+sijasta, mutta vain välillä 0 < x < 2 .
+10.4 Potenssisarjan muodostamistapoja
+Useat sarjojen sovellukset perustuvat siihen, että annettu funktio esitetään
+potenssisarjana eli
+. Seuraavassa on tarkoituksena esitellä tärkeimpiä sarjakehitelmiä ja niiden muodostamistapoja.
+* !
+Esim. 7
+
+"
+
+3
+Maclaurinin sarjaksi ja määritä kehitelmän
+2− x
+voimassaoloalue.
+Kehitä funktio
+
+82
+a
+
+3
+3/ 2
+=
+2 − x 1− x / 2
+q
+
+a
+on supp. geom. sarjan
+1− q
+a + ax + ax 2 +… summa
+
+3 3x 3 x 2
+x
++
++ ( ) +…, kun < 1
+2 22 2 2
+2
+3 3
+3
+3
+= + 2 x + 3 x 2 +…+ n x n −1 +…, kun − 2 < x < 2
+2 2
+2
+2
+=
+
+#!
+Pyritään löytämään funktiolle f potenssisarjakehitelmä
+
+f ( x ) = ao + a1x + a2 x 2 +…
+(eli f ( x ) :ää esittävä Maclaurinin sarja). Kertoimien a k määrittämiseksi
+sarja derivoidaan termi termiltä (potenssisarjalla tämä on luvallista, kuten
+voidaan todistaa):
+
+f ′( x ) = a1 + 2a2 x + 3a3 x 2 + 4a4 x 3 + 5a5 x 4 +…
+f ′′( x ) =
+
+2a2 + 2 ⋅ 3a3 x + 3 ⋅ 4a4 x 2 + 4 ⋅ 5a5 x 3 +…
+3!
+
+f ′′′( x ) =
+
+1 ⋅ 2 ⋅ 3a3 + 2 ⋅ 3 ⋅ 4a4 x + 3 ⋅ 4 ⋅ 5a5 x 2 +…
+
+f ( 4) ( x ) =
+
+4 ! a4 + 2 ⋅ 3 ⋅ 4 ⋅ 5a5 x +…
+
+⋮
+Kun näihin sijoitetaan x:lle arvo 0, saadaan
+
+f ( 0 ) = ao , f ′( 0) = a1, f ′′( 0 ) = 2a2 = 2 ! a2 , f ′′′( 0 ) = 3! a3 , f ( 4 ) ( 0 ) = 4 ! a4 , …
+
+f ( k ) ( 0)
+∴ ak =
+, missä k ! = 1 ⋅ 2⋅⋯⋅n ja 0 ! = 1 .
+k!
+Täten
+(4)
+
+" ( ) = " ( 0) + " ′ ( 0 ) +
+
+" ′′ ( 0 )
+2!
+
+Vastaavasti voidaan johtaa f:n
+ympäristössä:
+
+" ( ) = " ( o ) + " ′ ( o )( −
+
+2
+
++
+
+" ′′′ ( 0)
+3!
+
+3
+
++…
+
+sarjakehitelmä pisteen
+
+o)+
+
+" ′′( o )
+( −
+2!
+
+2
+o ) +…
+
+x0
+
+83
+
+Esim. 8
+
+Määritä funktioiden a) f ( x ) = e x , b) f ( x ) = sin x Maclaurinin
+kehitelmät.
+a) Koska f
+mukaan
+
+(k )
+
+( x ) = e x ja f ( k ) ( 0 ) = 1 ( k = 0, 1, 2, … ) , niin (4):n
+2
+
+= 1+
+
++
+
+2!
+
+b) f ( x ) = sin x
+f ′( x ) = cos x
+
+3
+
++
+
+3!
+
++…
+
+f ( 0) = 0
+f ′( 0 ) = 1
+
+f ′′( x ) = − sin x
+f ′′′( 0) = − cos x
+
+f ′′( 0 ) = 0
+f ′′′( 0 ) = −1
+
+f ( 4 ) ( x ) = sin x
+
+f ( 4) ( 0) = 0
+3
+
+∴ sin =
+
+−
+
+Voidaan todistaa, että
+
+3!
+
+jakso
+
+5
+
++
+
+5!
+
+− +…
+
+"
+.
+
+Jos funktion f ( x ) Maclaurinin sarja katkaistaan x n -termin edestä, saadaan
+f:n
+. Sitä käytetään sovelluksissa funktion f
+likiarvona. Sarjan loppupäätä sanotaan
+$
+Rn ( x ) ja sille
+voidaan johtaa mm. lauseke
+f ( n ) (c ) n
+Rn ( x ) =
+x ,
+n!
+missä c on jokin välillä 0 ... x oleva luku. Jäännöstermin avulla voidaan
+arvioida katkaisuvirhettä seuraavan esimerkin osoittamalla tavalla.
+Esim. 9
+
+Kun x = 1, e x :n kehitelmä antaa e:lle esim. seuraavan likiarvon:
+
+e = 1+1+
+
+1 1
+1 1
+1
++
++ +... ≈ 1 + 1 + + ≈ 2,67
+2 ! 3!
+2 ! 3!
+4!
+
+*Katkaisuvirheen itseisarvolle saadaan tässä tapauksessa yläraja
+
+ec 4 e1 3
+Rn (1) = 1 < < < 0,13
+4!
+4! 4!
+
+84
+Jos sarja on
+, ts. joka toinen (nollasta eroava) termi on positiivinen ja joka toinen negatiivinen, niin katkaisuvirheen arviointiin voidaan
+käyttää seuraavaa tulosta:
+%
+&
+
+'
+
+( Poisjätetty osa
+on samanmerkkinen kuin ensimmmäinen poisjätetty termi.
+Esim. 10 sin 1 = 1 −
+
+1 1
+1
+1 1
++
+− + −… ≈ 1 − + = 0,84166...
+3! 5!
+7!
+3! 5!
+
+Tässä | katkaisuvirhe| < 1 / 7! < 0,0002 . Koska ensimmäinen
+poisjätetty termi on negatiivinen, samoin on koko loppuosa.
+Siten oikea arvo on likiarvoa pienempi.
+)!
+Tunnetuista sarjakehitelmistä voidaan saada uusia mm. derivoimalla tai
+integroimalla tai
+x:n paikalle jokin x:n lauseke.
+Sarjakehitelmiä voidaan myös laskea yhteen, vähentää toisistaan ja kertoa
+tai jakaa keskenään samaan tapaan kuin polynomeja kerrotaan tai jaetaan.
+
+e x :n sarjaan jokaisen x:n paikalle −2x :
+
+Esim. 11 a)
+
+e
+
+−2 x
+
+4x 2 8x 3
+( −2 x )2 ( −2 x )3
+= 1 − 2x +
++
++… = 1 − 2 x +
+−
++ −…
+2!
+3!
+2!
+3!
+
+b) Derivoidaan sin x :n sarja. Näin saadaan cos x :n sarja:
+2
+
+cos = 1 −
+*c)
+
+2!
+
+4
+
++
+
+1
+= 1 − x + x 2 − +…
+1+ x
+
+4!
+
+− +…
+( −1 < x < 1)
+
+integroidaan
+
+x 2 x3
++ − +…+ C
+ln(1 + x ) = x −
+2
+3
+Kun tässä x:lle annetaan arvo 0, nähdään, että C = 0 . Saatu
+kehitelmä on voimassa myös, kun x = 1. (Integroitaessa voi
+voimassaoloalueeseen tulla mukaan välin päätepisteet, derivoitaesssa ne taas voivat kadota.). Miten saat tästä ln(1 − x ) :n
+1− x
+:n kehitelmän?
+kehitelmän ja sitten funktion ln
+1+ x
+
+85
+d) Jakamalla sin x :n sarjaa jakokulmassa cos x :n sarjalla saat
+tan x :n sarjan alkupään termejä. Kokeile!
+*! +
+Laskemalla funktion f ( x ) = ( a + x ) n derivaattoja x:n arvolla 0 saadaan tälle
+funktiolle sarjakehitelmä
+(5)
+
+( a + x ) n = a n + na n −1x +
+
+n( n − 1) n − 2 2 n( n − 1)( n − 2) n −3 3
+a
+x +
+a x +…
+2!
+3!
+
+Jos erityisesti a = 1 , saadaan ns. ,
+
+(1 + ) = 1 +
+
++
+
+( − 1)
+2!
+
+2
+
++
+
+( − 1)( − 2 )
+3!
+
+3
+
++… ,
+
+jonka voimassaoloalue on ainakin −1 < x < 1 (joillakin n:n arvoilla voivat
+välin päätepisteet tulla mukaan). Tässä n voi olla mikä reaaliluku tahansa.
+Jos erityisesti n = ½ , saadaan sarja
+
+1+ x = 1+
+
+x 1 x 2 1⋅ 3 x 3
+−
++
+− +…
+2 2 4 2⋅ 4 6
+
+(Laske itse välivaiheet. Mikä on seuraava termi?)
+Jos sarjassa (5) n on luonnollinen luku ja x = b , saadaan seuraava - .
+,
+:
+(6)
+
+( + ,) =
+
++
+
+−1
+
+,+
+
+( − 1)
+2!
+
+−2 2
+
+, +…+
+
+, −1 + , .
+
+Esimerkiksi
+
+( a + b )4 = a 4 + 4a 3b +
+
+4 ⋅ 3 2 2 4 ⋅ 3 ⋅ 2 3 4 ⋅ 3 ⋅ 2 ⋅1 4
+a b +
+ab +
+b
+2!
+3!
+4!
+
+= a 4 + 4a 3b + 6a 2b2 + 4ab3 + b4
+Kertoimet ovat Pascalin kolmion mukaiset. Yhtälön (6) kertoimia sanotaan
+ja niiden yleinen merkintä on
+
+,
+
+n
+k
+
+("n yli k:n")
+
+( n = 0, 1, …, n ). Binomikertoimien lauseke voidaan esittää kahdessa käyttökelpoisessa muodossa:
+
+=
+
+( − 1)( − 2 )⋯( − + 1)
+!
+=
+!
+!( − )!
+
+86
+Itse binomikaava (6) voidaan esittää lyhyesti muodossa
+n
+
+( a + b ) = ∑ nk a n − k b k .
+n
+
+k =0
+
+Jos termit kirjoitetaan lopusta alkuun päin, saadaan esitys
+
+( + ,) = ∑
+
+, − .
+
+=0
+
+10.5 Sarjojen sovelluksia
+Tavallisin sarjojen soveltamistapa on sarjan katkaiseminen ja alkuosan
+käyttäminen funktion tilalla.
+*Esim. 12 Käytetään seuraavan integraalin laskemiseen binomisarjan yhteydessä esitettyä sarjaa
+
+x x 2 x3
++
+− +…
+1+ x = 1+ −
+2 8 16
+1
+0
+
+3
+
+8 + x dx = 8 ⋅
+
+1
+0
+
+x3
+1+
+dx
+8
+
+x3
+sij. em. sarjaan x:n tilalle
+8
+
+1
+1 x3 1 x 6
+= 8 ⋅ (1 + ⋅ − ⋅ + −… ) dx
+0
+2 8 8 64
+
+1 x4 1 x7
+= 8 ⋅ (x + ⋅
+− ⋅
++ −… )
+⋅
+⋅
+2
+8
+4
+8
+64
+7
+0
+1
+
+= 8 ⋅ (1 +
+| virhe| < 8 ⋅
+
+1
+1
+1
+−
++ −… ≈ 8 ⋅ (1 + ) ≈ 2,8726.
+64 56 ⋅ 64
+64
+
+1
+< 0,0008
+56 ⋅ 64
+
+Esim. 13 Kun tavallisimpia sarjoja katkaistaan 1. tai 2. termin jäljestä,
+saadaan seuraavia likiarvokaavoja:
+Jos x on pieni, niin
+2
+
+sin
+1
+1+
+
+≈ , cos ≈ 1 −
+
+2!
+
+, tan ≈ ,
+
+1+
+
+≈ 1+
+
+2
+2
+
+≈ 1−
+
+2
+
+, ln(1 + ) ≈ , tarkemmin sanoen ≈
+
+−
+
+2
+
+87
+*Esim. 14 Johda hihnan pituudelle L likiarvo, kun hihnapyörien välimatka A
+on suuri pyörien säteiden erotukseen / − verrattuna.
+
+L = πR + 2 Rα + 2 A cos α + (πr − 2rα )
+R−r
+A
+2
+( R − r )2
+2( R − r )2
+( R − r )2
+α
+≈ π( R + r) +
++ 2A −
+cos α ≈ 1 −
+≈1−
+A
+A
+2
+2 A2
+= π ( R + r ) + 2( R − r )α + 2 A cos α
+
+∴ L ≈ 2A + π( R + r) +
+
+α ≈ sin α =
+
+( R − r )2
+, jos R − r << A.
+A
+
+Merkki << tarkoittaa: "paljon pienempi kuin". Tätä likiarvokaavaa käytetään A:n laskemiseen, kun L, R ja r tunnetaan (sillä
+esim. kiilahihnoja on tiettyjä pituuksia ja hihnapyöriä tietyn
+kokoisia). Alkuperäisestä L:n yhtälöstä A olisi mahdoton
+ratkaista, koska α on A:n funktio. Huomaa, että johtamisessa
+käytettiin aluksi likiarvokaavaa α ≈ sin α näin päin.
+
+*0
+
+( 1
+
+x 2 x3
++ +…−1 − x
+1+ x +
+e x − (1 + x )
+!
+2
+3!
+= lim
+lim
+2
+x→ 0
+x→ 0
+x
+x2
+x 2 x3
++ +…
+!
+2
+3!
+= lim
+x→ 0
+x2
+1 x
+1 1
+= lim ( + +… ) = = .
+2! 2
+x → 0 2 ! 3!
+
+88
+
+HARJOITUKSIA
+A
+10.1
+
+a) Mikä on n:n ensimmäisen positiivisen kokonaisluvun summa?
+Entä n:n ensimmäisen b) parillisen, c) parittoman, d) kolmella
+jaollisen positiivisen kokonaisluvun summa?
+
+10.2
+
+Aritmeettisen sarjan 1. termi on 10 ja 9. termi 7. Laske d, u16 ja S16 .
+
+10.3
+
+Laske sarjan 3 − 1 + 1 − 1 + 1 − +… summa.
+
+10.4
+
+Geometrisen sarjan 3. termi on 10 ja 7. termi 100. Laske 4., 5. ja 6.
+termi. Käytä laskemisessa samaa ajattelutapaa kuin esimerkissä
+5. b).
+
+10.5
+
+Hammaspyörien hammasmäärät ovat 55 ja 22. Näiden välille
+tehdään kaksi välikokoa (geom. porrastus). Laske välikokojen
+hammasmäärät.
+
+10.6
+
+a) Kehitä x:n potenssisarjaksi (myös n:s termi ja voimassaoloalue)
+2
+3
+funktio a)
+, b)
+.
+2− x
+2+ x
+
+10.7
+
+Muodosta funktion sinh x Maclaurinin sarja a) laskemalla
+derivaattoja, b) eksponenttifunktion avulla.
+
+10.8
+
+Muodosta funktion
+
+3
+
+9
+
+27
+
+1
+Maclaurinin sarja. Neljä ensimmäistä
+1+ x
+
+termiä näkyviin.
+10.9
+
+Laske Gaussin virheintegraali
+
+1 −x2
+0
+
+e
+
+dx kolmella desimaalilla.
+
+2 sin( x / 2 )
+
+dx niin tarkasti, että vielä tuhannesosatkin ovat
+x
+oikein. Montako termiä sarjasta täytyy ottaa mukaan?
+
+10.10 Laske
+
+10.11 Laske
+
+1
+
+1 −x2 /4
+0
+
+e
+
+dx niin tarkasti, että vielä tuhannesosatkin ovat
+
+oikein. Montako termiä sarjasta täytyy ottaa mukaan?
+
+89
+
+B
+10.12 Geometrisen sarjan 2. termi on 2 ja 4. termi 6. Laske S8 (tarkka
+arvo).
+2
+
+3
+
+2
+
+4
+
+10.13 Millä x:n arvoilla sarja a) 2 + x + x + x +… , b) 1 +
+
+x −1 x −1 2
++(
+) +…
+x
+x
+
+suppenee?
+10.14 Kahdelle hihnapyörälle A (∅ 300 mm) ja D (∅ 100 mm) tehdään
+välikoot B ja C (geom. porrastus). A pyörittää toista hihnapyörää E.
+Pyörä A korvataan C:llä. Miten muuttuu E:n pyörimisnopeus (esim.
+prosenteissa ilmaistuna)?
+10.15 Tankojen halkaisijat muodostavat geometrisen jonon, suhdelukuna
+q = 1,75 . Millaisen jonon muodostavat tankojen a) poikkipinta-alat,
+b) taivutusvastukset W = π d 3 / 32 ?
+10.16 Minkä säännön (aritm. tai geom. jonon, geom. sarjan tms.) mukaan
+pääoma kasvaa seuraavissa tapauksissa ja mikä on kasvaneen
+pääoman lauseke kussakin tapauksessa:
+a) Kertatallennus a euroa kasvaa ns. yksinkertaista korkoa, jolloin
+korko maksetaan koko ajan vain alkupääomalle a euroa. Kuinka
+suureksi tallennus on kasvanut t. vuoden loppuun mennessä, kun
+vuotuinen korkoprosentti on p?
+b) Kuten edellinen, mutta tallennus kasvaa korkoa korolle, jolloin
+korko liitetään pääomaan kerran vuodessa, vuoden lopussa.
+c) Kuten b), mutta kertatallennuksen a euroa sijasta tallennetaan joka
+vuoden alussa a euroa. (Eräs laskutapa: kuinka suureksi
+ensimmäinen a euroa kasvaa, entä toinen jne.)
+10.17 3600 euron velka maksetaan takaisin tasalyhenteisenä (lyhennyserät
+ovat yhtä suuret) 3 vuoden aikana. Vuotuinen korko velkapääomalle
+on 10 %.
+a) Paljonko korkoa menee yhteensä kun velkaa lyhennetään vuoden
+välein (1. lyhennys vuoden kuluttua, siis lyhennys on 1200 eur)?
+b) Paljonko korkoa menee yhteensä jos velkaa lyhennetään
+kuukausittain?
+
+90
+*10.18 Tasaerälaina: 20 000 euron laina maksetaan takaisin 4 erässä,
+vuoden välein, vuoden lopussa ja tasaerin, ts. joka maksukerralla
+maksuerä (korko + lyhennys) on yhtä suuri. Kuinka suuri on yksi
+maksuerä a, jos korkoprosentti on 10. (Ohje: 1. lyhennyksen jälkeen
+jäljellä on 110
+, ⋅ 20000 − a = 22000 − a , 2. lyhennyksen jälkeen
+jäljellä on 110
+, ⋅ ( 22000 − a ) − a =... jne. Kun merkitset viimeisen
+lyhennyksen jälkeinen määrä 0:ksi, saat a:n.)
+*10.19 Lainan 40 000 eur korko on 5 % ja korkokausi vuosi. a) Kuinka
+suureksi laina kasvaisi 5 vuodessa, jos sitä ei lyhennettäisi? b) Laina
+lyhennetään kolmessa vuodessa 30 000 euroksi tasaerin, ts. joka
+kerta maksuerät (korko + kuoletus) ovat yhtä suuret. Kuinka suuri on
+yksi maksuerä a ? (Ohje: ks. edellinen tehtävä.)
+*10.20 10 000 euron laina maksetaan takaisin neljässä erässä a eur, a eur,
+2a eur ja 2a eur vuoden väliajoin (kukin erä sisältää lyhennyksen ja
+koron). Laske a, kun korko % on 5. (vrt. edelliset tehtävät).
+*10.21 Tallennetaan 3 vuotena neljännesvuosittain 500 eur (1. erä vuoden
+alussa). Kuinka suuri tallennus on 3. vuoden lopussa, jos korko 3%
+liitetään pääomaan kerran vuodessa, jokaisen vuoden lopussa ?
+*10.22 Muodosta funktion
+
+x
+1 + x2
+
+sarja a) geom. sarjan summan avulla, b)
+
+derivoimalla funktion ln(1 + x 2 ) sarja.
+*10.23 Muodosta funktion sin 2 x Maclaurinin sarjan kolme (nollasta
+eroavaa) termiä a) kertomalla sin x :n sarja itsellään, b) laskemalla
+peräkkäisiä derivaattoja, c) integroimalla sin 2x :n sarja.
+
+1
+sin x − ln(1 + x ) − x 2
+2 .
+*10.24 Laske lim
+3
+x→ 0
+x
+
+C
+10.25 Perustele, miksi ympyröiden säteet muodostavat seuraavassa
+kuvassa geometrisen jonon.
+
+91
+10.26 Esitä seuraavat jaksolliset desimaaliluvut murtolukuina:
+a) 0,232323..., b) 0,321212121...
+10.27 Todista, että tasaerälainan kertamaksu on
+
+a=
+
+pk
+(α − 1) k
+,
++ nt
+n ⋅100 α − 1
+
+missä k = lainamäärä, t = laina-aika vuosissa, n = lyhennyskertojen
+p
+(= yhden kerran korkotekijä).
+määrä vuodessa ja α =
+n ⋅100
+10.28 Määritä funktioiden arcsin x ja arctan x Maclaurinin sarjat. Kirjoita
+edellisestä neljä ensimmäistä termiä ja jälkimmäisestä myös yleinen
+termi näkyviin. (Vastaukset kaavastossa.)
+10.29 Viereisen kuvan mukaisella peilimittauslaitteella voidaan määrittää, kuinka
+suuren kulman ϕ peili muodostaa xakselin suuntaan nähden. Kuvan mukaan
+
+tan 2ϕ =
+
+x
+x
+1
+∴ ϕ = arctan .
+h
+2
+h
+
+Johda tämän ja arctan x :n sarjan avulla
+ϕ:lle likiarvokaavat
+
+a) ϕ ≈
+
+90° x
+90° x 1 x 3
+− ( ) ,
+, b) ϕ ≈
+π h
+π h 3 h
+
+jos x << h. c) Osoita, että jos h = 7,5 m ja x ≤ 1 m , niin nämä
+likiarvokaavat antavat ϕ:n arvon niin tarkasti, että
+a) |virhe| < 0,6 %,
+
+b) |virhe| < 0,007 %.
+
+92
+
+11
+
+Fourier´n sarja
+
+11.1 F-sarjaan liittyviä käsitteitä
+Jos f ( x ) on
+risena sarjana, ns.
+(1)
+
+( ) = 12
+
+, jaksona 2π, se voidaan esittää trigonomet(lue: [Furjé:])
+
++ 1 cos + 1 sin + 2 cos 2 + 2 sin 2 + ...
+
+Sarjan termejä sanotaan komponenteiksi. Kertoimet a k ja bk ovat kosinija sinikomponenttien amplitudit (laajuudet). Näille johdetaan myöhemmin
+ja termit a1 cos x ja
+laskukaavat. Termi 12 ao on nimeltään
+
+b1 sin x ovat
+b2 sin 2 x ovat
+
+. Seuraavat kaksi termiä a2 cos 2 x ja
+jne.
+
+Harmonisilla komponenteilla a1 cos x ja b1 sin x on sama jakso ( 2π ) kuin
+f ( x ) :llä. Ensimmäisten yliharmonisten komponenttien a2 cos 2 x ja
+b2 sin 2 x jaksot ovat 2π / 2 = π , seuraavien jaksot ovat 2π / 3 jne.
+Fourier'n sarjan komponenttien jaksot ovat siis f:n jakson tasaosia
+( 2π , 2π / 2, 2π / 3, 2π / 4, … ).
+käytetään jonkin jaksollisen
+funktion tutkimiseen. Tällainen funktio voi kuvata esim. jonkin akselin,
+putkiston, koneen alustan tai seinän värähtelyä tai jotain sähköistä
+värähtelyä, jolloin yleensä x:n tilalla on aika t. Joskus värähtely on
+luonteeltaan jonkinlaista "haittavärähtelyä" (esim. koneen alustan värähtely,
+kampiakselivärähtely, vesijohtoputkien "ulvonta" tms.).
+Kun tällaiselle värähtelylle tehdään F-analyysi, kyseinen funktio kehitetään
+Fourier'n sarjaksi, ts. funktiolle lasketaan tai sopivien mittalaitteiden avulla
+mitataan komponenttiaaltojen kertoimet a k ja bk (amplitudit).
+Kertoimista voidaan päätellä, kuinka "voimakkaina" eri pituiset aallot ovat
+vaikuttamassa tässä värähtelyssä. Jokin suuriamplitudinen komponentti voi
+olla jokin haittavärähtely. Kun F-analyysin perusteella haittavärähtelystä on
+saatu selville paitsi sen voimakkuus, myös sen jakso, on mahdollista pyrkiä
+eliminoimaan se sopivilla toimenpiteillä (esim. seinämän tai putken
+kiinnityskohtien muuttamisella, kampiakselin
+a
+vastapainoilla tms.)
+k
+
+F-sarjan komponentit muodostavat kyseisen jaksollisen funktion (värähtelyn)
+. Näiden komponenttien kertoimien (amplitudien) muodostamaa
+jonoa taas sanotaan
+(kuva).
+
+k
+
+93
+11.2 F-sarjan kertoimien määrittäminen
+Sarjan
+
+f ( x ) = 12 ao + a1 cos x + b1 sin x + a2 cos 2 x + b2 sin 2 x +...
+
+(1)
+
+kertoimille saadaan johdettua laskukaavat seuraavalla periaatteella.
+Määritetään esimerkkinä termin a2 cos 2 x kerroin a2 . Kerrotaan yhtälön (1)
+kumpikin puoli cos 2x :llä ja integroidaan jakson yli, esim. 0:sta 2π :hin tai
+yhtä hyvin esim. −π : stä π : hin , siis
+=0
+2π
+0
+
+f ( x ) cos 2 x dx = 12 ao
+
+2π
+0
+
+=0
+
+cos 2 x dx + a1
+
+2π
+0
+
+cos x cos 2 x dx
+=π
+
+=0
+
++ b1
+
+2π
+0
+
+sin x cos 2 x dx + a2
+
+2π
+0
+
+cos 2 x cos 2 x dx
+
+=0
+
++ b2
+
+2π
+0
+
+=0
+2π
+
+sin 2 x cos 2 x dx + a3
+
+0
+
+cos 3x cos 2 x dx +…
+
+"Tulot summiksi"-kaavoilla voidaan todistaa (vrt. harj.), että edellisistä
+integraaleista kaikki muut ovat = 0 paitsi a2 :n kerroin, jonka arvoksi tulee π.
+Täten edellinen yhtälö sievenee muotoon
+2π
+0
+
+f ( x ) cos 2 x dx = a2 ⋅ π
+
+∴
+
+2=
+
+1 2π
+π 0
+
+( ) cos 2
+
+.
+
+Samalla tavoin saadaan laskettua yleisesti a k -kerroin, kun yhtälö (1)
+kerroaan cos 2x :n sijasta cos kx :llä. Vastaavasti, kertomalla yhtälö (1)
+sin kx :llä ja integroimalla, saadaan laskettua bk -kertoimet. Tulos on
+Lause 1
+
+Jaksollisen funktion, jonka jaksona on 2π , Fourier-sarjan
+∞
+
+( ) = 12
+
++ ∑(
+
+cos
+
++
+
+sin
+
+)
+
+=1
+
+kertoimet saadaan laskettua integraaleista
+
+=
+
+=
+
+1
+
+π(
+1
+
+π(
+
+( ) cos
+
+( = 0, 1, 2, ...)
+
+)
+
+( ) sin
+
+( = 1, 2, ...).
+
+)
+
+Seuraavassa käytetään käsitteitä
+
+. Kertaa!
+
+94
+Esim. 1
+
+Määritä seuraavan kuvan mukaisen "saha-aallon" F-sarja.
+π
+−π
+
+π
+
+2π
+
+Jaksoväliksi kannattaa valita väli −π …π , koska koko tällä
+välillä f ( x ) :llä on sama lauseke f ( x ) = x . Lasketaan ensin
+sinitermien kertoimet:
+u = x v ′ = sin kx
+1 π
+1 π
+bk =
+f ( x )sin kx dx =
+x sin kx dx
+cos kx
+π −π
+π −π
+u′ = 1 v = −
+k
+cos kx 1 π
+1 π
+cos kx dx
+=
+−x
++
+π −π
+k
+kπ − π
+1
+1 π sin kx
+2
+= − [π cos kπ + π cos( − kπ )] +
+= − cos kπ
+kπ
+kπ −π k
+k
+= cos kπ
+
+=0
+
+− 2k , kun k on parillinen ( 2, 4, ,...)
+.
+=
+2 , kun k on pariton (1, 3, ...)
+k
+Kosinitermien kertoimet ovat kaikki = 0:
+
+ak =
+
+1 π
+
+π −π
+
+x cos kx dx = 0 ,
+
+sillä funktio x ⋅ cos kx on
+pariton funktio (parittoman
+funktion x ja parillisen
+funktion cos kx tulona) ja
+integroimisväli on symmetrinen. Esim. viereisessä
+kuvassa
+on
+funktion
+x cos 2 x kuvaaja.
+Täten saha-aallon F-sarjaksi jää
+
+f ( x ) = 21 sin x − 22 sin 2 x + 23 sin 3x − 24 sin 4 x + −…
+.
+
+95
+Mitä useampi komponentti sarjan alusta otetaan, sitä tarkemmin
+niiden summa antaa saha-aallon, kuten seuraavista kuvista näkyy.
+
+π
+
+Kuva 1.
+
+2π
+
+3π
+
+f ( x ) ≈ 12 sin x − 22 sin 2 x
+
+π
+
+2π
+
+3π
+
+Kuva 2. f ( x ) ≈ 12 sin x − 22 sin 2 x + 23 sin 3x
+
+π
+
+2π
+
+3π
+
+Kuva 3. f ( x ) ≈ 12 sin x − 22 sin 2 x + 23 sin 3x − 24 sin 4 x
+
+11.3 Jaksollisen funktion, jonka jakso on , Fourier´n sarja
+F-sarjojen sovelluksissa on usein muuttujana aika t ja jaksollisen funktion
+jaksona on 2π :n sijasta T, jolloin
+ω = 2Tπ . Esim. funktion
+
+y = a sin bt jakso T = 2π / b (sillä y = 0 ⇔ bt = n ⋅ π ⇔ t = n ⋅ π / b ). Täten
+2π
+= b . Siis
+sin bt
+tämän funktion kulmataajuus ω =
+2π / b
+cos bt
+.
+Oletetaan nyt, että f ( t ) on jaksollinen funktio, jonka kulmataajuus on ω.
+Tällöin f ( t ) :n Fourier-sarja on muotoa
+
+96
+
+( ) = 12
+
++ 1 cos ω + 1 sin ω + 2 cos 2ω + 2 sin 2ω +…
+
+Tässä F-sarjassa harmonisilla komponenteilla on sama kulmataajuus ω ja
+siten sama jakso T = 2ωπ kuin f ( t ) :llä. Ensimmäisten yliharmonisten
+π = 2π = T .
+komponenttien kulmataajuudet ovat 2ω ja jaksot siten 22ω
+ω ⋅2 2
+Toisten yliharmonisten komponenttien kulmataajuudet ovat 3ω ja jaksot
+siten T3 , jne.
+
+Sarjan kertoimille saadaan seuraavassa lauseessa esitetyt integraalilausekkeet.
+Lause 2
+
+Fourier´n sarjoja käyttäen jaksollinen funktio f ( t ) , jonka
+jaksona on T, voidaan esittää sellaisten aaltojen sarjana
+("diskreettinä summana"), joiden kulmataajuudet ovat f:n
+kulmataajuuden ω monikertoja (ω, 2ω, 3ω,...) ja jaksot f:n
+jakson T tasaosia (T, T/2, T/3, ...). Sarjan muoto on
+∞
+
+( ) = 12
+
++ ∑(
+
+cos ω +
+
+sin ω ) ,
+
+=1
+
+missä
+
+= 2
+
+( )cos ω
+(
+
+Huom.
+
+)
+
+,
+
+= 2
+
+( )sin ω
+(
+
+.
+
+)
+
+funktio, sarjassa on vain parilliJos f ( t ) on
+sia/parittomia komponentteja (kosini/sini-komponentteja). Niiden
+kertoimet a k / bk voidaan tässä tapauksessa laskea kaavalla
+
+=
+
+=
+
+4
+
+/2
+0
+
+4
+
+/2
+0
+
+( ) cos ω
+
+(parillinen funktio)
+
+( )sin ω
+
+(pariton funktio),
+
+sillä kummassakin tapauksessa integroitava funktio on parillinen
+funktio, joten "integraali jakson yli = 2⋅integraali puolen jakson
+yli".
+Esim. 2
+
+Määritä seuraavan kuvan mukaisen "sakara-aallon" F-sarja.
+
+97
+f(t)
+1
+-1
+
+1
+
+3
+
+t
+
+5
+
+Funktio f ( t ) on parillinen funktio. Sen jakso on T = 4 ja kulmataajuus ω = 2Tπ = 24π = π2 . Parillisuuden vuoksi sarjassa on vain
+parillisia komponentteja (kosinikomponentteja). Niiden kertoimet
+ovat
+
+ak =
+
+4 T /2
+f ( t ) cos kωt dt
+T 0
+
+=
+
+4 2
+f ( t ) cos k2π t dt
+0
+4
+
+=
+=
+
+1
+0
+
+cos k2π t dt =
+
+2
+kπ
+sin
+kπ
+2
+
+f (t ) =
+
+1 välillä 0 …1
+0 välillä 1 … 2
+
+1
+
+2
+sin k2π t
+0 kπ
+
+( k = 1, 2, … ).
+
+Tästä saadaan a k -kertoimille seuraavat arvot:
+
+a1 =
+
+2
+
+π
+
+, a2 = 0, a3 = −
+
+2
+2
+2
+, a4 = 0, a5 =
+, a6 = 0, a7 = − ,…
+3π
+5π
+7π
+
+Vakiokomponentti 12 ao pitää laskea erikseen seuraavasti:
+
+ao =
+
+2
+1
+4 T /2
+f ( t ) cos 0ωt dt = f ( t ) dt = dt = 1∴ 12 ao = 12 .
+0
+0
+T 0
+
+Täten F-sarja on
+
+f ( t ) = 12 + π2 cos( π2 t ) − 32π cos( 32π t ) + 52π cos( 52π t ) − +…
+1
+
+-2
+
+2
+
+Jos f ( t ) -käyrä tunnetaan piirturin piirtämänä tai data-arvoina, joudutaan Fsarjan kertoimet laskemaan numeerisella integroinnilla, jakamalla jaksoväli
+
+98
+T n:ään osaan ja käyttämällä esim. suorakulmio- tai puolisuunnikasmenetelmää tai Simpsonin sääntöä. Ei ole aina itsestään selvää, että
+Simpsonin sääntö antaisi parhaan likiarvon, vrt. Matematiikka II, Esim. 5
+sivulla 86.
+Esim. 3
+
+Seuraavassa taulukossa on erään jaksollisen funktion f ( t )
+arvoja yhden jakson väliltä. Taulukon jäljessä on tämän funktion
+kuva "piirturin piirtämänä käyränä". Laske kerroin a2 .
+
+T = 9,973 − 0 = 9,973
+
+a2 =
+
+ω=
+
+2π
+= 0,6300
+T
+
+2
+= 0,20054 .
+T
+
+9,973
+2 T
+f ( t ) cos( 2ωt ) dt = 0,20054
+f ( t ) cos(1,2600t ) dt .
+0
+T 0
+g( t )
+
+Taulukossa on integroimisväli jaettuna 10 yhtä suureen osaan
+(jakopisteitä on 11 kpl). Yhden osavälin pituus on h = 0,9973 .
+Laske itse g ( ti ) -arvot (i = 0, 1, ..., 10). Integraalin arvo voidaan
+sitten laskea esim. puolisuunnikasmenetelmällä:
+
+a2 ≈ 0,20054 ⋅ h ⋅ (
+
+g( to )
+g ( t10 )
++
+g
+(
+t
+)
++
+g
+(
+t
+)
++
+…
++
+g
+(
+t
+)
++
+) ≈…
+1
+2
+9
+2
+2
+
+ti
+Kokeile, millä em. kolmesta
+integroimismenetelmästä saat
+parhaan likiarvon ja kuinka
+lähellä se on "oikeaa arvoa"
+a2 = 0,95 . Taulukkoarvot on
+nimittäin laskettu seuraavalle
+funktiolle (F-kehitelmälle) ja
+kuvaaja on piirretty samalle
+funktiolle:
+
+0
+0.9973
+1.9946
+2.9919
+3.9892
+4.9865
+5.9838
+6.9811
+7.9784
+8.9757
+9.973
+
+f ( ti )
+g ( ti )
+0.23
+0.23
+-3.68733 1,1395...
+2.38718
+6.64524
+3.79742
+4.16968
+3.48467
+-3.45725
+-3.64996
+2.57973
+0.231988
+
+f ( t ) = 1.25 – 2.42 cos[0.63t] + 2.37 sin[0.63t] + 0.95 cos[2⋅0.63t]
+– 1.73 sin[2⋅0.63t] + 0.45 cos[3⋅0.63t] – 3.03 sin[3⋅0.63t].
+
+99
+
+6
+4
+2
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+-2
+-4
+
+HARJOITUKSIA
+A, B
+11.1
+
+Määritä seuraavien funktioiden f ( t ) amplitudi (laajuus), jakso T,
+kulmataajuus ω ja frekvenssi (taajuus) f sekä piirrä kuvaajat:
+a) f ( t ) = 2,75 sin(1,35t ) b) f ( t ) = a sin(ω 1t ) , c) f ( t ) = a sin( 2ω 1t ) .
+
+11.2
+
+Määritä viereisen jaksollisen funktion f (t ) Fourier’n sarjan kolme
+ensimmäistä (nollasta eroavaa) a)
+paritonta,
+b)
+parillista 2
+komponenttia. Ohje: integroit
+misväliksi tulee 0...π , sillä
+2π
+π
+f ( t ) = 0 välillä π ...2π .
+
+11.3
+
+Laske Fourier’n sarjan a)
+harmoninen, b) ensimmäinen yliharmoninen komponentti, kun funktio f ( t )
+on viereisen kuvan mukainen.
+
+11.4
+
+Määritä
+oheisen
+jaksollisen
+funktion
+f ( t ) harmoninen ja
+ensimmäinen
+yliharmoninen
+komponentti.
+
+2
+
+-1
+
+1
+
+3
+
+100
+
+12
+
+Diff.yhtälön numeerinen ratkaiseminen
+
+12.1 Eulerin menetelmä
+Esim. 1
+
+x =1
+pystyttäisiin
+y=2
+ratkaisemaan tarkastikin. Yleinen ratkaisu (käyräparvi) on
+y = C 1x + 14 x ja alkuehdon täyttävä yksityisratkaisu eli pisteen
+Diff.yhtälö
+
+xy ′ + y = x 3 ,
+
+alkuehtona
+
+(1, 2) kautta kulkeva käyrä on y = 47x + 14 x . Kaikille diff.yhtälöille ei pystytä määrittämään tällaista tarkkaa ratkaisua, vaan
+joudutaan tyytymään ratkaisukäyrän pisteiden likiarvoihin
+( xi , yi ) . Ajatus on seuraavanlainen.
+Vaikka ratkaisukäyrää ei tunneta, sen tangentin kulmakerroin k
+saadaan, kun ratkaistaan diff.yhtälöstä y ′ :n lauseke. Tässä
+esimerkissä
+
+y′ = x2 − x ,
+
+kulmakerroin
+
+y
+
+joten
+
+ratkaisukäyrän
+
+"lähtöpisteessä"
+
+( xo , yo ) = (1, 2 )
+
+tangentin
+on
+
+ko = 12 − 12 = −1.
+
+12
+Siirrytään
+lähtöpisteestä
+(1,2)
+10
+tangenttia pitkin pieni
+matka, jolloin saadaan 8
+uusi piste ( x1, y1 ) .
+6
+Tämä ei ole enää aivan
+ratkaisukäyrällä.
+4
+(1,2)
+Lasketaan
+uusi
+2
+tangentin kulmakerroin
+y ′ :n
+samasta
+lausekkeesta, mutta nyt
+arvoilla x1 ja y1 . Siirrytään sitten pisteestä ( x1, y1 ) pieni matka
+uuden tangentin suuntaan. Näin saadaan uusi piste ( x2 , y2 ) , jne.
+Yleisesti: Ratkaistaan diff. yhtälöstä y ′ :n lauseke:
+
+y ′ = u( x , y ) .
+Tämä antaa ratkaisukäyrän tangentin kulmakertoimen k käyrän pisteessä
+(x,y). Lähtöpisteessä Po ( xo , yo ) tangentin kulmakerroin on ko = u( xo , yo ) .
+
+101
+Siirrytään tangenttia pitkin sellainen matka, että x-koordinaatti muuttuu
+määrän x = h . Silloin y-koordinaatin muutos y = k ⋅ x = k ⋅ h , ts. uusi
+piste on
+
+x1 = xo + h
+.
+y1 = yo + k ⋅ h = yo + u( xo , yo ) ⋅ h
+Samalla tavoin yleisesti
+
+xi +1 = xi + h
+yi +1 = yi + u( xi , yi ) ⋅ h
+
+( i = 0, 1, … ) .
+
+Seuraavassa ovat esimerkkiin 1 liittyvät laskut MathCad-ohjelmalla laskettuina:
+
+Diff.yhtälö xy' + y = x^3, alkuehtona y(1) = 2.
+2 y
+u( x , y ) x
+x
+x0 1 y0 2 h 0.5 n 6
+Alkuehto, askelpituus h ja
+kaikkiaan n askelta
+i 0 .. n
+xi 1 xi h yi 1 yi u xi , yi . h
+Ratkaisukäyrän
+pisteiden likiarvoja:
+xi
+yi
+1
+1.5
+2
+2.5
+3
+3.5
+4
+
+2
+1.5
+2.125
+3.594
+6
+9.5
+14.268
+
+tarkka( z )
+
+7
+4. z
+
+3
+
+z
+4
+
+z
+
+0.1 , 0.11 .. xn
+
+20
+tarkka ( z )
+y
+
+10
+i
+
+0
+
+0
+
+1
+
+2
+z,x
+
+3
+i
+
+Jos käytettäisiin lyhempää askelta h, likiarvot poikkeaisivat
+vähemmän tarkasta ratkaisukäyrästä.
+
+4
+
+102
+12.2 Runge-Kutta-menetelmä
+Sama diff. yhtälö kuin edellä.
+
+Esim. 2
+
+u( x , y )
+
+x
+
+2
+
+y
+x
+
+x0
+
+1 y0
+
+painotettu keskiarvo:
+k1 ( x , y ) u( x , y ) k2( x , y )
+
+2 n
+
+6 h
+
+0.5
+
+h
+,y
+2
+
+h.
+k1( x , y )
+2
+
+k3 ( x , y )
+
+u x
+
+k4 ( x , y )
+
+u( x h , y h. k3( x , y ) )
+k1 ( x , y ) 2. k2( x , y ) 2. k3( x , y )
+6
+
+k4 ( x , y )
+
+k( x , y )
+i
+
+0 .. n xi 1
+xi
+yi
+1
+1.5
+2
+2.5
+3
+3.5
+4
+
+2
+2.01
+2.875
+4.606
+7.333
+11.219
+16.438
+
+h
+,y
+2
+
+xi
+
+u x
+
+h.
+k2( x , y )
+2
+
+h
+
+yi 1
+
+yi
+
+h. k xi , yi
+
+Menetelmä on tarkkuudeltaan aivan
+eri luokkaa kuin Eulerin menetelmä.
+Eulerin menetelmässä tarkan arvon
+ja likiarvon ero kohdassa x = 4 oli
+n. 2,17. Nyt ero on seuraava:
+3
+
+tarkka ( z )
+
+7
+4. z
+
+z
+4
+
+tarkka xn
+
+yn = 0.000000000000000
+
+HARJOITUS
+12.1
+
+y ′ + 2x y = 6, y (1) = 3 . Laske y(2) a) Eulerin, b) Runge-Kuttamenetelmällä, käyttäen 5 askelta ( h = 0,2 ).
+
+Vastaus: a) 4,16667, b) 4,25. Laskemiseen voit käytää laskinta, Exceliä,
+Mathcadiä tms.
+
+103
+
+Vastauksia
+1.1
+
+( 23 / 7, 6 / 7, 4 / 7 ) 1.2
+
+4 / 5, − 3 / 5, 0
+
+1.3
+
+9 [6,−3,−2] 1.4
+9 / 7, 49
+
+1:( −7 ):( −10 ) 1.5 10:7:(–1) 1.6 –60, [61,64,–26] 1.7 (2/3,1/3,2/3) 1.8
+5 2 / 3 1.9 3 14 / 14 1.10 X = ( 2,0,−4 ) ja Y = ( 2,2,−2) (Esim. AX =
+
+AD − 2 ADo ) 1.12 t = 1 / 2, u = −3 / 4 , z = −1 / 4 2.1a) 3:(–4):(–3), b) [3, –
+4,–3], c) 3x − 4 y − 3z − 14 = 0 2.2 x + 2 y − z + 1 = 0 2.4 x + y + z − 5 = 0
+2.5 3 / 14 2.6 n = [7, 3, 22] 2.7 x + 2 y − 4 z − 4 = 0 ja x + 2 y − 4 z + 17 = 0
+2.8 4 ± 3 2 2.9 3/5 2.11 3x + 2 y − 6 z = 6 2.12 x = 0, 2 y + 2 z − 14 = 0
+2.13 Yhtälöryhmällä on ratkaisu t = 4 , u = −3 2.14 samalla 2.15 Etäisyys
+pienenee 2.16 b) Poispäin, koska P ja Q ovat samalla puolella tasoa. 2.17 k
+= 1/2, 4 x + 3 y − 3z + 5 = 0 2.18 21x − 7 y + 2 z + 3 = 0 2.19 3x + 4 y − 5 = 0
+ja 15 x − 12 y + 16 z − 25 = 0 . 3.1 a) 0:1:1, b) Monta tapaa: 1) sama suunta ja
+esim. piste x = 1/3, y =0, z = 5/3 toteuttaa edellisenkin yhtälöparin, 2)
+Valitse jälkimmäisen suoran kaksi pistettä ja osoita, että ne toteuttavat
+edellisen suoran yhtälöt, 3) Kun kerrot ensimmäisen parin yhtälöitä sopivilla
+luvuilla ja lasket yhteen, saat ekvivalentiksi yhtälöpariksi jälkimmäisen
+parin. 3.2 2:(–1):(–1), esim. (0,3,5) ja (6,0,2)
+3.3
+a)
+x = 2 + 3t
+x + 3z = 29
+r = [2,−7,9] + t [3,4,−1] , b) y = −7 + 4t , c) esim.
+3.4 ( 8, 1, 7 )
+y + 4 z = 29
+z = 9−t
+3.5 Eivät leikkaa (sillä tällä neljän yhtälön ryhmällä ei ole ratkaisua, koska
+piste (–3,–7,–5) ei toteuta 1. yhtälöä) 3.6 (–1,1,2), b) (–4,3,1) 3.7 D =
+(3,1,1), Q = (5,2,0) 3.8 a) x − 2 y − z = 1 , b) Q =(2,–1,3) c) 11 , d)
+R = (3,−2,6) 3.9 5 / 3 3.10 n. 49,1° 3.11 a ) r = [2,5,0] + t[1,−2, 2]
+( t = 0,1,2,3,4 ) b) (3,3,–2) jne. 3.12 b) x − y + z − 6 = 0 3.13 a) (1,–1,2), b)
+n. 80,4° (huom. suorien yhtälöt eivät ole aivan normaalimuodossa) c)
+r = [1,−1,2] + t [1,−1,2] + y[2,1,−1] d) x − 5 y − 3z = 0 3.14 (12,4,13) (joka
+saadaan, kun t = −2, u = −5, v = 5 ) 3.15 a) Yhtälö on lineaarinen ja pisteet
+(5,0,0) jne toteuttavat sen b) (180/361,300/361,450/361) 3.16 n. 4,1 4.1
+x 2 + y 2 + z 2 − 2 x + 4 y − 6 z = 0 4.2
+2 x − y − 4 z − 18 = 0 4.3 a)
+Pyöräysellipsoidi, kp. origossa, pyöräysakseli z, puoliakselit 2, 2 ja 1. Piirrä
+kuva! b) ei mikään pinta (ns. imaginaarinen pallo) 4.4 a) 1-vaippainen
+pyöräyshyperboloidi, akselina y, kp origossa, akselia vastaan kohtisuora
+leikkaus keskellä on 1-ympyrä. Akselileikkaus on tasasivuinen hyperbeli
+(asymptootit 45° kulmassa), b) 2-vaippainen pyöräyshyperboloidi, akselina
+x, huiput kohdissa ±1, akselileikkaus tasasivuinen hyperbeli, c)
+
+104
+pyöräyskartio (kaksoiskartio), akselina x ja akselikulma eli akselin ja
+sivuviivan välinen kulma on 45°. 4.5 a) ympyrälieriö, akselina y ja säteenä
+1, b) hyperbolinen lieriö, akselina z ja "pohjakäyränä" tasasivuinen
+hyperbeli, c) negatiivisen z-akselin suuntaan aukeava pyöräysparaboloidi
+(muuten samanlainen kuin perusparaboloidi), d) z-akselin suuntainen taso
+(tavallaan lieriöpinta, mutta "pohjakäyränä" on suora viiva). 4.6
+( 2 + 2 2 ,−1 − 2 , 0) 4.7 x 2 + y 2 + z 2 + x + 10 y − 7 z = 0 . 4.8 a) 2vaippainen pyöräyshyperboloidi, akseli z-akselin suuntainen, keskipiste
+(1,0,–2). Kuvan piirtämistä varten käytä leikkausta x = 1 b) elliptinen
+paraboloidi, akselina z. Kuvan piirtämiseksi käytä xz- ja yz-leikkauksia ja
+esim. leikkausta z = 2. 4.9 a) Kartio, akseli z-akselin suuntainen, keskipiste
+(1,0,–2). Kuvan piirtämistä varten käytä esim. leikkausta z = 0. b) 1vaippainen hyperboloidi, kp = (0,2,0), akseli || z-aks. Kuvan piirtämiseksi
+käytä leikkauksia x = 0 (hyperbeli, a = b = 2) ja z = 0 (ellipsi, a = 1, b = 2).
+4.10
+30 / 3 , ( 2 / 3, 1 / 3, 1 / 3) . 4.11 a) elliptinen kartio, kärki = (0,2,0),
+akseli || z-aks. Kuvan piirtämiseksi käytä leikkausta z = 2. b) elliptinen
+paraboloidi, akselina y, huippu (0,1,0). Leikkaus kohdassa y = 2 on ellipsi (a
+= 1, b = 2) 4.12 a = 2, kp. = (0,0,1), aks. || y-aks., leikkaus y = 1 on
+ellipsi (puoliakselit 1 ja 2). 4.13 a) Pisteen P(x,y,z) etäisyyden x-akselista eli
+x2 y2 z2
+pisteestä (x,0,0) pitää olla = |f(x)|, b)
+−
+−
+= 0 , c)
+a 2 b 2 b2
+−24
+x2 y2 z2
+2
+2
+2
+−
+−
+=
+0
+4.15
+(
+y
++
+1
+)
++
+z
+=
+3
+(
+x
+−
+2
+)
+5.1
+a)
+, b) mahdoton
+3
+a 2 b2 c 2
+5.2 − 12
+
+5
+6
+
+3
+2
+
+5.3 B = (4,70;–1,71), C = (5,21;5,55) 5.4 D = (4,70;1,71),
+
+E = (0,42;7,60) 5.5 a) (3 2 , − 2 , − 3) b) Laske AAT 5.6 a) ( − 2 , 3, 3 2 )
+b) 3π / 4 = 135° 5.7 a) 1:(–1):1 b)
+
+1
+2
+− 1
+6
+1
+3
+
+1
+2
+1
+6
+− 1
+3
+
+0
+2
+6
+1
+3
+
+c) n. (–2,1; 4,9; 0,14)
+
+5.8 3π 5.9 r = 14 , ψ ≈ 206,6° , θ ≈ 36,7° , ϕ ≈ 53,3° 5.10 a) Kartio, akselina
+negatiivinen z-akseli, akselin ja sivuviivan välinen kulma 30° b)
+perusparaboloidi c) spiraali (1-lieriön pinnalla) 5.12 (2,3,4) 6.1 a) 2 x 3 / y ,
+
+−x 4 / ( 2 y 2 ) b) 6 x 2 sin 2 y , 4 x 3 cos 2 y c) 3x 2 ( 2 x + y )3 + 6 x 3 ( 2 x + y )2 ,
+3x 3 ( 2 x + y ) 2
+
+e x ln y , e x / y − z 2 sin y , 2 z cos y
+6.3
+dz
+a)
+= −6 x 2 ln⋅ y sin 2t +
+dz = e x (sin 2 y ) dx + 2e x (cos 2 y ) dy
+6.4
+dt
+6.2
+
+105
+
+∂z
+x3
+∂z
+= 6 x sin 2ϕ − 10 y cos( 2ϕ − π ) ,
++ ( 2t + t 2 )et b)
+= 12 xr cos 2ϕ +
+∂r
+∂ϕ
+y
++20 yr sin( 2ϕ − π ) 6.5 x − y = 0 6.6 a) 2 x − z = 0 , b) esim.
+−x
+
+y
+
+x + 2 z = 0, y = 3 6.7 a)
+
+x2 + y
+
+,
+2
+
+x2 + y
+
+,
+2
+
+π
+
+b)
+
+ℓg
+
+, −
+
+π
+g
+
+ℓ
+, c)
+g
+
+v p
+v p
+− o 2o (1 + αt ), o o α 6.12 0,083 ± 0,009 6.15. 2 x + 6 y + z − 8 = 0 6.16
+p
+p
+x = 1+ t
+(1,1,2) 6.20 –6, –6, 2 6.21
+
+y = −1 − 2t 7.1 ( 0, 2,−11) on minimipiste 7.2
+z =2−t
+
+9 x+6
+(8 / 3, 2 / 3), − 4 13 , min. 7.3 (1,1) 7.4 (1,1,2) 7.6 1:1:2 7.7 y = 10
+5
+
+7.10 y = 3,x63 + 0,358 7.12 (0,0,–1) 7.13
+7.8 y = 3,04 ⋅ e −0,262 x 7.9 y = 4,16
+x
+5
+7
+
+3
+x + 20
+35 ( t = 1, s = 57 ) 7.15 k = 3e , b = 12 ( e − 1e ) 7.17 b) y = − 14 x 2 + 19
+20
+
+8.1 –3 8.2 –2 8.3 7/6 8.4 30π 8.5 2 8.6 − 13 , − 1, 13 8.7 6 − 4 ln 2 8.8 32 8.9
+
+−π 3 / 6 8.10 a) 7/6 b) 4/105 8.11 2π ln 2 9.1 a ) s +1 3 , b) 0, c ) s −1 5 ,
+5
+s+ 2
+
+6
+s4
+
+9.2
+
+1 2
+s
+1
+2
+2
+9.3 a) F ( s ) = − 2 + 2
+9.4 a)
+, b) Y ( s) =
+− 2
++
+s s
+s−3 s +4 s
+s +9
+
+1 ( t − 1) , b) 1 ( et − e − t ) eli sinh t , c)
+2
+2
+
+5e 2t − 3e t , d) y ( t ) = −1 + 4e −2t 9.5
+
+6−s
+9.6 a) y = ( t + 1)e − t , b) y ( t ) = 13 ( e −3t + 5) 9.7 a) y = cos t , b)
+s( s − 2)
+
+y = sin t 9.8 y ( t ) = 2e −2t − e − t 9.11
+
+2 t sin 3t − 1 (sin 3t − 3t cos 3t )
+3
+54
+
+9.12
+
+vrt. Lauseen 1 kohdan 2) todistus 9.13 y ( t ) = t − 3 sin t + cos t 9.14
+10
+y ( t ) = t − 2e − t + e −2t 9.15 I ( s ) = 2
+, i∞ = 0 9.16 i∞ = UR ,
+s + 2s + 5
+−
+t
+Rt
+/
+L
+i( t ) = UR (1 − e
+) 9.18 x = 32 e + 12 e − t , y = 32 et − 12 e − t − t (Vain esim.
+X(s):lle tarvitaan käänteismuunnos. Sen jälkeen y(t) saadaan 1. yhtälöstä.)
+R
+− t
+i( t ) = UL e L
+
+n( n + 1)
+3
+, b) n( n + 1), c) n 2 , d) n( n + 1)
+2
+2
+10.2 − 83 , 4 83 , 115 10.3 2 1 10.4 104 10, 104 100, 104 1000 10.5 41 (tai
+4
+
+9.20
+
+10.1
+
+a)
+
+2
+40) ja 30 10.6 a) 1 + x + x 2 +
+2 2
+
+3 / 2 − 3x / 4 + 3x 2 / 8 − +
+
+n −1
++ x n −1 +
+2
+
+∞
+
+k
+
+= ∑ x k , −2 < x < 2
+
++( −1) n −1 ⋅ 3x n −1 / 2 n +
+
+k=0
+
+2
+
+b)
+
+, −2 < x < 2 . 10.8 ks.
+kaavasto (binomisarja, n = −1 / 2 ) 10.9 0,747 10.10 0,453, kolme termiä
+
+106
+0,923, kolme termiä (neljäs on –0,00037 ja se ei tässä vaikuta
+80(3 ± 3 )
+10.13 a) −2 < x < 2 b) x > 12 10.14
+pyöristämistä) 10.12
+3
+muuttuu n. 0,48-kertaiseksi eli pienenee n. 52 % 10.15 geometrisen jonon,
+suhdelukuina a ) 1,752 , b) 1,753 10.16 a) kasvu on aritm. jonon mukaista:
+10.11
+
+p
+
+K = a + t ⋅ 100 a , b) kasvu on geom. jonon mukaista: K = aα t , missä
+p
+
+α = 1 + 100 on ns. korkotekijä, c) kasvu on geom. sarjan mukaista:
+t
+
+K = aα αα −−11 10.17 a) 720 eur, b) 555 eur 10.18 6309,42 eur 10.19 a)
+51051,26 eur, b) 5172,09 eur 10.20 1911,14 eur 10.21 6297,71 eur 10.22
+x − x 3 + x 5 − + +( −1) n +1 x 2n −1 + 10.23 x 2 − x 4 / 3 + 2x 6 / 45 − +
+10.24 −1 / 2 10.25 Kuviot, joista poistetaan ympyrä kerrallaan, ovat
+yhdenmuotoisia. Siksi r1 / r2 = r2 / r3 = ( = 1 / q ) 10.26 a) 23/99, b) 53/165
+π ≈ 4,65 ,
+11.1 a) amplitudi = 2,75, T = 12,35
+
+2
+1
+
+ω = 2Tπ = 1,35 , f = T1 ≈ 0,215
+
+-1
+
+11.2 a) π2 sin x , − π1 sin 2 x , 32π sin 3x
+b) 12 , − 42 cos x , −
+π
+
+4 cos 3x
+9π 2
+
+1
+-1
+-2
+
+( cos 2x :n
+
+kerroin on = 0)
+11. 3 a) π2 sin( π2 t ) b) − π1 sin πt 11. 4 ja −
+
+4
+
+π2
+
+cos(πt )
+
+2
+
+3
+
+4
+
+5
+
+

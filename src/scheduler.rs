@@ -55,20 +55,21 @@ impl Scheduler {
 
         let stagnating = stats.total_gain() <= 0;
         let shift_pressure = (self.shift_base_prob + world_pressure * 0.3).clamp(0.05, 0.9);
-        if stagnating || (remaining_quota >= 5 && rng.gen_range(0.0..1.0) < shift_pressure) {
+        // ÄLÄ loukussa ShiftWindow:ssa jos world on tyhjä tai hyvin pieni
+        if world_pressure > 0.05 && (stagnating || (remaining_quota >= 5 && rng.gen_range(0.0..1.0) < shift_pressure)) {
             return Action::ShiftWindow;
         }
 
-        // Jos exploit on tuottavaa, käytä sitä usein
+        // Jos exploit on tuottavaa, käytä sitä aggressiivisemmin (0.7 -> 0.85)
         if stats.gain_per_quota_exploit > 0.0 && stats.gain_per_quota_exploit >= stats.gain_per_quota_explore {
-            if rng.gen_range(0.0..1.0) < self.exploit_bias_prob {
+            if rng.gen_range(0.0..1.0) < 0.85 {
                 return Action::Exploit;
             }
         }
 
-        // Jos explore on tuottavaa, käytä sitä
+        // Jos explore on tuottavaa, käytä sitä useammin (parannettu 0.7 -> 0.8)
         if stats.gain_per_quota_explore > 0.0 {
-            if rng.gen_range(0.0..1.0) < 0.7 {
+            if rng.gen_range(0.0..1.0) < 0.8 {
                 return Action::Explore;
             }
         }

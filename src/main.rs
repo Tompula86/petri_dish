@@ -62,7 +62,7 @@ fn main() {
 
     // Luo Evaluator ja Solver
     let evaluator = Evaluator::new();
-    let mut solver = Solver::load_or_new(1000, 150, config.window_fraction); // 150 patternin kapasiteetti (kasvuvaraa teksteille)
+    let mut solver = Solver::load_or_new(1500, 300, config.window_fraction); // 300 patternin kapasiteetti (aiemmin 150) + enemmän quotaa (1500)
 
     println!("\nAloitustilanne:");
     println!("  World kapasiteetti: {} tavua", world.memory_limit);

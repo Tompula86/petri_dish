@@ -1,0 +1,8737 @@
+Antti Majaniemi
+
+MATEMATIIKKA II
+Differentiaali- ja integraalilaskentaa
+sekä differentiaaliyhtälöitä
+t= 0
+
+u2
+R
+
+U
+
+C
+
+L
+
+i = i (t )
+u3
+
+2016
+ISBN 978-952-93-8168-5
+
+u1
+
+Tämä teos on lisensoitu Creative Commons Nimeä-EiKaupallinen 4.0
+Kansainvälinen -lisenssillä. Tarkastele lisenssiä osoitteessa
+http://creativecommons.org/licenses/by-nc/4.0/deed.fi.
+
+Antti Majaniemen perikunta on päättänyt antaa tämän teoksen käytettäväksi
+yllä olevalla lisenssillä. Painatus ei ollut enää kannattavaa alhaisen
+kysynnän vuoksi, mutta tällä tavalla oppimateriaali on edelleen
+opiskelijoiden ja oppilaitosten käytettävissä.
+Tämä teos on ladattavissa osoitteessa http://anttimajaniemi.fi
+Turussa 20.11.2016
+Jari Majaniemi
+jari @ anttimajaniemi.fi
+
+i
+
+SISÄLLYS
+1
+
+Differentiaaliyhtälöistä ___________________________________ 1
+1.1
+Peruskäsitteitä _______________________________________ 1
+1.2
+Mekaniikan ja lujuusopin esimerkki ______________________ 2
+1.3
+Muuttujien erottaminen _______________________________ 4
+1.4
+Lineaarinen 1. kertaluvun DY __________________________ 7
+1.5
+Virtapiirisovellus ___________________________________ 11
+
+2
+
+Toisen kertaluvun DY __________________________________ 16
+2.1
+Vakiokertoiminen lineaarinen toisen kertaluvun DY ________ 16
+2.2
+Esimerkkejä _______________________________________ 17
+2.3
+Sovelluksia ________________________________________ 20
+
+3
+
+Trigonometristen funktioiden käänteisfunktiot ______________ 30
+3.1
+Käänteisfunktio ja sen derivaatta _______________________ 30
+3.2
+Arkusfunktiot ______________________________________ 31
+3.3
+Integroimismenetelmiä. Areafunktiot ____________________ 34
+
+4
+
+Murtofunktion integrointi _______________________________ 39
+4.1
+Perustapauksia _____________________________________ 39
+4.2
+Osamurtoihin jako __________________________________ 40
+
+5
+
+Trigonometristen funktioiden integrointi ___________________ 45
+5.1
+Perustapauksia _____________________________________ 45
+5.2
+Tulot sin ax cos bx , sin ax sin bx, cos ax cos bx ___________ 45
+5.3
+Potenssilausekkeen sinm x cosn x integrointi ______________ 46
+5.4
+Sijoituksia _________________________________________ 47
+
+6
+
+Irrationaalifunktioiden integrointi ________________________ 49
+
+7
+
+Eksponentti-, logaritmi- ja hyperbelifunktiot _______________ 52
+7.1
+Eksponenttifunktioiden integrointitapoja _________________ 52
+7.2
+Logaritmifunktioiden integrointitapoja___________________ 53
+7.3
+Hyperbelifunktiot ___________________________________ 53
+
+8
+
+Lisää integraalien sovelluksia ____________________________ 57
+8.1
+Funktion keskiarvo välillä [a ,b] ________________________ 57
+8.2
+Kaaren pituus ______________________________________ 58
+*8.3 Pyöräyspinnan ala ___________________________________ 58
+8.4
+Työintegraali _______________________________________ 59
+8.5
+Epäolennainen integraali______________________________ 60
+
+9
+
+Käyriä koskevia tuloksia ________________________________ 63
+9.1
+Kertaus ___________________________________________ 63
+*9.2 Kaaren painopiste ___________________________________ 63
+9.3
+Ratkaisemattoman funktion derivointi ___________________ 64
+
+ii
+9.4
+9.5
+9.6
+9.7
+*9.8
+
+Parametrimuotoisen funktion derivointi __________________ 65
+Parametrikäyrän kaaren pituus ja vastaavan alueen ala ______ 67
+Käyrän kaarevuus ___________________________________ 67
+Käyrä napakoordinaatistossa __________________________ 70
+Kaaren pituus ja pinta-ala napakoordinaatistossa ___________ 71
+
+*10
+Integraalin derivointi parametrin suhteen ________________ 76
+10.1 Parametri integroimisrajoissa __________________________ 76
+10.2 Parametri integroitavassa funktiossa_____________________ 77
+11 Numeerisia menetelmiä _________________________________ 79
+11.1 Haarukointi ja iterointi (kertaus) ________________________ 79
+11.2 Newtonin menetelmä (tangenttimenetelmä) _______________ 80
+11.3 Numeerinen derivointi _______________________________ 81
+11.4 Numeerinen integrointi suorakulmiomenetelmällä __________ 83
+11.5 Puolisuunnikasmenetelmä_____________________________ 84
+11.6 Simpsonin sääntö ___________________________________ 85
+Vastauksia ________________________________________________ 89
+
+Monisteen tässä osassa käsitellään differentiaaliyhtälöitä (luvut 1 ja 2),
+arkusfunktioita (luku 3), integroimistekniikkaa (luvut 4...7) sekä erilaisia
+derivointiin ja integrointiin liittyviä kysymyksiä, joita voidaan opettaa
+valikoiden, linjakohtaisesti.
+Integrointitekniikan osuutta voidaan keventää ja korvata paikoitellen
+matemaattisten tietokoneohjelmien käytöllä sen mukaan, mitä ohjelmia on
+käytettävissä ja minkä opintosuunnan opetus on kyseessä. Opintosuunnan
+tulisi vaikuttaa myös diff. yhtälöiden sovellusten valintaan. Diff. yhtälöitä
+käsitellään monisteen seuraavan osan loppupuolella jonkin verran
+numeerisesti ja Laplace-muunnoksilla.
+Tässä painoksessa olen jatkanut monisteen muokkaamista ja korjailua.
+Lähinnä olen yrittänyt parantaa kuvien ulkoasua muuttamalla kuvissa
+viivoja paksummiksi ja kirjaimia lihavoiduiksi ja kursiiviksi. Toivon että
+monisteen kaikenlaisten puutteiden paikallistamisessa saan muiden
+opettajien apua kuten tähänkin asti.
+Turussa 25.7. 1998
+
+Antti Majaniemi
+
+Olen päivittänyt monistetta korjaten sitä tämän päivän tilanteeseen
+paremmin sopivaksi.
+Turussa 14.7.2008
+
+Jari Majaniemi
+
+1
+
+1
+
+Differentiaaliyhtälöistä
+
+1.1
+
+Peruskäsitteitä
+
+Yhtälöä, jossa esiintyy tuntemattoman funktion ainakin yksi derivaatta,
+sanotaan
+, esim.
+
+y ′ + 2 xy = sin x , y ′′ + 3 y ′ − 2 y = x 2 + 1 .
+Jatkossa käytetään lyhenteitä diff.yhtälö tai DY.
+Esim. 1
+
+Ratkaise DY
+
+y ′ − 2x = 0 .
+Tehtävä on sama kuin kaikkien sellaisten funktioiden etsiminen,
+joiden derivaatta on 2x. Näin yksinkertainen DY ratkeaa
+suoraan integroimalla:
+
+y ′ = 2x
+
+integroidaan
+
+y = 2 x dx = x 2 + C.
+Koska C voi olla mikä reaaliluku
+tahansa, tällä DY:llä on äärettömän
+monta ratkaisua. Ratkaisufunktiot
+y = x 2 + C muodostavat yhdessä
+DY:n
+, joka on
+geometrisesti eräs paraabeliparvi.
+DY:ssä voi olla mukana myös jokin
+, esim. ehto
+
+y ( 2 ) = 3 eli
+
+x=2
+y=3
+
+(lue:"
+
+").
+
+Tämä alkuehto määrää integroimisvakion suuruuden ts. valitsee
+ratkaisuparvesta yhden funktion (paraabelin):
+
+y = x2 + C
+
+alkuehto
+
+x=2
+y =3
+
+.
+
+3 = 2 2 + C ∴ C = −1 ∴ y = x 2 − 1
+Ratkaisu y = x 2 − 1 on tämän DY:n eräs
+
+.
+
+2
+Esim. 2
+
+Eräässä suoraviivaisessa liikkeessä nopeus v muuttuu ajan t
+funktiona seuraavan lain mukaisesti:
+
+( t + 1) ⋅ v ( t ) − 2t = 1, t ≥ 0
+Laske matkan s(t) lauseke, kun hetkellä t = 1 kappale on
+kohdassa s = 3, ts. s(1) = 3. Aikaisemman mukaan = ′( ):
+
+2t + 1
+integr.
+t +1
+2t + 1
+dt suor. jako jakokulmassa tai seuraavasti:
+t +1
+( 2t + 2 ) − 1
+1
+) dt == 2t − ln t + 1 + C.
+dt = ( 2 −
+t +1
+t +1
+
+v = s ′( t ) =
+s( t ) =
+=
+
+Itseisarvot ovat tarpeettomat, koska t ≥ 0 .
+
+Alkuehto:
+
+t =1
+s=3
+
+⇒ 3 = 2 − ln 2 + C ⇒ C = 1 + ln 2
+
+∴ s( t ) = 2t − ln( t + 1) + 1 + ln 2.
+1.2
+
+Mekaniikan ja lujuusopin esimerkki
+
+Esim. 3
+
+Kummastakin päästään q(x)
+tuetun palkin pituus on 4
+1
+(m) ja sitä kuormittaa
+kuvan mukainen paraabelikuorma. Paraabelin
+yhtälö on muotoa
+
+y − 1 = a ( x − 2 )2
+
+(2,1)
+4
+
+x
+
+( 0,0 ) toteuttaa
+
+−1 = a ( −2 )2 ∴ a = − 14 ∴ paraabeli on y = 1 − 14 ( x − 2 )2 .
+Kuormitustiheys q(x) (kuorma/pituusyks.) on siis
+
+q( x ) = 1 − 14 ( x − 2) 2
+
+(esim. q( 2 ) = 1 ).
+
+1) Mekaniikan mukaan
+( ) kohdassa x on
+sellainen, että sen 2. derivaatta on –q(x). Tästä tulee taivutusmomentille 2. kertaluvun DY, jonka ratkaiseminen vaatii kaksi
+
+3
+integrointia. Siten yleiseen ratkaisuun tulee kaksi integroimisvakiota. Laskut ovat seuraavat:
+
+M t (x)′′ = −q(x) = −1 + 14 ( x − 2 )2
+
+integr.
+
+M t ( x )′ = ( −1 + 14 ( x − 2 )2 ) dx = − x + 121 ( x − 2)3 + C1
+
+integr.
+
+M t ( x ) = − 12 x 2 + 481 ( x − 2 )4 + C1 x + C2 .
+Koska integroimisvakioita on 2 kappaletta, tarvitaan 2 alkuehtoa, jotta niille määräytyisivät jotkin arvot.
+Alkuehdot: Kummassakin päässä taivutusmomentti on = 0, ts.
+
+M t ( 0 ) = M t ( 4 ) = 0 eli
+
+x=0
+x=4
+.
+ja
+Mt = 0
+Mt = 0
+
+Kun 1. alkuehto sijoitetaan M t ( x ) :n lausekkeeseen, saadaan
+
+0 = 0 + 481 ( −2 )4 + 0 + C2 ∴ C2 = − 13 .
+Sitten 2. alkuehto antaa yhtälön
+
+0 = − 12 ⋅ 42 + 481 ⋅ 24 + C1 ⋅ 4 − 13 ∴ C1 = 2
+∴
+
+( )= − 12
+
+2
+
++ 481 ( − 2)4 + 2 − 13 .
+
+2) Lujuusopin mukaan, jos
+taipuma on pieni, palkin
+= ( ) toinen
+derivaatta on yhteydessä
+taivutusmomenttiin seuraavan
+DY:n mukaisesti:
+
+′′( )= −
+
+q(x)
+4
+
+0
+
+x
+
+taipumaviiva y = y(x)
+y
+
+,
+
+missä E ja I ovat vakioita (E = aineen
+kimmovakio ja I on palkin poikkileikkauksen
+neliömomentti poikkileikkauksen painopisteen
+kautta kulkevan vaakasuoran akselin (z) suhteen).
+
+z
+
+Jos tähän taipumaviivan diff.yhtälöön sijoitettaisiin edellä
+laskettu taivutusmomentin lauseke ja suoritettaisiin kaksi
+
+4
+integrointia sekä käytettäisiin alkuehtoja: y ( 0 ) = y ( 4 ) = 0 (ts.
+tukien kohdalta palkki ei taivu), saataisiin taipumaviivan lauseke
+y(x). Maksimitaipuma saataisiin tässä esimerkissä palkin
+keskellä, ts. laskemalla y(2).
+1.3
+
+Muuttujien erottaminen
+
+Edellä käsitellyt DY:t olivat sellaisia, että ne voitiin muuttaa muotoon
+
+y ′ = u( x ) , y ′′ = u( x ), y ′′′ = u( x ), ...
+eli muotoon, jossa jonkin kertaluvun derivaatta = ainoastaan x:n lauseke.
+Mikäli tämä lauseke sisältää myös tuntemattoman funktion y, suora
+integrointi ei käy. Jos tällainen DY on 1. kertalukua ts. korkein derivaatta
+on y', DY saattaa ratketa
+. Tässä menetelmässä
+käytetään lähtökohtana tietoa
+
+(= differentiaalien osamäärä) .
+
+′=
+
+Esim. 4 y ′ = 2 xy
+
+′=
+
+dy
+= 2 xy erotetaan muuttujat ( y: t vasemmalle, x: t oikealle)
+dx
+dy
+= 2 x ⋅ dx integroidaan kumpikin puoli
+( y ≠ 0)
+y
+dy
+= 2 x dx
+y
+yleisesti ln z = a ⇒ z = ea
+
+ln y = x 2 + C1
+2
+
+y = e x + C1
+
+z = a ⇒ z = ±a
+
+2
+
+e a+ b = e a ⋅ e b = eb ⋅ ea
+
+y = ± e x + C1
+C1
+
+= ( ±e ) ⋅ e
+
+x2
+
+± e C1 kulkee kaikki pos. ja neg. luvut
+∴ voidaan merkitä ± eC1 = C
+(myös ratkaisu y = 0 on mukana).
+
+∴ =
+
+Huomaa, että edellisellä DY:llä integrointivakio ei tullut ratkaisun perään
+2
+
+2
+
+lisätermiksi: y = e x + C , vaan kertoimeksi eteen: y = Ce x . Näiden kahden
+funktioparven kuvaajat eivät ole samanlaisia. Edellisessä parvessa on
+
+5
+2
+
+funktio y = e x , jota siirretään C:n arvon avulla ylös- ja alaspäin.
+Jälkimmäisen parven funktiot nousevat sitä jyrkemmin, mitä suurempi Ckerroin on.
+
+Esim. 5
+
+suora integrointi ei käy. Kokeillaan
+
+xy ′ − 2 y = 0
+x
+
+muuttujien erottamista
+
+dy
+= 2y
+dx
+dy
+dx
+=2
+y
+x
+
+erotetaan muuttujat ja integroidaan
+
+ln y = 2 ⋅ ln x + C1 = ln x 2 + C1
+2
+
+y = ± e ln x + C1 = ± e C1 ⋅ e ln x
+∴ =
+
+2
+
+yleisesti e ln a = a
+
+.
+
+Aina ei edellisen tapaista integroimisvakion vaihtamista tarvita:
+
+Esim. 6
+
+y ′ + 2 xy 2 = 0
+dy
+= −2 xy 2
+dx
+dy
+− 2 = 2 x dx
+y
+1
+1
+= x2 + C∴ y = 2
+.
+y
+x +C
+
+Muuttujien erottaminen onnistuu, jos DY voidaan muuttaa tulo- tai osady
+dy
+= x+ y
+määrämuotoon, esim. u( x ) = v ( y ) . Sen sijaan esim. DY:ssä
+dx
+dx
+muuttujia ei pystytä erottamaan (yritä!).
+Useat eksponentti- tai logaritmilait ovat peräisin Esimerkin 4 tapaisista
+DY:istä. Tällaisia ovat esim. aineen radioaktiivisuuden tai mikrobien määrän
+väheneminen, bakteerikannan kasvu tai solujen määrän lisääntyminen solun
+jakautumisessa, lämmön tasaantuminen kappaleen ja ympäristön välillä jne.
+Seuraavasta näkyy, miten tällaisissa tapauksissa joudutaan diff.yhtälöihin.
+Esim. 7
+
+Tarkastellaan ainetta, jota alussa on määrä mo , mutta joka vähenee vähitellen (esim. muuttuu toiseksi aineeksi tai "väsyy" tai
+radioaktiivisuus häviää, mikrobit häviävät tms.).
+
+6
+Hetkellä t ainetta on jäljellä enää määrä m(t). Jos tästä hetkestä
+t eteenpäin hetkeen t + t , niin
+mennään pieni aika
+ainemäärän muutos m (joka on negatiivinen) on verrannollinen
+1) aikavälin pituuteen, jos aikaväli on hyvin pieni (esimerkiksi,
+jos ainetta häviää 1 millisekunnissa tietty määrä, niin 2 ms:ssa
+sitä häviää kaksinkertainen määrä),
+2) jäljellä olevaan ainemäärään (jos esim. 1 g:sta häviää tietty
+määrä, niin 2 g:sta häviää kaksinkertainen määrä).
+Siis m = k ⋅ m ⋅ t . Koska m < 0, mutta m > 0 ja t > 0 , niin
+verrannollisuuskerroin k < 0 . Merkitään k = − λ , jolloin λ > 0 .
+
+∴ m = −λ ⋅ m ⋅ t ,
+m
+= −λ ⋅ m .
+t
+Kun
+
+(1)
+
+t → 0 , tämä yhtälö muuttuu diff.yhtälöksi
+dm
+= − λ ⋅ m erotetaan muuttujat ja integroidaan
+dt
+dm
+= − λ dt
+m
+ln m = − λt + C (itseisarvoja ei tarvita, koska m > 0).
+
+Alussa ainetta oli jäljellä määrä mo , ts. alkuehtona on
+
+t =0
+⇒ ln mo = 0 + C ⇒ C = ln mo .
+m = mo
+∴ ln m = − λt + ln mo eli ln m − ln mo = − λ t .
+
+m
+∴ ln m = − λ t ∴
+= e− λ t ∴
+m
+mo
+o
+
+=
+
+−λ
+
+.
+
+Edellä mainitun kahden verrannollisuuskohdan 1) ja 2) sijaan olisi voitu
+lähteä liikkeelle suoraan diff.yhtälöstä (1). Sen mukaan ainemäärän muuttumisnopeus on verrannollinen jäljellä olevaan ainemäärään.
+
+7
+1.4
+
+Lineaarinen 1. kertaluvun DY
+
+Lineaarisen, 1. kertaluvun DY:n yleinen muoto on
+
+′+ ( ) = ( ).
+
+(1)
+
+Lineaarisuus merkitsee tässä yhteydessä, että diff.yhtälö on 1. astetta muuttujiin y ja y' nähden. Esim. diff.yhtälöt
+
+y ′ + x 2 y = x + 1, xy ′ − ( x + 1) y = sin 2x , y ′ = y / x
+ovat lineaarisia, mutta seuraavat DY:t eivät ole:
+
+xy ′ + y 2 = 0, yy ′ + 2 y = x, y ′ = x / y .
+Vastaavassa homogeenisessa DY:ssä on v(x):n tilalla 0:
+
+′ + ( ) = 0.
+
+(2)
+
+Lineaarisen DY:n (1) ratkaiseminen tapahtuu kolmessa vaiheessa:
+Vaihe 1: Vastaavan homogeenisen DY:n (2) yleisen ratkaisun
+y = y h ( x ) määrittäminen (ratkaisukaavalla),
+Vaihe 2: Lineaarisen DY:n (1) jonkin yksityisratkaisun y = yo ( x )
+etsiminen (yritteellä tms.).
+Vaihe 3: Lineaarisen DY:n (1) yleinen ratkaisu on näiden kahden
+ratkaisun summa:
+
+y = y h ( x ) + yo ( x ) .
+! Johdetaan
+"
+DY:n (2) yleiselle ratkaisulle
+. Se käy erottamalla muuttujat:
+
+dy
+= − u( x ) ⋅ y
+dx
+dy
+= − u( x ) dx
+y
+
+merkitään u( x ): n integraalifunktiota U ( x ):llä
+
+ln y = −U ( x ) + C1
+y = ± e −U ( x ) + C1 = ± e C1 ⋅ e −U ( x ) = C e −U ( x ) .
+
+#
+
+8
+Saatu tulos esitetään yleensä muodossa, jossa integraalifunktion U(x) tilalle
+merkitään u( x ) dx . Kun tämän integraalin arvo lasketaan, siihen ei tule
+enää mukaan integroimisvakiota, sillä integroimisvakio siirtyi johtamisessa
+lausekkeen eteen. Siis
+Lause.
+
+′ + ( ) = 0 yleinen ratkaisu on
+
+Homogeenisen DY:n
+−
+
+=
+
+(3)
+missä
+
+( )
+
+,
+
+on u(x):n integraalifunktio ilman yleistä
+
+u( x ) dx
+
+integroimisvakiota.
+
+Esim. 8
+
+y ′ + (sin x ) y = 0
+y=Ce
+
+− sin x dx
+
+= C ecos x ← ei int. vakiota tähän!
+
+Myös esimerkkien 4, 5 ja 7 DY:t ovat muotoa (2), joten ne
+voidaan ratkaista ratkaisukaavalla (3) seuraavasti:
+
+1) y ′ = 2 xy
+
+(Esim. 4)
+
+y ′ − 2 xy = 0 (∴ u( x ) = −2 x )
+y= Ce
+
+− −2 x dx
+
+y = C ex
+
+=Ce
+
+2 x dx
+
+2 ← ei int. vakiota!
+
+2) xy ′ − 2 y = 0
+2
+y′ − y = 0
+x
+
+(Esim. 5.)
+
+2
+− − dx
+2
+2 ln x
+x
+=Ce
+= C e ln x = C x 2 .
+y=Ce
+
+3)
+
+dm
+= − λ ⋅ m ⇔ m′ + λ m = 0
+m
+m=Ce
+
+− λ dt
+
+(Esim. 7.)
+
+= C e −λ t .
+
+Sen sijaan esimerkin 6 DY y ′ + 2 xy 2 = 0 ei ole muotoa (2) (sillä
+vp. ei ole lineaarinen), joten siihen ratkaisukaava ei käy.
+
+9
+Lineaarisen DY:n y ′ + u( x ) y = v ( x ) jonkin yksityisratkaisun
+etsiminen.
+Seuraavassa rajoitutaan siihen tapaukseen, että u(x):nä on jokin vakio a, ts.
+että kyseessä on ns.
+lineaarinen DY.
+
+′ + ⋅ = ( ).
+
+(4)
+
+Kun etsitään tämän jotakin yksityisratkaisua, etsitään sellaista x:n lauseketta
+y(x), että jos se kerrotaan a:lla ja lisätään derivaattaansa y'(x), tuloksena on
+lauseke v(x):
+
+y ′( x ) + a ⋅ y ( x ) = v ( x ) .
+Kun y(x):n kerroin on vakio a
+$ %&
+seuraavasti:
+
+( )
+
+Jos esim. v(x) on 2. asteen polynomi, niin y(x):nkin täytyy olla
+polynomi, jotta lausekkeesta y ′( x ) + a ⋅ y ( x ) tulisi polynomi. Koska
+y'(x) on alempiasteinen kun y(x), ei lausekkeesta y ′( x ) + a ⋅ y ( x ) tule
+2. asteen polynomia, ellei y(x):n aste ole tarkalleen 2.
+Vastaavasti jos v(x) on esim. 2 e3 x , täytyy y(x):n olla sama e:n potenssi
+
+e3x sopivalla vakiolla A kerrottuna, jotta lausekkeesta y ′( x ) + a ⋅ y ( x )
+voisi tulla 2 e3 x .
+. Seuraavaan taulukkoon on
+Etsittävää funktiota y = y ( x ) sanotaan
+koottu eräitä esimerkkejä sopivista yritefunktioista.
+DY:
+
+′+ ⋅ = ( )
+
+Yrite:
+
+( )
+
+= ( )
+
+2x + 3
+
+y = Ax + B
+
+x2 + 3
+
+y = Ax 2 + Bx + C (ei riitä y = Ax 2 + C )
+
+5 sin 3x + 2 cos 3x
+
+y = A sin 3x + B cos 3x
+
+2 sin 3x
+
+y = A sin 3x + B cos 3x (ei y = A sin 3x )
+
+5e 2 x
+
+y = Ae 2 x tai joskus y = Axe 2 x
+
+3x + 2e − 5 x
+
+y = Ax + B + Ce −5 x (joskus x:llä kerrottu)
+
+10
+Vaiheiden 1 ja 2 tulosten yhdistäminen. Voidaan todistaa, että
+lineaarisen DY:n yleinen ratkaisu on homogeenisen yhtälön
+yleisen ratkaisun ja koko lineaarisen DY:n ratkaisujen summa.
+
+Esim. 9 y ′ + 3 y = 18 x.
+1o . Homog. diff. yhtälön y ′ + 3 y = 0 yleinen ratkaisu:
+= Ce
+
+- 3 dx
+
+#
+
+=
+
+.
+
+2 o . Koko DY:n yksityisratkaisu. Yrite:
++
+
+y = Ax + B
+y′ =
+A
+
+⋅3
+⋅1
+
+y ′ + 3 y = 3 Ax + (3B + A ) ≡ 18 x.
+Jotta DY: n vp ja op olisivat identtisesti eli kaikilla x: n
+arvoilla samat, täytyy vastinpotenssien kertoimien olla
+samat. Täten saadaan yhtälöpari
+3 A = 18
+
+A=6
+
+∴
+
+3B + A = 0
+
+B = −2
+
+∴ yksityisratkaisu on = 6 − 2.
+
+1o + 2 o : Koko DY:n yleinen ratkaisu on summa
+=
+
+-
+
++' − .
+
+Esim. 10 y ′ − 2 y = 4 cos 2 x
+1o .
+
+y = Ce
+
+2 dx
+
+= Ce 2x .
+
+2 o . Yrite:
+y=
+
+A sin 2 x + B cos 2 x ⋅( −2 )
+
+y ′ = −2 B sin 2 x + 2 A cos 2 x ⋅1
+( −2 A − 2 B )sin 2 x + ( 2 A − 2 B ) cos 2 x ≡ 4 cos 2 x
++
+
+−2 A − 2 B = 0
+2 A − 2B = 4
+− 4 B = 4 ∴ B = −1, A = 1 ∴ y = sin2x − cos2x.
+
+1o + 2 o : y = Ce 2x + sin2x − cos2x.
+Seuraavan esimerkin a)-kohdassa on käytettävä "tavallista" eksponenttifunktio-yritettä ja b)-kohdassa x:llä kerrottua yritettä.
+
+11
+
+a ) y ′ − 2 y = 9e5 x .
+
+Esim. 11
+
+1o .
+
+y = Ce 2 x ( edellä)
+
+y = Ae5 x ⋅ ( −2 )
+2 .+
+y ′ = 5 Ae5 x ⋅1
+o
+
+3 Ae5 x ≡ 9e5 x ∴ 3 A = 9 ∴ A = 3∴ y = 3e 5x
+1o + 2 o : y = Ce 2x + 3e 5x .
+
+b) y ′ − 2 y = 4e2 x
+
+1o .
+
+y = Ce 2x .
+
+2o . Yrite y = Ae 2 x ei käy, sillä tätä muotoa olevat funktiot
+toteuttavat homogeenisen DY:n y ′ − 2 y = 0 (kohdan 1° nojalla,
+jossa on juuri sama eksponentti 2x ja A:n paikalla vain C).
+Toisin sanottuna: jokainen funktioista y = Ae 2 x tekee DY:n vp:n
+0:ksi, eikä mikään tee sitä 4e 2 x :ksi. Se, että yrite y = Ae 2 x ei
+käy, näkyisi laskuissa siten, että jouduttaisiin mahdottomaan
+yhtälöön 0 ≡ 4e2 x (kokeile).
+Tällaisessa tapauksessa täytyy kokeilla x:llä kerrottua yritettä:
+
++
+
+y = Axe2 x
+
+⋅ ( −2)
+y ′ = Ae2 x + 2 Axe2 x ⋅1
+−2 Axe2 x + Ae2 x + 2 Axe2 x = Ae2 x ≡ 4e2 x ∴ A = 4.
+∴ y = 4xe 2x .
+
+1o + 2o : y = Ce 2 x + 4 xe2 x = e 2x (C + 4x).
+1.5
+
+Virtapiirisovellus
+
+Esim. 12 (RL-piiri) Johdetaan virranvoimakkuudelle = ( ) lauseke oheisessa
+virtapiirissä. Katkaisija suljetaan
+hetkellä t = 0 , jolloin virta alkaa U
+kasvaa arvosta 0. Virta ei saavuta
+heti lopullista arvoaan i∞ , sillä
+käämi vastustaa virran kasvua.
+
+t=0
+
+u2
+R
+L
+
+i = i(t)
+
+u1
+
+12
+Käämin vastustava vaikutus virran muuttumiseen voidaan esittää
+seuraavana sääntönä: käämissä tapahtuva jännitehäviö on
+verrannollinen virran muuttumisnopeuteen, ts.
+1 = (⋅
+
+(verrannollisuuskerroin L on
+
+).
+
+(Alussa, jolloin virta pyrkii kasvamaan i(t)
+nopeasti, käämi vastustaa tehokkaasti virran
+kasvua. Myöhemmin, kun virta ei enää
+paljon kasva, ts. em. derivaatta ≈ 0, käämin
+vaikutus on lähes olematon.)
+
+t
+
+Vastuksen aiheuttama jännitehäviö taas on (Ohmin lain mukaan)
+verrannollinen virran voimakkuuteen:
+2 = )⋅
+
+(verrannollisuuskerroin R on
+
+).
+
+Koska kokonaisjännite U on jännitehäviöiden summa (Kirchhoff), saadaan DY
+
+(⋅ ′ + ) ⋅ = * .
+Tämä on vakiokertoiminen, lineaarinen 1. kertaluvun DY (jossa
+oikealla puolella on vakiopolynomi). Ratkaistaan se:
+
+1o . Homog. DY on L ⋅ i ′ + R ⋅ i = 0 eli
+R
+
+R
+
+dt
+−
+− t
+R
+i ′ + i = 0 ∴ i = Ce L = Ce L .
+L
+2o . Koska op. on vakiopolynomi U , niin yrite on
+
++
+
+i= A ⋅R
+i′ = 0 ⋅ L
+AR ≡ U ∴ A =
+
+o
+
+o
+
+1 +2 :
+Alkuehto:
+
+U
+U
+∴i = .
+R
+R
+
+R
+− t
+U
+i = Ce L +
+
+R
+t =0
+U
+U
+⇒ 0 = Ce0 + ∴ C = −
+i=0
+R
+R
+R
+
+U
+U − t U
+*
+∴ i = − e L + → , kun t → ∞ ∴ ∞ = .
+R
+R
+R
+)
+
+13
+
+HARJOITUKSIA
+A
+x =1
+.
+y=2
+
+1.1
+
+Ratkaise DY xy′ = 1 , alkuehtona y (1) = 2 eli
+
+1.2
+
+Määritä DY:n y ′ = sin 2 x yleinen ratkaisu sekä sellainen yksityisratkaisu, että se täyttää alkuehdon y( 0 ) = 1.
+2
+
+x =1
+x =1
+2
+, b) x y ′′ = 1, y = 1 .
+y=2
+y′ = 1
+
+1.3
+
+a) x + y ′ = x ,
+
+1.4
+
+Ratkaise erottamalla muuttujat a) y ′ − xy = 0 , b) y ′ + (sin x ) y = 0.
+
+1.5
+
+Ratkaise DY a) xdy+ydx=0,
+
+1.6
+
+Ratkaise ratkaisukaavalla: a) y ′ − xy = 0 , b) y ′ + (sin x ) y = 0 .
+
+1.7
+
+Ratkaise a) erottamalla muuttujat, b) ratkaisukaavalla 2 y ′ − 3xy = 0 .
+
+1.8
+
+Ratkaise a) y ′ + 2 y = x , b) y ′ + 2 y = 3e 4 x .
+
+1.9
+
+Mikä DY:n y ′ + 2 y = sin 2 x ratkaisukäyristä kulkee origon kautta?
+
+x=2
+, b) x 2 dy + y 2 dx = 0,
+y=4
+
+x=2
+.
+y=2
+
+B
+1.10
+
+Ratkaise DY y ′′x 2 = 1 , alkuehtoina y (1) = y ( 2 ) = 1.
+
+1.11
+
+Määritä DY:n y ′′ = xe2 x yleinen ratkaisu.
+
+1.12
+
+Pystysuorassa heittoliikkeessä kiihtyvyys a toteuttaa ehdon a = − g
+( g = 9,81 m / s 2 , a = s′′( t ) ). Määritä matkan s = s(t) lauseke, kun
+hetkellä t = 0 kappaleella on alkunopeus v o ja alkukorkeus so .
+
+1.13
+
+Ratkaise seuraava DY erottamalla muuttujat sekä piirrä ratkaisux =1
+käyrä yy ′ − x = 1 ,
+.
+y =1
+
+1.14
+
+a) y ′ + 4 xy = 0 , b) xy ′ + y 2 = 0
+kohdissa).
+
+(vihje: eri menetelmät a)- ja b)
+
+14
+1.15
+
+Ratkaise DY y ′ − 3 y = 6 a) erottamalla muuttujat , b) käsittelemällä
+DY:tä lineaarisena DY:nä.
+
+1.16
+
+Kappaleen lämpötila hetkellä t on T ja ympäristön on (koko ajan)
+Tymp . Lyhyenä aikavälinä lämpötilan muutos on verrannollinen
+aikavälin pituuteen sekä kappaleen ja ympäristön väliseen lämpötilaeroon. a) Johda näiden tietojen avulla lämpötilalle T = T ( t ) DY ja
+b) ratkaise se, kun kappaleen alkulämpötila (hetkellä t = 0 ) on
+10 o C ja ympäristön 50 oC (erota muuttujat).
+
+1.17
+
+Edellisen harjoituksen mukaisen kappaleen lämpötila on tunnin
+kuluttua (hetkellä t = 1) 45o . Mikä se on kahden tunnin kuluttua?
+
+1.18
+
+Ratkaise a) y ′ − y = e − x , b) y ′ + y = e − x .
+
+1.19
+
+Vaihtovirtapiirissä jännite u = 3 sin 2t , R = 2 ( ) ja L = 1 ( H ) (arvot
+ovat laskujen yksinkertaistamiseksi tekaistuja). Johda virranvoimakkuudelle i = i( t ) DY ja ratkaise se, kun i( 0 ) = 1 / 4 ( A) .
+
+C
+1.20
+
+Kummastakin päästään tuetun palkin pituus on L ja sitä kuormittaa
+tasainen kuorma, kuormituskorkeutena q (= vakio). Laske diff.yhtälöillä taivutusmomentin ja taipumaviivan lausekkeet.
+
+1.21
+
+Laske ulokekannattajan, jonka pituus on L ja jota kuormittaa
+tasainen kuorma, taipumaviivan yhtälö ja maksimitaipuma. (Ohje:
+alkuehdot ovat y( 0 ) = 0 ja y ′(0) = 0 —miksi?)
+
+1.22
+
+Vaihtovirtapiirissä on u = 311sin(100πt ) , R = 2 , L = 1H
+i( 0 ) = 0 (käämin oikosulkumoottori) . Määritä i(t):n lauseke.
+
+1.23
+
+Eräs bakteerikanta lisääntyy siten, että lyhyenä aikavälinä lisäys on
+verrannollinen bakteerimäärään ja aikavälin pituuteen. Tutkimus
+alkoi klo 9.00 ja klo 12.00 todettiin bakteerimäärän lisääntyneen
+72%.
+
+ja
+
+a) Montako % määrä on lisääntynyt kokeen alusta hetkeen 11.00
+mennessä?
+b) Milloin bakteerimäärä tulee kolminkertaiseksi alkutilanteeseen
+verrattuna?
+c) Montako % määrä lisääntyy aikavälillä klo 16.00 ... klo 16.30?
+
+15
+1.24
+
+Vakion variointi. Jos 1. kertaluvun lineaarinen DY ei ole vakiokertoiminen, sen yksityisratkaisua ei löydetä yleensä edellä esitetyllä
+yritemenetelmällä, vaan sopiva yrite saadaan muuntamalla (varioimalla) homogeenisen diff.yhtälön yleistä ratkaisua seuraavasti.
+Korvaa homogeenisen diff.-yhtälön ratkaisussa vakio C funktiolla
+C(x) ja yritä löytää tälle funktiolle jokin sellainen lauseke, että näin
+muunnettu homogeenisen DY:n ratkaisu toteuttaa lineaarisen DY:n.
+Esimerkiksi
+
+y ′ + 1x y = sin x , x > 0 1o . Homog.DY: n yl. ratk. on y = Cx (laske!)
+2o .
+C( x )
+x
+C ( x )⋅ x − C ( x )
+y′ = ′
+x2
+
+y=
+
+⋅ 1x
+⋅1
+
+C ′( x )
+≡ sin x ∴ C ′ ( x ) ≡ x sin x ∴ C( x ) = sin x − x cos x
+x
+
+1o + 2o : y = Cx + sinx x − cos x .
+a) Suorita edelliset laskut yksityiskohtaisesti.
+b) Ratkaise DY y ′ + 2 y tan x = sin 2 x .
+1.25
+
+Laske virta i(t) viereisessä piirissä:
+
+1.26
+
+Osoita, että funktiot
+
+( x − C1 )2 + ( y − C1 )2 + z 2 = a 2
+toteuttavat osittaisdifferentiaaliyhtälön
+
+z ⋅(
+
+u = 311 sin 100πt
+
+t=0
+L = 7 (H)
+
+∂z ∂z
+− )= y− x.
+∂x ∂y
+
+(Vihje: termin z 2 osittaisderivaatta esim. x:n suhteen on 2z ⋅
+
+∂z
+).
+∂x
+
+16
+
+2
+
+Toisen kertaluvun DY
+
+2.1
+
+Vakiokertoiminen lineaarinen toisen kertaluvun DY
+
+Otsikon mukainen DY on muotoa
+
+′′ +
+
+(1)
+
+′+
+
+= ( ).
+
+Se ratkaistaan kolmessa vaiheessa, joista kaksi viimeistä ovat lähes samanlaisia kuin edellä (mutta joskus tarvitaan x 2 :lla kerrottu yrite). Ensimmäinen
+vaihe, vastaavan homogeenisen DY:n
+(2)
+
+′′ +
+
+′+
+
+=0
+
+yleisen ratkaisun määrittäminen, on erilainen. Ratkaiseminen perustuu ns.
+käyttämiseen ja seuraavaan lauseeseen (joka esitetään todistuksetta):
+Lause 1
+
+Jos homogeeniselle DY:lle (2) löydetään kaksi yksityisratkaisua
+y1( x ) ja y2 ( x ) , joiden suhde ei ole vakio, niin
+on
+
+=
+Näiden
+
+kahden
+
+1⋅
+
+1(
+
+yksityisratkaisun
+
+)+
+
+2⋅
+
+2(
+
+)
+
+y1( x ) ja y2 ( x )
+
+määrittämistavan
+
+johtamiseen käytetään eksponenttimuotoista yritettä y = e rx (joka on
+samantapainen kuin vastaavan 1. kertaluvun DY:n y ′ + ay = 0 ratkaisu
+
+y = Ce − ax ).
+y = erx
+
+⋅b
+
+y ′ = re rx ⋅ a
+y ′′ = r 2 erx ⋅1
+y ′′ + ay ′ + by = erx ( r 2 + ar + b) ≡ 0 ∴ r 2 + ar + b = 0.
+>0
+
+Funktio y = e rx on siis homogeenisen diff.yhtälön (2) yksityisratkaisu,
+mikäli r:llä on sellainen arvo, että
+.
+
+17
+Tätä tavallista toisen asteen yhtälöä sanotaan DY:n (2)
+. Huomaa, että sen kertoimet ovat samat kuin DY:n kertoimet.
+Sen mukaan, millaisia karakteristisen yhtälön 2
+ratkaisut) ovat, käsittely jakautuu kolmeen osaan:
+
+0 juuret (eli
+
+1) Karakteristisella yhtälöllä on
+
+r1 ja r2 .
+
+Tällöin em. yritteellä saadaan yksityisratkaisut y = e r1 x ja y = er2 x .
+Näiden suhde e r1 x : e r2 x = e( r1 − r2 ) x ≠ vakio , joten Lauseen 1 mukaan
+homogeenisen DY:n (2) yleinen ratkaisu on
+
+=
+
++
+
+.
+
+2) Karakteristisen yhtälön juuret ovat samat eli yhtälöllä on
+. Tällöin em. yritteellä saadaan vain yksi yksityisratkaisu
+1, 2
+r x
+
+y = e 1, 2 . Voidaan todistaa, että tällöin myös x:llä kerrottu funktio
+r x
+
+y = xe 1, 2 toteuttaa homogeenisen DY:n. Lauseen 1 mukaan homogeenisen DY:n (2) yleinen ratkaisu on nyt
+= C1e r1, 2 x + C2 xer1, 2 x =
+
+#
+
+!
+
++
+
+".
+
+= ± ,
+3) Karakteristisen yhtälön juuret ovat
+:
+a , b ∈R . Voidaan todistaa, että tässä tapauksessa y = eax sin bx ja
+
+y = eax cos bx toteuttavat homogeenisen DY:n. Koska näiden kahden
+yksityisratkaisun suhde ei ole vakio (vaan = tan bx ), niin homogeenisen DY:n (2) yleinen ratkaisu on
+=
+2.2
+
+(
+
+1 sin
+
++
+
+2 cos
+
+).
+
+Esimerkkejä
+
+Esim. 1
+
+1)
+
+Ratkaistaan kaksi vakiokertoimista, homogeenista diff.yhtälöä:
+
+′′ + 4 ′ + 4 = 0 karakteristinen yhtälö r 2 + 4r + 4 = 0
+= −2
+∴ =
+
+−
+
+(
+
++
+
+).
+
+18
+
+r 2 + 4r + 13 = 0
+
+y ′′ + 4 y ′ + 13 y = 0
+
+2)
+
+r = −2 ± 22 − 13 = −2 ± −9 = −2 ± 3i
+−2
+
+∴ =
+
+(
+
++
+
+1sin 3
+
+2 cos 3
+
+).
+
+Seuraava DY ei ole enää homogeeninen vaan lineaarinen, joten siinä on
+käytettävä kaikkia em. vaiheita 1° , 2° ja 3° . Huomaa, että mukana olevat
+alkuehdot ovat koko DY:n alkuehtoja, joten niitä on käytettävä kohtaan
+1° + 2° eikä kohdan 1° jälkeen.
+Esim. 2
+
+y ′′ + 4 y ′ + 3 y = 18 x , alkuehtoina
+
+1o .
+
+x=0
+x=0
+ja
+.
+y =1
+y′ = 3
+
+Homog. DY: n yleinen ratkaisu. Karakt. yhtälö on
+r 2 + 4r + 3 = 0 juuret r1 = −1, r2 = −3
+∴ y = C1e − x + C2e −3x .
+
+2o .
+
+Koko DY:n yksityisratkaisu. Yrite:
+y = Ax + B ⋅ 3
+y′ = A
+y ′′ = 0
+
+⋅4
+⋅1
+
+3 Ax + ( 4 A + 3B ) ≡ 18 x
+
+3 A = 18
+A=6
+∴
+∴ y = 6x − 8
+4 A + 3B = 0
+B = −8
+
+1o + 2o .
+Alkuehdot:
+
+=
+
+−
+1
+
++
+
+−3
+2
+
++6 −8
+
+x=0
+⇒ 1 = C1e 0 + C2 e0 − 8 ⇒ C1 + C2 = 9
+y =1
+y ′ = − C1e − x − 3C2 e −3x + 6
+x=0
+⇒ 3 = − C1 − 3C2 + 6 ⇒ C1 + 3C2 = 3
+y′ = 3
+
++
+
+C1 + C2 = 9 ⋅ ( −1)
+C1 + 3C2 = 3 ⋅1
+2C2 = −6
+
+∴ C2 = −3, C1 = 12
+
+∴ = 12 − − 3 −3 + 6 − 8.
+
+19
+*Seuraavasta DY:stä puuttuu y-termi, mikä aiheuttaa tässä esimerkissä
+(mutta ei aina) sen, että täytyy käyttää x:llä kerrottua yritettä (yksityiskohdat
+harj.)
+
+*Esim. 3
+
+y ′′ + y ′ = 2 x + 1
+1o .
+
+r 2 + r = 0 ⇔ r( r + 1) = 0 ∴ r1 = 0, r2 = −1.
+∴ y = C1e 0 x + C2e − x = C1 + C2e − x .
+
+2 o . Yrite y = Ax + B johtaa ristiriitaan A ≡ 2 x + 1.
+vakio
+
+ei ole vakio
+
+Yrite y = x ( Ax + B ) eli y = Ax 2 + Bx sensijaan käy.
+Suorita laskut. Vastaus on
+
+=
+
+1 +
+
+−
+2
+
++
+
+2
+
+− .
+
+*Seuraavassakin esimerkissä yritteet ovat poikkeuksellisia (harj.).
+
+*Esim. 4
+
+a)
+
+y ′′ + 9 y = 2 sin 3x 1o .
+
+r 2 + 9 = 0 ∴ r = ±3i
+
+∴ y = e 0 x ( C1 sin 3x + C2 cos 3x ) = C1 sin 3x + C2 cos 3x.
+
+2o . Yrite y = A sin 3x + B cos 3x ei käy, sillä nämä funktiot ovat juuri samat kuin homogeenisen DY:n ratkaisut. Siksi
+tarvitaan x:llä kerrottu yrite. (Käytä derivaattoja laskiessasi
+tulon derivoimissääntöä.)
+b)
+
+y ′′ + 4 y ′ + 4 y = 6e −2 x . Homog. DY:n ratkaisu on Esim.1 mukaan
+y = e −2 x ( C1 + C2 x ) = C1e −2 x + C2 xe −2 x .
+Yritefunktioksi ei käy y = Ae −2 x eikä myöskään y = Axe −2 x ,
+sillä nämä funktiot ovat mukana homog. DY:n ratkaisuissa (kun
+valitaan C2 = 0 tai vastaavasti C1 = 0 ). Siksi tässä esimerkissä
+on käytettävä x 2 :lla kerrottua yritettä y = Ax 2e −2 x .
+
+*Jos edellisen DY:n oikealla puolella olisi ollut esim. 6e −3x (siis eri
+eksponentti kuin homogeenisen DY:n ratkaisussa), niin normaali yrite
+y = Ae −3 x olisi ollut oikea yrite.
+
+20
+2.3
+
+Sovelluksia
+
+Esim. 5
+
+$
+. Kappale, jonka massa
+m = 4 , liikkuu pitkin s-akselia edestakaisin voiman F = −16 s
+vaikutuksesta. Muodosta liikkeelle
+s = s( t ) DY ja ratkaise se, kun
+s
+hetkellä t = 0 kappale on kohdassa
+s
+0
+s = 1 ja sillä on nopeus v = −2 3 .
+Nopeudella on näin erikoinen arvo, jotta amplitudiksi saataisiin
+kokonaisluku. Luonnollisempi arvo olisi esim. tämän nopeuden
+likiarvo. Mittayksiköt on jätetty pois, jotta perusidea tulisi paremmin
+esiin.
+
+, missä %
+Lähtökohtana on liikelaki % =
+. Tässä esimerkissä mukana on vain "harmoninen" voima F = −16 s . Diff.yhtälöön joudutaan sen kautta,
+että kiihtyvyys on matkan toinen derivaatta: = ′′( ) .
+
+=%
+
+m = 4,
+
+4 s′′ = −16 s
+
+:4
+
+= ′′, % = ∑ % = −16s
+
+∴ ′′ + 4 = 0.
+Kyseessä on homogeeninen vakiokertoiminen 2. kertaluvun DY.
+Se ratkeaa siis karakteristisen yhtälön avulla seuraavasti:
+
+r 2 + 4 = 0 ⇔ r = ±2i ∴ s = e 0t ( C1 sin 2t + C2 cos 2t )
+=1
+
+= C1 sin 2t + C2 cos 2t
+v = s′ = 2C1 cos 2t − 2C2 sin 2t
+t =0
+⇒ 1 = C1 sin 0 + C2 cos 0 ⇒ C2 = 1
+s =1
+=0
+=1
+t =0
+v = −2 3
+
+⇒ −2 3 = 2C1 − 0 ⇒ C1 = − 3
+
+∴ = − 3 sin 2 + cos 2 .
+Harmoninen liike muodostuu siis sini- ja kosinikomponenteista, joilla
+kummallakin on sama jakso 2π / 2 = π .
+Yleisesti funktion y = sin ωt jakso on
+T = 2π / ω , sillä
+
+sin ωt = 0 ⇔ ωt = n ⋅ π ⇔ t = n ⋅ π / ω ,
+josta saadaan peräkkäisiä 0-kohtia 0, π / ω , 2π / ω ,... .
+
+π/ω
+
+2π/ω
+
+21
+*Koska komponenttiaalloilla on sama jakso, ne voidaan tarvittaessa (esim.
+piirtämistä varten) yhdistää yhdeksi siniaalloksi seuraavasti:
+
+A, ϕ = ?
+
+s = − 3 sin 2t + cos 2t ≡ &sin(2 + ϕ )
+
+≡ A(sin 2t cos ϕ + cos 2t sin ϕ )
+≡ ( A cos ϕ )sin 2t + ( A sin ϕ ) cos 2t
++
+
+2
+A cos ϕ = − 3 ( )
+
+A sin ϕ = 1
+
+( )2
+
+A2 (cos 2 ϕ + sin 2 ϕ ) = 3 + 1 ∴ A = 2
+Jaetaan alempi yhtälö ylemmällä ⇒
+sini pos.
+1
+1
+A sin ϕ
+=−
+∴ tan ϕ = −
+, 2. neljännes, koska
+kosini neg.
+A cos ϕ
+3
+3
+Peruskulma ϕ o = π / 6 ∴ϕ = π − π / 6 = 5π / 6
+
+∴ = 2sin(2 + 5π / 6) .
+Käyrä on viereisen kuvan
+mukainen. Kohta −5π / 12
+saadaan,
+kun
+tutkitaan
+milloin s = 0 eli milloin
+sin( 2t + 5π / 6) = 0 . Tämän
+yksi ratkaisu on
+
+s
+π
+1
+t
+−5π/12
+
+2t + 5π / 6 = 0
+∴ t = −5π / 12.
+
+π
+
+Yhtälössä t:n kerroin 2 on värähtelyn kulmataajuus, jota merkitään
+yleensä ω :lla. Siis tässä esimerkissä
+2π
+=π,
+kulmataajuus ω = 2 , jakso (jaksonaika) T =
+
+ω
+
+frekvenssi eli taajuus f =
+
+1 1
+= .
+T π
+
+Seuraavassa esimerkissä heikennetään harmonista voimaa F = −16 s ,
+korvaamalla se voimalla F = −13s . Samalla lisätään systeemiin vaimennus,
+jonka suuruus on valittu sellaiseksi, että lopputuloksena on värähtely (nyt
+vaimennettuna), jonka kulmataajuus ω on edelleenkin 2.
+Esim. 6
+
+$
+. Kappaleeseen, jonka massa on
+1, vaikuttaa harmoninen voima F1 = −13s ja vaimentava voima,
+joka on verrannollinen nopeuteen: F2 = −6 v (ns.
+
+22
+). Johda liikkeelle DY ja ratkaise se, kun hetkellä
+t = 0 kappale on kohdassa s = 1 ja sillä on nopeus v = −1.
+Tilannetta voidaan havainnollistaa oheisella kuvalla, jossa
+systeemiin on lisätty jokin
+vaimennin (esim. vajaatehoinen
+iskunvaimennin).
+
+=%
+
+s
+0
+
+s
+
+m = 1, a = s′′, F = ∑ Fi = − 13s − 6 v = −13s − 6 s′
+
+1 ⋅ s′′ = −13s − 6 s′ ∴ s′′ + 6s′ + 13s = 0 homog.lin. DY
+Kar. yhtälö: r 2 + 6r + 13 = 0 ∴ r = −3 ± 9 − 13 = −3 ± 2i.
+∴ =
+
+−3t
+
+(
+
+1sin 2
+
++
+
+2cos 2 )
+
+t =0
+s =1
+
+⇒ 1 = 1 ⋅ ( 0 + C2 ) ∴
+
+2 = 1.
+
+v = s′ = −3 ⋅ e −3t ( C1 sin 2t + C2 cos 2t ) + e −3t ( 2C1 cos 2t − 2C2 sin 2t )
+t =0
+⇒ −1 = −3 ⋅ C2 + 2C1 ⇒ −1 = −3 + 2C1 ∴
+v = −1
+∴ =
+
+−3t
+
+1 = 1.
+
+(sin 2 + cos 2 ).
+
+*Yhdistetään vielä sini-ja kosinikomponentit: sin 2t + cos 2t . Koska niillä on
+paitsi sama jakso ( 2π / 2 = π ) myös sama amplitudi, yhdistäminen käy
+edellistä esimerkkiä helpommin trigonometrian tuloksen
+
+sin α ± cos α = 2 sin(α ± π / 4 )
+avulla. Näin saadaan tulos
+
+= 2
+
+−3
+
+sin( 2 + π / 4 ) .
+
+Kyseessä on vaimeneva, sinimuotoinen s
+värähtely, jonka amplitudi on 2e −3t .
+Vaimennustekijä e −3t pienenee hyvin
+voimakkaasti t:n kasvaessa. Käyrä on
+viereisen kuvan tapainen, mutta nopeammin vaimeneva (b:n arvo 3 on
+piirtämistä ajatellen liian suuri jos s- ja
+t-asteikoilla halutaan käyttää yhtä
+pitkää mittayksikköä).
+
+s = Ae
+
+-bt
+
+t
+-bt
+
+s = -Ae
+
+-bt
+
+s = Ae
+
+sin(ωt + ϕ)
+
+ja vaimentavan
+Edellisessä esimerkissä harmonisen voiman % = −
+voiman % = − β = − β ′ kertoimien k ja β suhde oli sellainen, että
+tuloksena oli ns.
+. Tämä näkyi laskuissa siten, että
+
+23
+karakteristisen yhtälön juuret olivat imaginaariset ja siksi värähtelystä tuli
+sinimuotoinen.
+Jos suhdetta β/k suurennetaan (joko kasvattamalla vaimennusta tai heikentämällä harmonista voimaa), karakteristisen yhtälön juuret muuttuvat reaalisiksi ja ratkaisu on eksponenttimuotoa: s = C1e − at + C2e − bt ( a, b > 0) .
+Kyseessä on ns.
+(vrt. auton jousitus ja kunnossa olevat
+iskunvaimentimet) ja käyrä on esimerkiksi seuraavan kuvan tapainen.
+Harj. A
+
+m = 1, F1 = −5s, F2 = −6v ,
+.
+s( 0) = v ( 0 ) = 1
+
+s
+s=Ce
+
+-at
+
++Ce
+
+-bt
+
+t
+
+Näiden välimuoto on ns. kriittinen vaimennus,
+joka vastaa kaksoisjuuri-tapausta. Ratkaisu on
+muotoa s = e − at ( C1 + C2 t ) ja käyrä ei eroa
+kovin paljoa edellisestä.
+Harj. B
+Esim. 7
+
+m = 1, F1 = −9 s, F2 = −6 v, s( 0) = v ( 0 ) = 1 .
+Lisätään edellisen esimerkin tapaiseen sys- F = a sin ωt F= -ks
+F = -βv
+teemiin vielä värähtes
+lyä "häiritsevä" paks
+0
+kovoima (joka voi olla
+esim. sinimuotoinen). Jos esimerkiksi m = 1, F1 = −5s, F2 = −2 v
+ja pakkovoima on F3 = 2 sin t , niin DY:n ratkaisuksi saadaan
+(kohtien 1o + 2 o avulla, tarkemmin harj.)
+
+s = e − t ( C1 sin 2t + C2 cos 2t ) + 15 ( 2 sin t − cos t ).
+Ensimmäisen termin edessä oleva
+e − t aiheuttaa
+sen, että tämä termi → 0, kun t kasvaa. Siten jonkin ajan kuluttua
+
+s ≈ 15 ( 2 sin t − cos t ) ≈ 55 sin( t − 0,46 ).
+ts. systeemi värähtelee pakkovoiman kulmataajuudella ω = 1 ,
+mutta tässä esimerkissä pakkovoimaa pienemmällä amplitudilla.
+Pakkovoimaan 2sin t nähden s:ssä on
+(
+) 0,46.
+
+24
+Esim. 8
+
+'( ) * Lisätään aikaisemmin
+käsiteltyyn RL-piiriin kondensaattori, jonka kapasitanssi on C
+ja joka on hetkellä t = 0
+U
+varaukseton. Uusi jännitehäviö
+on verrannollinen varaukseen q
+(verrannollisuuskertoimena 1/C):
+
+u2
+
+t=0
+
+R
+C
+
+L
+
+u1
+
+i = i(t)
+u
+
+3
+
+1
+
++.
+3 =
+
+Kirchhoffin lain mukaan jännitehäviöiden summa on = U, ts.
+
+L dtdi + Ri + C1 q = U .
+
+(1)
+
+Tässä yhtälössä on kaksi tuntematonta funktiota = ( ) ja
++ = +( ) . Niitä sitoo kuitenkin toisiinsa se, että lyhyenä aikavälinä dt kondensaattori saa varauksen dq = i( t ) dt ts. että
+,+
+
+( )= , . Siten i ′( t ) =
+
+d 2q
+dt 2
+
+. Kun nämä sijoitetaan yhtälöön (1),
+
+saadaan
+(2)
+
+(
+
+, 2+
+,+
++ ' , + 1 + =- .
+2
+,
+
+Tästä saadaan ratkaistua varaus q, alkuehtoina q( 0 ) = 0 ja
+i( 0 ) = 0 eli q ′( 0 ) = 0 . Sen jälkeen i saadaan q:n derivaattana.
+*Yhtälöstä (1) saataisiin myös i:lle DY seuraavasti. Koska
+dq = i( t ) dt , niin hetkeen t mennessä kondensaattori on saanut
+varauksen
+
+q=
+
+t
+0
+
+(sillä koko varaus on osavarausten summa)
+
+i( t ) dt
+
+Kun tämä sijoitetaan yhtälöön (1), i(t):lle saadaan differentiaaliintegraaliyhtälö
+
+( ,, + ' + 1
+
+0
+
+( ), = - .
+
+Tästä yhtälöstä seuraa derivoimalla i(t):lle 2. kertaluvun DY
+2
+
+( , 2 + ' ,, + 1 ( )= 0 ,
+
+(3)
+
+,
+
+sillä
+t
+t
+d
+d
+f
+(
+t
+)
+dt
+F ( t ) = dtd
+=
+dt 0
+dt 0
+
+F ( t ) − F ( 0 ) = F ′( t ) − 0 = f ( t ) .
+
+25
+*Yhtälön (3) toinen alkuehto on i( 0 ) = 0 . Toinen i′ ( 0 ) = ? täytyy
+laskea vastaavan RL-piirin i( t ): n lausekkeesta (ts. ajattelemalla,
+että alussa kondensaattori on tyhjä, joten se ei vaikuta silloin
+virran kasvusuuntaan).
+*Esim. 9 .
+, pituus
+heilahduskulmalle ϕ = ϕ ( t ) DY.
+
+ℓ , massa m. Johdetaan
+
+ma = F a = ℓϕ ′′, F = − mg sin ϕ
+mℓϕ ′′ = − mg sin ϕ
+ℓϕ ′′ + g sin ϕ = 0
+
+ϕ
+
+ϕ ′′ + gℓ sin ϕ = 0.
+Tämä ei ole lineaarinen DY. Jos oletetaan, että
+heilahduskulman suurin arvo ϕ max on aika
+
+F
+mg
+
+pieni, esim. alle π / 18 rad ( = 10 o ), niin
+
+sin ϕ ≈ ϕ
+
+( sillä lim
+
+sin ϕ
+
+ϕ→0 ϕ
+
+= 1) .
+
+Näin DY saadaan linearisoiduksi:
+
+ϕ ′′ + gℓ ϕ = 0
+
+g
+
+Merkitään ℓ = k 2 ∴ϕ ′′ + k 2ϕ = 0
+
+kar. yhtälö: r 2 + k 2 = 0 ∴ r = ± − k 2 = ± ki
+∴ϕ = e0 t ( C1 sin kt + C2 cos kt ).
+=1
+
+t =0
+⇒ C2 = 0 ∴ϕ = C1 sin kt.
+ϕ=0
+Toisen integrointivakion C1 määrittäminen ei käy alkuehdon
+avulla aivan tavanomaisesti, vaan seuraavalla päättelyllä. Koska
+sinin suurin arvo on 1 ja ϕ :n suurin arvo on ϕ max , niin täytyy
+olla C1 = ϕ max . Siis
+
+ϕ = ϕ max sin kt .
+Tästä saadaan tavallinen heilahdusajan T laskukaava seuraavasti:
+
+26
+
+t = T4
+
+ϕ = ϕ max
+
+⇒ ϕ max = ϕ max sin k T4 ⇒ sin k T4 = 1
+∴ k T4 = π2 ( + n ⋅ 2π ) ∴ T = 2π 1k = 2π
+
+*Esim.10 /
+,
+kohdassa x on
+
+ℓ
+.
+g
+
+perustapaus. Taivutusmomentti
+
+x
+
+F
+
+Mt = F ⋅ y .
+Sijoitetaan tämä taipumaviivan diff.yhtälöön:
+M
+
+F
+y ′′ = − EIt = − EI
+y = −k 2 y (k =
+
+y
+
+F
+)
+EI
+
+∴ y ′′ + k 2 y = 0 r 2 + k 2 = 0 ∴ r = ± ki
+
+x
++
+
+∴ y = C1 sin kx + C2 cos kx
+x=0
+⇒ C2 = 0 ∴ y = C1 sin kx
+y=0
+
+y
+0
+
+x=ℓ
+⇒ C1 sin kℓ = 0
+y=0
+
+Tästä lähtien käsittely ei ole "tavanomaista" vaan tapahtuu
+seuraavasti. Koska C1 sin kℓ = 0 , niin
+
+1) Joko C1 = 0 ⇒ taipumaviivan yhtälö on y = 0
+⇒ ei nurjahdusta
+2) Tai: sin kℓ = 0 ⇒ kℓ = n ⋅ π ( n = 0, ± 1, ± 2, ...)
+∴
+
+F
+ℓ = n⋅
+EI
+
+π
+
+n 2π 2 EI
+F=
+ℓ2
+Siten pienin voima, jolla nurjahdus tapahtuu, saadaan kun n = 1:
+
+F=
+
+π 2 EI
+ℓ2
+
+.
+
+Nurjahdus eroaa palkin taivutuksesta mm. siten, että jos
+vaikuttava voima on niin suuri, että nurjahdus tapahtuu, palkki
+"taipuu alas asti" ts. niin paljon, että alku- ja loppupäät yhtyvät.
+
+27
+
+HARJOITUKSIA
+A
+2.1
+
+a) y ′′ + 16 y ′ + 64 y = 0 , b) y ′′ + 4 y = 0 . c) y ′′ + 2 y ′ + y = e 2 x .
+
+x=0
+2.2
+
+−x
+
+y ′′ − y = e , y = 0
+
+.
+
+y′ = 1 / 2
+2.3
+
+a) y ′′ − 4 y = e − x , b) y ′′ + y = sin x .
+
+2.4
+
+Kappaleeseen, jonka massa m = 1, vaikuttaa harmoninen voima
+F = − s . a) Johda liikkeelle s = s( t ) DY ja ratkaise se, kun hetkellä
+t = 0 kappale on kohdassa s = 1 ja sillä on nopeus v = 1. b) Yhdistä
+sini- ja kosinikomponentit yhdeksi siniaalloksi. Ohje: Koska komponenteilla on sama amplitudikin, yhdistäminen käy helposti kaavan
+sin α + cos α = 2 sin(α + π / 4 ) avulla. c) Piirrä kuvaaja.
+
+2.5
+
+Ratkaise Esimerkin 7 edellä mainitut kaksi vaimennetun värähdysliikkeen harjoitusta a) Harj. A ja b) Harj. B sekä kolmantena
+c) m = 1, F1 = −5s, F2 = −2 v , s( 0) = v ( 0 ) = 1 .
+
+B
+2.6
+
+a) y ′′ + 4 y = 6 sin x − 3 cos x , alkuehtoina
+
+x=0
+ja
+y=4
+
+x=0
+,
+y′ = 6
+
+b) y ′′ + 2 y ′ = 8 sin 2 x , y ( 0 ) = 1, y ′( 0 ) = 0 .
+2.7
+
+Ratkaise Esimerkin 3 DY (vastaus esimerkin yhteydessä).
+
+2.8
+
+Seuraavista DY:istä ainakin yksi vaatii "vajautensa" vuoksi x:llä
+kerrotun yritteen. Ratkaise nämä DY:t
+a) y ′′ − 4 y = 2 x + 1 , b) y ′′ − 4 y ′ = 1 − 8 x , c) y ′′ + y ′ = sin x .
+Huom. Ole yleisesti tarkkana, kun muodostat "vajaalle" DY:lle kar.
+yhtälön. Esim. c)-kohdassa väärä kar. yhtälö r 2 + 1 = 0 antaisi
+homog. DY:lle ratkaisun C1 sin x + C2 cos x ja sitten olisi loogista
+käyttää x:llä kerrottua yritettä (joka kuitenkin johtaa ristiriitaan).
+
+28
+2.9
+
+Määritä DY:n
+
+y ′′ + 8 y ′ + 7 y = 0 sellainen ratkaisukäyrä, joka
+
+leikkaa x-akselin origossa 45o kulmassa.
+2.10
+
+Määritä DY:n y ′′ − 4 y = 4 a) yleinen ratkaisu, b) sellainen
+yksityisratkaisu, joka sivuaa suoraa y = 2x origossa.
+
+2.11
+
+Ratkaise y ′′ − 2 y ′ + y = 12 x 2 + 1 , alkuehtoina y ( 0 ) = 1, y ′( 0 ) = 2 .
+
+2.12
+
+Kappaleeseen, jonka massa m = 2 , vaikuttavat voimat F1 = −8 s ja
+F2 = 6 sin t − 3 cos t . Johda funktiolle s = s( t ) DY ja ratkaise se, kun
+s( 0 ) = 3 ja v ( 0 ) = 2 .
+
+2.13
+
+Kappaleeseen, jonka massa = 1, vaikuttaa harmoninen voima −9s ,
+vaimentava voima −6v ja pakkovoima 4e −2t . Muodosta ja ratkaise
+liikkeen DY.
+
+2.14
+
+Kappaleeseen, jonka massa m = 2, vaikuttavat voimat F1 = −4 v ja
+F2 = 10 sin 2t . Muodosta matkalle s = s( t ) DY ja määritä sen
+yleinen ratkaisu.
+
+2.15
+
+Kappaleeseen, jonka massa = 1, vaikuttavat voimat F1 = −2 v ja
+F2 = 8 sin 2t . Muodosta matkalle s = s( t ) DY ja ratkaise se, kun
+s( 0) = 1 ja v( 0 ) = 0 .
+
+2.16
+
+Ratkaise Esimerkin 4 diff.yhtälöt a) ja b).
+
+C
+2.17
+
+Kappaleeseen vaikuttaa a) vain harmoninen voima F = − ks , b) myös
+vaimentava voima F = − βv , c) näiden lisäksi pakkovoima Fo sin ωt .
+2
+
+β
+
+Merkitään mk = ω o , m = 2δ ja
+tapauksen diff.yhtälöt.
+2.18
+
+Fo
+= K o . Muodosta näiden kolmen
+m
+
+Viereisen kuvan mukaisessa RC-piirissä
+katkaisija suljetaan hetkellä t = 0, jolloin
+virta i kasvaa heti ohmin lain mukaiseen
+arvoon ja kondensaattori alkaa varautua. a)
+Muodosta i:lle DY ja ratkaise se. b) Laske
+varauksen q lauseke (integroi i(t):n lauseke).
+
+R
+U
+
+C
+
+29
+2.19
+
+Ratkaise RCL-piiri erityisarvoilla U = 10 V , R = 2 , C = 15 F ,
+L = 1H . Katkaisija suljetaan hetkellä t = 0, jolloin kondensaattori on
+varaukseton.
+
+2.20
+
+RCL-piirissä R = 16 ( ), L = 0,02 ( H ), C = 2 ⋅10 −4 ( F ) , U = 12 (V ) .
+a) Muodosta varauksen yleinen lauseke. b) laske i:n lauseke, kun
+q( 0 ) = i( 0 ) = 0 . Myöhemmin virtapiirejä käsitellään ns. Laplacemuunnosten avulla.
+
+2.21
+
+Ratkaise y ′′′ − 3 y ′′ + 2 y ′ = e x kahdella eri tavalla: a) käyttämällä
+karakteristista yhtälöä ja yritettä samaan tapaan kuin edellä, b)
+merkitsemällä y ′ = u , jolloin saat u:lle 2. kertaluvun diff. yhtälön.
+
+2.22
+
+Ratkaise y ′′ + 1x y ′ = x , x > 0 merkitsemällä y ′ = u ja käyttämällä
+vakion variointia (joka esiteltiin edellisen luvun C-tehtävissä).
+
+2.23
+
+Todista, että DY:llä x 2 y ′′ − 3xy ′ + y = 0 on muotoa y = x r oleva
+ratkaisu ja määritä r.
+
+2.24
+
+Ratkaise DY-ryhmä
+
+2.25
+
+Seuraavassa tehtävässä saadaan liikkeelle 1. kertaluvun DY, joka
+muodostetaan samantapaisesti kuin harmonisessa liikkeessä: Putoavaan kappaleeseen vaikuttaa maan vetovoima F = mg ja ilmanvas-
+
+y′ + z′ + 2 y = 2x
+, missä y = y ( x ), z = z ( x ) .
+y′ − z′ + 2z = 2x +1
+
+tus, joka on verrannollinen nopeuden johonkin potenssiin: F = kv r .
+a) Muodosta nopeudelle v DY. b) Ratkaise DY siinä tapauksessa,
+että r = 1. c) Laske tapauksessa r = 2 rajanopeus v ∞ ts. nopeuden
+raja-arvo, kun t → ∞ .
+Ohje: Rajanopeus saadaan selville DY:stä ratkaisematta diff.
+yhtälöä, sillä kun t → ∞ , niin nopeuskäyrän tangentin kulmakerroin
+eli v' lähenee nollaa (koska nopeus vakioituu).
+2.26
+
+Kanootti (massa m) työnnetään liikkeelle nopeudella 5 (m/s).
+a) Johda kanootin kulkemalle matkalle s = s(t) diff.yhtälö ja ratkaise
+se, kun oletetaan, että kanoottiin vaikuttaa vain väliaineen vastus,
+joka on on suoraan verrannollinen nopeuteen (F = –kv).
+b) Minkä muodon ratkaisu saa, jos tiedetään, että kanootti pysähtyy
+15 m päähän?
+
+30
+
+3
+
+Trigonometristen funktioiden käänteisfunktiot
+
+3.1
+
+Käänteisfunktio ja sen derivaatta
+
+Funktion f perusominaisuus on se, että jokaista x:n
+arvoa, joka kuuluu määrittelyjoukkoon, vastaa
+yksikäsitteinen y:n arvo. Nämä y:n arvot eivät aina
+ole eri suuria. Esim. paraabelilla y = x 2 x:n arvoja
++2 ja –2 vastaa sama y:n arvo 4.
+
+y
+
+x
+
+Jos funktio kasvaa tai vähenee aidosti, niin eri x:n
+arvot kuvautuvat erisuurille y:n arvoille. Siten
+y=f(x) eli
+tällaisilla funktioilla y = f ( x ) jokaista y:n arvoay
+x=g(y)
+kin vastaa yksikäsitteinen x:n arvo x = g ( y ) ts. g
+täyttää funktion perusominaisuuden. Yhtälön
+x = g ( y ) määrittelemää funktiota g sanotaan fx
+funktion
+ja sen merkkinä on
+(teoreettisissa tarkasteluissa) f −1 . Tässä yhteydessä –1 ei tarkoita tavallista
+negatiivista eksponenttia.
+Esim. 1
+
+funktio
+
+käänteisfunktio
+y −1
+2
+
+y = 2x + 1
+
+⇔
+
+x=
+
+y = x3
+
+⇔
+
+x=3 y
+
+y = ln x
+
+⇔
+
+x = ey .
+
+Koska esim. y = ln x ⇔ x = e y , ts.
+kyseessä on sama yhtälö vain
+kahdessa eri muodossa, niin näiden
+funktioiden kuvaajat xy-koordinaatistossa ovat samat. Jos jälkimmäisessä yhtälössä vaihdetaan x ja y
+keskenään, jolloin x tulee riippumattoman muuttujan (eli argumentin) ja y
+funktion merkiksi, niin uuden yhtälön
+y = e x kuvaaja on entiselle kuvaajalle
+symmetrinen suoran y = x suhteen.
+
+(1,e)
+
+y = ex
+
+y = ln x eli
+x = ey
+(e,1)
+
+31
+Lause 1
+
+Käänteisfunktioiden derivaatat ovat toistensa käänteislukuja:
+
+=
+Esim. 2
+
+1
+
+.
+
+Jos logaritmifunktion derivoimissääntö tunnetaan, sen avulla
+voidaan johtaa eksponenttifunktion derivoimissääntö seuraavasti.
+Koska y = e x ⇔ x = ln y , niin
+
+D ex =
+
+1
+1
+= 1 = y = ex .
+D ln y y
+
+Joskus funktio saadaan
+, ts. aidosti kasvavaksi tai
+väheneväksi, kun rajoitetaan funktion määrittelyjoukkoa. Siten funktiolle
+saadaan käänteisfunktio. Esimerkiksi funktiolla y
+= x 2 rajoitettuna x:n positiivisiin arvoihin on
+y = x2, x > 0
+käänteisfunktio:
+eli x = y
+
+2
+
+y= x , x>0 ⇔ x=
+
+y.
+
+Vastaavasti funktiolla y = sin x rajoitettuna väliin
+−π / 2 ≤ x ≤ π / 2 (vrt. seuraava kuva) on
+käänteisfunktio x = arcsin y (lue: arkussini y).
+Ohjelmistoissa on usein
+lyhenteen arcsin tilalla
+asin tai asn. (Ehkä
+matematiikassakin
+olisi
+syytä siirtyä näihin.)
+3.2
+
+y = sin x, -π/2 < x < π/2
+eli x = arcsin y
+−π/2
+π/2
+
+Arkusfunktiot
+
+Arkussini. Edellisen mukaan
+
+π/2
+
+y = arcsin x
+
+y = sin x , − π / 2 ≤ x ≤ π / 2 ⇔ x = arcsin y .
+Kun tässä vaihdetaan x ja y keskenään ja luetaan
+päättely oikealta vasemmalle, saadaan tulos
+(1) = arcsin ⇔
+
+= sin , − π / 2 ≤
+
+-1
+1
+
+≤ π / 2.
+
+Täten käyrä y = arcsin x on sama käyrä kuin
+x = sin y , − π / 2 ≤ y ≤ π / 2 , ts. kyseessä on
+
+−π/2
+
+32
+pätkä y-akselin ympärillä aaltoilevasta sinikäyrästä.
+Tuloksen (1) mukaan y eli arcsin x toteuttaa
+ehdot sin y = x , −π / 2 ≤ y ≤ π / 2 , ts.
+
+1
+x
+
+−π / 2 ≤
+
+≤π /2
+
+α
+
+.
+
+α = arcsin x
+(α on kulma, jonka sini on x)
+
+Siten esim. arcsin 12 = sellainen kulma
+väliltä [− π2 , π2 ] , että sen sini on 12 . Tällainen kulma
+on π6 . Siis
+Esim. 3
+
+arcsin 12 = π6 .
+
+1
+
+arcsin( − 23 ) = − π3
+
+(kuva),
+2
+
+- 3
+
+arcsin 2 ei ole määritelty, sillä ei ole
+olemassa kulmaa, jonka sini olisi 2,
+(laskimessa ehkä sin −1 tai inv sin),
+
+arcsin( −0,234) ≈ −0,236
+arcsin( − 12 ) = − π6 .
+*Yleisesti
+(2)
+
+1
+
+arcsin(− )= − arcsin ,
+
+α
+−α -
+
+sillä viereisessä kuvassa kulma, jonka sini on x, on
+α ja kulma, jonka sini on –x, on −α , ts.
+
+arcsin x = α ja arcsin( − x ) = −α .
+*Yhtälön (2) mukaan arcsin
+
+on pariton funktio.
+
+Koska y = arcsin x ⇔ x = sin y , − π / 2 ≤ y ≤ π / 2 , niin lauseen 1 nojalla
+
+D arcsin x =
+
+1
+1
+1
+1
+.
+=
+=
+=
+2
+D sin y cos y + 1 − sin 2 y
+1− x
+>0
+
+Siis
+
+arcsin
+
+(3)
+
+=
+
+1
+1−
+
+Esim. 4
+
+D arcsin 2 x =
+
+1
+1 − ( 2 x )2
+
+⋅2 =
+
+2
+
+2
+1 − 4x2
+
+(sisäfunktiona 2x).
+
+33
+
+dx
+
+2/2
+
+Esim. 5
+
+1/ 2
+
+1− x
+
+2/2
+2
+
+==
+
+1/ 2
+
+arcsin x =
+
+π
+4
+
+−
+
+π
+6
+
+=
+
+π
+12
+
+.
+
+*Arkuskosini. Kun kosinifunktio rajoitetaan välille 0... π , se on monotonisesti vähenevä ja saa (kertaalleen) kaikki arvonsa –1...1. Täten voidaan
+määritellä
+
+y = arccos x ⇔ x = cos y, 0 ≤ y ≤ π .
+Siis arccos x on sellainen kulma väliltä [0 , π ] , että sen kosini on x.
+Esim. 6
+
+arccos 12 = π3 , arccos( − 12 ) = π − π3 = 23π .
+1
+α
+-x
+x
+α = arccos x
+β = arccos(-x)
+
+Yleisesti (vrt. kuva)
+(4)
+
+β
+
+arccos( − ) = π − arccos .
+
+Arkuskosini ei siis ole parillinen funktio kuten
+kosini. Arkuskosini voidaan esittää arkussinin avulla
+seuraavasti (vrt. viereinen kuva):
+(5)
+
+1
+
+arccos = π2 − arcsin .
+
+x
+α
+
+Tästä seuraa, että
+
+arccos = − arcsin
+
+=−
+
+1
+1−
+
+2
+
+.
+
+Arkustangentti. Tangettifunktiolla rajoitettuna
+avoimelle välille − π2 ... π2 on käänteisfunktio:
+
+y = arctan x ⇔ x = tan y , − π2 < y < π2 .
+
+Siis arctan x on sellainen kulma väliltä
+− π2 … π2 , että sen tangentti on x.
+
+Esim. 7
+
+β
+
+arctan 3 = π3 ,
+arctan( − 3 ) = − π3 .
+
+*Yleisesti: arctan x on pariton funktio.
+
+α = arcsin x
+β = arccos x
+β = π/2 −α
+
+y = tan x
+π
+
+y = arctan x
+
+34
+*Seuraavalla tuloksella voi olla käyttöä mm. ohjelmoinnissa:
+(6)
+
+arcsin = arctan
+
+1− 2
+
+.
+
+1
+
+*sillä viereisessä kuvassa α on sekä kulma, jonka sini
+
+α
+
+on x että kulma, jonka tangentti on x / 1 − x 2 .
+(Funktioiden parittomuuden takia voidaan olettaa, että x > 0.)
+
+1- 2
+
+Koska y = arctan x ⇔ x = tan y , − π2 < y < π2 , niin
+
+D arctan x =
+
+1
+1
+1
+=
+=
+.
+D tan y 1 + tan 2 y 1 + x 2
+
+Siis
+
+Esim. 8
+
+1) D arctan(3x + 1) =
+
+2)
+3.3
+
+=
+
+arctan
+
+(7)
+
+1
+.
+1+ 2
+
+3
+1
+3
+⋅
+=
+.
+9x 2 + 6x + 2
+1 + (3x + 1)2
+
+1
+π
+π π
+dx
+=
+arctan x = − ( − ) = .
+2
+−1 1 + x
+−1
+4
+4
+2
+1
+
+Integroimismenetelmiä. Areafunktiot
+
+Arkussinin ja arkustangentin derivoimiskaavoilla on integroinnissa merkitystä laajemmaltikin, sillä eräät integraalit palautuvat näihin, kun käytetään
+apuna sijoitusta ja neliöintiä.
+
+dx
+
+Esim. 9
+
+=
+
+1 − 4x
+1
+dt
+2
+
+2
+
+1− t
+
+2
+
+sij. 2 x = t ∴ 2 dx = dt
+= 12 arcsin t + C = 12 arcsin 2 x + C.
+
+dx
+=
+4x 2 + 4 x + 2
+
+*Esim. 10
+=
+
+1
+dt
+2
+2
+
+t +1
+
+dx
+( 2 x + 1)2 + 1
+
+sij. 2 x + 1 = t
+2 dx = dt
+
+= 12 arctan t + C = 12 arctan( 2 x + 1) + C.
+
+35
+
+sij. x = at
+dx
+dx = adt
+x2 + a2
+1
+dt
+1
+1
+x
+adt
+=
+=
+t
++
+C
+=
++ C.
+arctan
+arctan
+=
+a
+a
+a 2t 2 + a 2 a t 2 + 1 a
+
+Esim. 11
+
+Siis
+
+2
+
++
+
+=
+2
+
+1
+
+arctan
+
++
+
+ja vastaavasti
+
+2
+
+−
+
+2
+
+= arcsin
+
++
+
+.
+
+Kaavastossa on kolme lähes samannäköistä integraalia, mutta niiden tulokset
+ovat eräitä logaritmifunktioita:
+
+2
+
+2
+
+−
+2
+
+−
+
+Esim. 12
+
+=
+
+2
+
+1
+ln
+2
+
+−
++
+
++ ,
+2
+
+= ln +
+
+−
+
+2
+
++ ,
+
+2
+
++
+
+2
+
+= ln( +
+
+2
+
++
+
+2
+
+)+ .
+
+1 1
+1 dx
+−1
+1
+x−2
+dx
+=
+−
+=
+−
+= − (ln
+− ln −1 )
+ln
+2
+2
+0 x −4
+04− x
+0 2⋅2
+4
+3
+x+2
+1
+
+= − 14 ln 13 = 14 ln 3
+
+( sillä ln a1 = ln 1 − ln a = − ln a ).
+
+Edelliset tulokset voidaan perustella esim. derivoimalla oikeat puolet.
+Varsinaisesti ne ovat peräisin hyperbelifunktioiden käänteisfunktioiden eli
+ns.
+derivoimiskaavoista.
+*Koska hyperbelifunktiot ovat eksponenttifunktioyhdelmiä, on luonnollista,
+että niiden käänteisfunktiot ovat eräitä logaritmifunktioita. Esim.
+
+y = sinh x =
+
+e x − e− x
+⇔ x = ar sinh y = ln( y + y 2 + 1).
+2
+
+e x − e− x
+= y:
+*Tod. Ratkaistaan x yhtälöstä
+2
+
+e x − e− x = 2 y ⋅ e x
+( e x )2 − 2 ye x − 1 = 0 ⇔ e x = y ± y 2 + 1 − ei käy, sillä e x > 0
+⇔ x = ln( y + y 2 + 1 ).
+
+36
+
+HARJOITUKSIA
+A
+3.1
+
+Jos mahdollista, laske seuraavat arvot ilman laskinta, taulukkoja tms.
+(erikoiskolmion tai trig.ympyrän avulla) ja tarkista tulokset laskimen
+avulla. Tulokset radiaaneina.
+a) arcsin 23 , b) arcsin1, c) arcsin 0 , d) arcsin( − 23 )
+e) arcsin( − 22 ) + arcsin( − 12 ) , f) arcsin 53 g) arcsin 54 ,
+h) 2 arcsin( −1) + 3 arcsin( − 12 ) .
+
+3.2
+
+Kuten edellinen, mutta arkussinin tilalla arkuskosini.
+
+3.3
+
+Kuten 3.1., mutta a) arctan 3 , b) arctan( − 13 ) , c) arctan 2 ,
+d) 3 arctan 2 ( − 13 ) , e) arctan( − 13 ) 2 .
+
+3.4
+
+Derivoi a) arcsin 1x , b) ln arcsin x , c) 2 arcsin 3t , d) x 2 arcsin x .
+
+3.5
+
+Derivoi a) arctan 3x , b) arctan x c) arctan e2 x .
+
+3.6
+
+a)
+
+1/ 2
+
+dx
+
+0
+
+1− x2
+
+2 xdx
+
+, b)
+
+dx
+, b)
+0 1+ x2
+1
+
+1− x2
+
+xdx
+, c)
+0 1+ x2
+1
+
+, c) .
+
+a)
+
+3.8
+
+Laske sopivan sijoituksen avulla
+a)
+
+3
+0
+
+dx
+, b)
+x +9
+2
+
+ds
+, c)
+s −9
+2
+
+2dt
+
+− 3/2
+
+1− t2
+
+.
+
+ds
+.
+−1 s2 + 1
+
+3.7
+
+3.9
+
+3/2
+
+3
+
+1/ 3
+0
+
+dx
+.
+1 + 9x 2
+
+dt
+2
+
+.
+
+t −4
+
+3.10
+
+Laske neliöinnin ja sopivan sijoituksen avulla
+
+3.11
+
+Laske neliöinnin ja sopivan sijoituksen avulla
+
+dx
+.
+x + 6 x + 13
+2
+
+dx
+x 2 + 4x
+
+.
+
+37
+
+B
+3.12
+
+Johda lauseen 1 avulla funktion y = 3 x derivaatan lauseke.
+
+3.13
+
+a) D arcsin x , b) D arcsin( 2 x − 1) , c) D arccos x 2+1 .
+
+3.14
+
+Laske D arctan
+
+3.15
+
+Laske sijoituksen x = 2sin t avulla
+
+1+ x
+.
+1− x
+
+4 − x 2 dx ja tarkista tulos
+
+kaavastosta löytyvän kaavan
+2
+
+a 2 − x 2 dx = 2x a 2 − x 2 + a2 arcsin ax + C
+avulla. (Tämä kaava johdettaisiin samantapaisesti.)
+3.16
+
+3.17
+
+3.18
+
+Laske arcsin( − t ) ja arccos( − t ) , jos tiedetään, että arcsin t =
+a)
+
+dx
+, b)
+−1 3 + x 2
+
+a)
+
+2x 2 + 1
+dx (suorita jako) b)
+x2 +1
+
+3
+
+dx
+, c)
+2
+4x + 4x + 3
+
+4
+
+du
+
+3
+
+u2 − 4
+
+x +1
+x2 − 4
+
+π −b
+4
+
+.
+
+.
+
+dx , c)
+
+dx
+1 + 9x 2
+
+C
+3.19
+
+Esitä yhtälön sin x = a ratkaisut arkusfunktioita (lukua arcsin a )
+käyttäen siinä tapauksessa, että a) a ≥ 0 , b) a < 0 (Vihje: mikä on
+peruskulma?)
+
+3.20
+
+Kuten edellinen, mutta arkussinin sijalla 1) arkuskosini, 2) arkustangentti.
+
+3.21
+
+Osoita, että jos a > 0, niin
+
+dx
+2
+
+x x −a
+
+2
+
+=−
+
+sign x
+a
+arcsin + C ,
+a
+x
+
+etumerkkifunktio (signum), ts. sign x =
+
+missä
+
+sign
+
+1, jos x ≥ 0
+.
+−1, jos x < 0
+
+x
+
+on
+
+x:n
+
+38
+3.22
+
+Esitä arccos x arkustangentin avulla.
+
+3.23
+
+Tulos arccos x = π2 − arcsin x perusteltiin vain kolmion avulla, ts.
+olettamalla, että x on positiivinen. Todista se siinä tapauksessa, että
+x on negatiivinen.
+
+3.24
+
+Tulos sin(arcsin ) = pitää paikkansa aina kun arcsin x on määritelty (ts. kun x ≤ 1 ), sillä aina "sini kulmasta, jonka sini on x, on x".
+a) Määritä tämän avulla funktion y = arcsin 2 x − 34π käänteisfunktio.
+Sen sijaan arcsin(sin ) ei aina ole = x, koska arkussinin arvon
+täytyy olla aina välillä − π2 ... π2 , mutta x voi olla minkä kokoinen
+kulma tahansa. Ainoastaan, jos x rajoitetaan välille − π2 ... π2 , niin
+
+arcsin(sin x ) = x .
+Niinpä esim. arcsin(sin 43π ) = − π3 (sillä kulma, jonka sini on muuten
+sama kuin kulman 43π sini, mutta joka on välillä − π2 ... π2 , on − π3 .
+Laske vastaavasti seuraavat arvot ja tarkista tulokset laskimella:
+b) arcsin(sin 2 ) , c) arcsin(sin 4 ) , d) arcsin(sin 6 ) . e) arcsin(cos 56π ) .
+3.25
+
+Laske yleisesti arcsin(cos x ) , kun x on a) välillä π2 ...π , b) välillä
+3π
+...2π . Ohje: Merkitse arcsin(cos x ) = y , jolloin
+2
+
+sin y = cos x , − π2 ≤ y ≤ π2
+π
+
+sin α = sin β ⇔ α = β + n ⋅ 2π
+.
+tai α = π − β + n ⋅ 2π
+
+sin( − x )
+2
+
+Ratkaise tästä kaikki y:n arvot ja valitse niistä oikea.
+
+39
+
+4
+
+Murtofunktion integrointi
+
+4.1
+
+Perustapauksia
+ovat muotoa
+
+a( x )
+, missä a(x) ja b(x) ovat polynomeja.
+b( x )
+
+Aikaisemmissa luvuissa on esiintynyt lähinnä sellaisten murtofunktioiden
+integrointia, joiden nimittäjissä on vain yksi jaoton tekijä tai tällaisen tekijän
+potenssi. Seuraavassa esimerkissä on tällaisia "perustapauksia".
+
+Esim. 1
+
+a)
+b)
+
+dx
+2 dx 1
+= 12
+= ln 2 x + 1 + C,
+2x + 1
+2x + 1 2
+dx
+= 12 ( 2 x + 1) −3 ⋅ 2 dx
+3
+( 2 x + 1)
+( 2 x + 1)
+= 12
+
+−3+1
+
+−3 + 1
+
+c)
+d)
+e)
+
+x
+
+dx = 12 ln( x 2 + 3) + C,
+x +3
+
+2
+
+2
+
+= 12 arctan 2x + C,
+
+2
+
+= 14 ln xx −+ 22 + C,
+
+x +4
+dx
+x −4
+
+f)
+
+dx
+=
+4 x 2 + 4x + 5
+
+=
+
+1
+dt
+2
+2
+
+t +4
+
+1
++ C,
+4( 2 x + 1)2
+
+2x
+
+dx = 12
+
+x +3
+dx
+
++C = −
+
+2
+
+dx
+( 2 x + 1) 2 + 4
+
+sij. 2 x + 1 = t
+2 dx = dt
+
+= 12 ⋅ 12 arctan 2t + C = 14 arctan 2 x2+1 + C.
+
+≥
+joko jakokulmassa tai esim. seuraavalla tavalla:
+
+Esim. 2
+
+x
+2x
+2x −1 +1
+dx
+dx = − 12
+dx = − 12
+1 − 2x
+2x − 1
+2x − 1
+1
+= − 12 (1 +
+) dx = − 12 ( x + 12 ln 2 x − 1 ) + C
+2x − 1
+
+Jos suoritat jaon jakokulmassa, polynomien termien täytyy olla jakokulmassa x:n alenevien potenssien mukaisessa järjestyksessä. Kokeile esim.
+
+40
+4 x 3 − 4 x 2 − 23x +17 = 2 x − 5 + −4 x + 7 .
+2 x 2 + 3x − 2
+2 x 2 + 3x − 2
+
+Yleisesti yllä olevan esimerkin tapaisen jaon tulos on muotoa
+
+r( x )
+a( x )
+,
+= q( x ) +
+b( x )
+b( x )
+missä q(x) on osamääräpolynomi ja r(x) jakojäännöspolynomi, jonka aste on
+alempi kuin jakajapolynomin b(x) aste.
+Koska polynomi q(x) on helppo integroida, tehtäväksi jää sellaisen murtofunktion integrointi, jossa osoittaja on alempiasteinen kuin nimittäjä.
+4.2
+
+Osamurtoihin jako
+
+on menetelmä, jolla sellainen supistetussa muodossa
+oleva murtofunktio, jonka osoittaja on nimittäjää alempiasteinen ja jonka
+nimittäjässä on vähintään kaksi jaotonta tekijää, voidaan "paloitella osiin"
+(osamurtoihin).
+
+Esim. 3
+
+I=
+
+−4 x + 7
+dx.
+2 x 2 + 3x − 2
+
+x2
+(Vaihtoehtoinen esim. ∫ 2
+dx . Se vaatii ensin jaon.)
+x + 3x + 2
+Nimittäjän 0-kohdat ovat 12 ja − 2 , joten sen tekijöihin jako on
+
+2 x 2 + 3x − 2 = 2( x − 12 )( x + 2) = ( 2 x − 1)( x + 2 )
+Yritetään jakaa integroitava funktio kahteen osaan, kahden osamurron summaksi seuraavasti:
+
+A
+B
+−4 x + 7
+.
+≡
++
+( 2 x − 1)( x + 2) 2 x − 1 x + 2
+Kertoimien A ja B määrittämistä varten kerrotaan tämä yhtälö
+vasemman puolen nimittäjällä:
+
+−4 x + 7
+A
+B
+≡
++
+( 2 x − 1)( x + 2) 2 x − 1 x + 2
+−4 x + 7 ≡ A( x + 2 ) + B( 2 x − 1)
+Kun
+määrittämiseksi seuraava yhtälöpari:
+
+⋅ ( 2 x − 1)( x + 2)
+
+, saadaan A:n ja B:n
+
+41
+
++
+
+A + 2 B = −4 ⋅1
+2A − B = 7 ⋅2
+5 A = 10
+
+∴I =
+
+(
+
+( x:n kertoimet)
+(vakiotermit)
+
+∴ A = 2, B = −3
+
+3
+2
+−
+) dx = ln 2 x − 1 − 3 ln x + 2 + C .
+2x − 1 x + 2
+
+Yleisesti voidaan todistaa, että
+1) jokainen reaalikertoiminen polynomi jakautuu :ssä jaottomiin tekijöihin, jotka ovat lineaarisia tai 2. astetta,
+2) jokainen (reaalikertoiminen, supistettu) murtofunktio, jonka
+osoittaja on alempiasteinen kuin nimittäjä, voidaan jakaa
+osamurtoihin. Osamurtokehitelmän muoto riippuu nimittäjän
+tekijöistä seuraavan neljän esimerkin mukaisesti:
+1)
+
+:
+
+−4 x + 7
+A
+B
+≡
++
+( 2 x − 1)( x + 2) 2 x − 1 x + 2
+
+(Esim. 3 edellä),
+
+2) Nimittäjässä on
+
+:
+
+C
+D
+3x 3 − 7 x 2 + 4 x + 1 A B
+≡ +
++
++
+2
+3
+x x - 1 (x − 1) (x − 1) 3
+x ( x − 1)
+3) Nimittäjässä on
+
+:
+
+Bx + C
+A
+3x 2 + x − 4
+≡
++
+( x − 1)( x 2 + 2 x + 3) x − 1 x 2 + 2 x + 3
+jaoton ( diskr .< 0 )
+
+*4) Nimittäjässä on
+
+3x 4 − x 3 + 4 x 2 − 2 x + 1
+x ( x 2 + 1)
+
+2
+
+:
+
+≡
+
+A Bx + C Dx + E
++
++
+x x 2 + 1 ( x 2 + 1)2
+
+jaoton
+
+(Murtofunktioiden 2) - 4) kertoimet ovat seuraavat:
+2) A = 1, B = 2, C = 0, D = −1 , 3) A = 1, B = 2, C = −1 .
+4) A = 1, B = 2, C = −1, D = 0, E = −1 .)
+
+42
+
+Esim. 4
+
+x −1
+dx
+x 2 ( x 2 + 4)
+
+x 2 on 2 - kertainen lineaarinen tekijä
+x 2 + 4 on jaoton 2. asteen tekijä
+
+x −1
+A B Cx + D
+≡
++
++
+x 2 ( x 2 + 4) x x 2 x 2 + 4
+
+⋅x 2 ( x 2 + 4 )
+
+x − 1 ≡ Ax ( x 2 + 4 ) + B( x 2 + 4 ) + ( Cx + D ) x 2
+Kun verrataan vastinpotenssien kertoimia, saadaan seuraava
+yhtälöryhmä:
+
+A+C = 0
+
+( x 3: n kertoimet )
+
+A = 14 , B = − 14
+B + D = 0 (x 2 : n kertoimet)
+∴
+C = − 14 , D = 14
+4A = 1
+( x: n kertoimet)
+4B = −1 (vakiotermit)
+
+∴ I = 14 (
+
+1 1 −x +1
+1
+− 2+ 2
+) dx = 14 (ln x + +
+x x
+x
+x +4
+
+1− x
+dx ) .
+x2 + 4
+
+Jäljellä olevan integraalin laskeminen:
+
+1− x
+dx =
+x2 + 4
+
+dx
+− 12
+2
+x +4
+
+2 x dx 1
+= 2 arctan 2x − 12 ln( x 2 + 4) + C .
+2
+x +4
+
+Vastaus voidaan kirjoittaa esim. muotoon
+
+I = 18 (ln
+
+x2
++ 2x + arctan 2x ) + C .
+2
+x +4
+
+Kokeile, missä muodossa valmisohjelmat (MathCad, Matlab, Mathematica,
+Maple tms.) antavat edellisen vastauksen. Esim. Mathematica-ohjelma
+laskee osamurtokehitelmän Apart-käskyllä. Kehitelmän saat takaisin yhdeksi
+murtofunktioksi Factor-käskyllä.
+Jos nimittäjä muodostuu ainoastaan yhden lineaarisen tekijän potenssista ja
+osoittajassakin on x:ää, vaatii sekin osamurtoihin jaon, mutta kehitelmä
+saadaan joskus helpommin kuin edellisellä tavalla seuraavasti:
+
+3x − 1 3( x − 2) + 5
+3
+5
+≡
+≡
++
+.
+x − 2 ( x − 2) 2
+( x − 2)2
+( x − 2)2
+
+43
+
+Ax + B
+oleva osamurtotermi integroidaan neliöimällä
+x + 2x + 5
+nimittäjä ja käyttämällä sijoitusta sillä tavoin kuin arkusfunktioita koskevan
+luvun loppuosassa on esitetty.
+
+*Esim. muotoa
+
+2
+
+*Neliöinnin ja sijoituksen avulla esim. funktion
+johtaa integraaliin
+
+Ax + B
+integrointi
+( x + 2 x + 5)2
+2
+
+1
+dt , jolle löytyy kaavastosta palautuskaava.
+( t 2 + 1)2
+
+*Osamurtokehitelmiä tarvitaan paitsi integroinnissa myös esim. Laplacemuunnosten yhteydessä.
+*Esitetään vielä muutama tekijöihinjakoesimerkki:
+
+x 3 + 2 x 2 − 5x − 6 = ( x + 1)( x 2 + x − 6) = ( x + 1)( x − 2)( x + 3) ,
+2 x 3 + x 2 + 7 x − 4 = 2( x − 12 )( x 2 +...) = ( 2x − 1) ( x 2 + x + 4) ,
+jaoton, D =1−16 < 0
+
+x 3 − 2 x − 5 = ( x − 2,095...)( x 2 +...) (haarukointi tms. ja jakokulma),
+x 4 + 1 = x 4 + 2 x 2 + 1 − 2 x 2 = ( x 2 + 1)2 − 2 x 2
+= ( x 2 + 1 − 2 x )( x 2 + 1 + 2 x ).
+
+HARJOITUKSIA
+A
+x
+dx , b)
+−1 x − 1
+
+4.2
+
+a)
+
+x −1
+dx b)
+x2 +1
+
+4.3
+
+Muodosta osamurtokehitelmä: a)
+
+4.4
+
+Muodosta osamurtokehitelmä ja integroi
+a)
+
+4.5
+
+0
+
+2
+
++ 2x
+dx .
+0 x +1
+1x
+
+2
+
+x −1
+dx , b)
+x2 + x
+
+Mikä on funktion
+
+x
+dx , c)
+1− x
+
+4x 2
+dx .
+2x + 1
+
+a)
+
+4.1
+
+x−4
+2
+, b) 2
+.
+2
+x + 2x
+s −1
+
+5
+dx .
+2x 2 − 7x + 3
+
+s2 − 3s − 2
+osamurtokehitelmä?
+s3 + s2 + s
+
+44
+4.6
+
+4.7
+
+x2 + 1
+Laske
+dx .
+2 x3 − x 2
+3
+
+ax 2 + b
+ax 2 + b
+, b) 2 2
+osamurtoEsitä funktion a) 2 2
+x ( x − 2 x + 2 )3
+x ( x − 2 x + 1)2
+kehitelmän muoto (kertoimien arvoja ei tarvitse laskea)?
+
+B
+4.8
+
+4.9
+
+a)
+
+x2
+dx , b)
+x2 + x − 2
+
+x 2 − 3x + 26
+dx .
+( x + 1)( x 2 + 9)
+
+dx
+a) käyttämällä osamurtoihin jakoa, b) neliöinnin
+4x − 4x
+dx
+ja sijoituksen avulla, c) kaavaston kaavalla
+.
+2
+ax + bx + c
+Laske
+
+2
+
+4.10
+
+4 s2 + 2s
+osamurtokehitelmä.
+Muodosta funktion 2
+( s + 1)( s + 1)2
+
+4.11
+
+a)
+
+3x + 5
+dx , b)
+x 2 + 2x
+
+8x − 4
+dx .
+x 4 + 4x 2
+
+a)
+
+x2 +1
+dx , b)
+x3 − x 2
+
+3x + 1
+dx .
+0 ( x + 1)( x 2 + 1)
+
+4.12
+
+1
+
+C
+4.13
+4.15
+
+dt
+.
+0 t3 +1
+1
+
+4.14
+
+3x 2 − x + 2
+dx .
+x3 + x − 2
+
+Voidaan todistaa, että (reaali-tai kompleksikertoiminen) polynomi
+jakautuu kompleksilukualueella lineaarisiin tekijöihin, ja jos a + bi
+on polynomin nollakohta, niin samoin on a − bi . Tekijöiden
+x − ( a + bi ) ja x − ( a − bi ) tulo antaa reaalikertoimisen toisen asteen
+tekijän, joka on reaalilukujoukossa jaoton (koska sen nollakohdat
+eivät ole reaaliset). Millaisia ovat näiden tulosten perusteella a)
+kolmannen, b) neljännen asteen reaalikertoimisen polynomin
+jaottomat tekijät reaalilukualueella?
+
+45
+
+5
+
+Trigonometristen funktioiden integrointi
+
+5.1
+
+Perustapauksia
+
+Esim. 1
+
+1)
+
+sin( ax + b) dx = − a1 cos( ax + b) + C ,
+
+2)
+
+tan ωt dt = − ω1
+
+− sin ωt ⋅ ω
+dt = −ω1 ln cos ωt + C ,
+cos ωt
+
+Eräs päämenetelmä trigonometristen funktioiden integroinnissa on
+. Kertaa se, ellet hallitse sitä hyvin (I osa, luku 7)!
+Integraalien
+
+cos2 x dx laskemiseen on aikaisemmin käytetty
+
+sin 2 x dx ja
+
+yleensä palautuskaavaa. Eksponentista 2 päästään eroon myös kaavoilla
+
+cos 2α = 2 cos2 α − 1 = 1 − 2 sin 2 α
+∴ sin 2α = 12 (1 − cos2α ), cos 2α = 12 (1 + cos2α ).
+
+Esim. 2
+
+π /4
+0
+
+sin 6t
+)
+0
+0
+6
+1
+1
+= 12 ( π4 − 16 sin 32π ) = π8 − 12
+( −1) = π8 + 12
+.
+
+sin 2 3t dt = 12
+
+π /4
+
+(1 − cos 6t )dt = 12
+
+π /4
+
+(t −
+
+*Palautuskaavan käyttäminen olisi vaatinut ensin sijoituksen 3t = u .
+
+tan 2 x dx laskemisessa voidaan käyttää palautuskaavan
+
+*Integraalin
+
+sijasta tietoa D tan x = 1 + tan 2 x seuraavasti:
+
+Esim. 3
+
+5.2
+
+tan 2 5 x dx =
+
+Tulot sin
+
+cos
+
+(1 + tan 2 5x − 1) dx = 15 tan 5x − x + C.
+
+, sin
+
+sin
+
+, cos
+
+cos
+
+Jos = , niin otsikon mukaisten tulojen integroinnissa voidaan käyttää
+apuna kaavaa sin 2α = 2 sin α cos α (vrt. Esim. 5 jäljempänä).
+Jos taas a ≠ b , nämä tulolausekkeet integroidaan siten, että muutetaan "tulot
+summiksi" seuraavien trigonometristen kaavojen avulla:
+
+46
+
+sin α sin β = 12 cos(α − β ) − cos(α + β )
+cos α cos β = 12 cos(α − β ) + cos(α + β )
+sin α cos β = 12 sin(α − β ) + sin(α + β ) .
+sin 2t ⋅ cos 3t dt = 12
+
+Esim. 4
+
+= 12
+
+*Esim. 5
+
+− sin t + sin 5t dt = 12 (cos t − 15 cos 5t ) + C.
+
+T /4
+0
+
+sin( − t ) + sin 5t dt
+
+sin ω t cos ω t dt = 12
+
+T /4
+0
+
+ωT
+
+sin 2ω t dt = − 41ω
+
+= − 41ω (cos π − 1) = − 41ω ( −1 − 1) =
+Potenssilausekkeen sinm
+
+sin 4 x ⋅ cos3 x dx =
+
+Esim. 6
+=
+
+0
+
+cos 2ω t
+
+jakso T = 2ωπ ∴ωT = 2π
+
+= − 41ω (cos 2 − 1)
+
+5.3
+
+T /4
+
+cosn
+
+1
+.
+2ω
+
+integrointi
+
+sin 4 x ⋅ (1 − sin 2 x ) cos x dx
+
+sin 5 x sin 7 x
+sin x ⋅ cos x dx − sin x ⋅ cos x dx =
+−
++ C.
+5
+7
+4
+
+6
+
+Jos siis ainakin toinen eksponentti on pariton, jätetään tästä potenssista yksi
+funktio muuttamatta (sisäfunktion derivaataksi) ja muu osa muutetaan
+toiseksi trig. funktioksi kaavan sin 2 α + cos 2 α = 1 avulla.
+
+sin 2 x ⋅ cos4 x dx =
+
+Esim. 7
+=
+
+(1 − cos2 x ) ⋅ cos4 x dx
+
+cos4 x dx − cos6 x dx = ... (palautuskaava).
+
+Jos siis kumpikin eksponentti on parillinen, joudutaan muuttamaan koko
+toisen funktion potenssi (pienempi) toiseksi kaavan sin 2 α + cos 2 α = 1 avulla ja käyttämään palautuskaavaa.
+Jälkimmäinen tapa kävisi myös Esimerkkiin 6, mutta se johtaisi oleellisesti
+pidempiin laskuihin (ja vastaus olisi aivan erinäköinen).
+
+47
+5.4
+
+Sijoituksia
+
+*
+=
+
+sin x dx
+
+sij. cos x = t
+
+1 − cos 2 x
+
+∴− sin x dx = dt
+
+− dt
+1− t
+
+=
+2
+
+1 t −1
+1 cos x − 1
++ C.
++
+=
+=
+C
+ln
+ln
+2 cos x + 1
+t2 −1 2 t +1
+dt
+
+*Tässä esimerkissä sijoituksella päästiin kosinifunktiosta eroon. Sijoitus
+johti helpompaan integraaliin, koska osoittajassa oli etumerkkiä vaille
+kosinin differentiaali. Sijoitus muutti "trigonometrisen murtofunktion"
+integroinnin tavallisen murtofunktion integroinniksi.
+*Esim. integraaliin
+
+dx
+ei käy edellinen sijoitus sillä x = arccos t ja
+1+cos x
+
+siten dx:lle tulee hankala lauseke: dx = −1 / 1 − t 2 dt . On olemassa eräs
+trigonometrinen erikoissijoitus, joka muuttaa sinin, kosinin, tangentin ja dx:n
+t:n murtofunktioiksi. Tämä sijoitus on
+
+tan x2 = t .
+2 tan α
+1 − tan 2 α
+*Tätä ja kaavoja sin 2α =
+ja cos 2α =
+1 + tan 2 α
+1 + tan 2 α
+saadaan sin x , cos x , tan x esitettyä t:n murtofunktioina:
+
+käyttäen
+
+sin x =
+
+2 tan 2x
+1 − tan 2 2x 1 − t 2
+sin x
+2t
+2t
+,
+cos
+tan
+.
+=
+x
+=
+x
+=
+∴
+=
+=
+cos x 1 − t 2
+1 + tan 2 2x 1 + t 2
+1 + tan 2 2x 1 + t 2
+
+Lisäksi
+
+1
+x
+dt (vrt. kaavasto).
+= arctan t ∴ x = 2 ⋅ arctan t , dx = 2 ⋅
+2
+1+ t2
+dx
+1 + cos x
+
+*Esim. 9
+
+=
+
+2 dt
+1+ t2 =
+1− t2
+1+
+1+ t2
+
+sij. tan 2x = t ∴ cos x =
+2 dt
+1+ t2
+=
+1+ t2 +1− t2
+1+ t2
+
+1− t2
+2 dt
+,
+dx
+=
+1+ t2
+1+ t2
+
+2 dt
+=
+2
+
+dt = t + C = tan 2x + C.
+
+*Tutki, miten matematiikkaohjelmat (MathCad, Matlab tms.) pystyvät
+integroimaan edellä olevan tapaisia funktioita ja millaisessa muodossa ne
+esittävät vastauksen.
+
+48
+
+HARJOITUKSIA
+A
+5.1
+5.2
+5.3
+
+5.4
+
+a)
+a)
+a)
+
+π /2
+0
+1
+0
+
+π /2
+0
+
+*5.5
+
+π /2
+
+tan 2 4u du , b)
+
+2π
+
+π
+
+sin(3x − π / 6 ) dx , b)
+
+0
+
+T /3
+0
+
+cos 3ωt dt ( T = 2π / ω ).
+
+(sin 2 2t + cos2 3t ) dt .
+
+sin x cos x dx , b)
+
+cos 3x sin x dx .
+
+sin 3 x cos 2 x dx .
+
+1
+dx , b)
+sin x
+
+Laske (sij. tan 2x = t ) a)
+
+1
+dx .
+1 − cos x
+
+B
+5.6
+
+5.7
+
+5.8
+
+( t + 1)sin 2t dt , b)
+
+a)
+a)
+
+π /2
+0
+
+T /2
+0
+
+*5.9
+
+a)
+
+0
+
+sin 5 2x dx .
+
+π /4
+0
+
+sin 2 x
+dx .
+1 + sin x
+
+( t + 1) sin( 3ωt + π / 3) dt ( T = 2π / ω ).
+
+π /3
+0
+
+cos x
+dx , b)
+1 + sin x
+
+π
+
+dt
+, b)
+1 − sin t
+
+π /4
+0
+
+dx
+(sij. tan x = t ).
+1 + sin 2 x
+
+C
+dt
+, b)
+sin 3 ωt
+
+dx
+dx .
+sin 2 x cos 2 x
+
+5.10
+
+a)
+
+5.11
+
+Lyhyenä aikavälinä dt vaihtovirta tekee työn dW = u( t )i( t )dt (vrt.
+tasavirran työ W = Pt = UI t ). Laske integroimalla tästä työ yhden
+jakson 0...T aikana, jos u( t ) = uɵ sin ωt ja i( t ) = iɵ sin(ωt − ϕ ) .
+
+49
+
+6
+
+Irrationaalifunktioiden integrointi
+
+Irrationaalifunktioissa muuttuja x esiintyy juuren alla. Tällaisia integraaleja
+on laskettu aikaisemmin esim. yhdistetyn funktion potenssin yhteydessä ja
+arkus- ja areafunktioiden yhteydessä.
+
+x2
+
+Esim. 1
+
+1+ x
+
+dx = 13 ⋅
+3
+
+3 −1/ 2
+
+(1 + x )
+
+⋅ 3x
+
+2
+
+3 1/ 2
+1 (1 + x )
++C
+dx = 3 ⋅
+
+1/ 2
+
+= 23 1 + x 3 + C.
+Irrationaalifunktioista suuri osa on sellaisia, että niillä ei ole olemassa mitään
+tavallisen muotoista integraalifunktiota (kuten on voitu todistaa). Niinpä esimerkiksi integraalien
+
+1 + x 3 dx ja
+
+3
+
+1 − x 2 dx arvoja ei pystytä tavalli-
+
+sessa mielessä laskemaan. Myöhemmin opitaan esittämään näiden integraalien arvot äärettömän pitkinä sarjoina. Seuraavassa esitetään eräitä funktiotyyppejä, joiden integrointi onnistuu sopivan sijoituksen (tai
+sijoitusmenettelyllä johdetun valmiskaavan) avulla.
+*Jos juuren alla oleva lauseke on lineaarinen, voidaan koko juurilauseke
+valita uudeksi muuttujaksi:
+
+x
+dx
+x − 2 +1
+
+*Esim. 2
+
+sij.
+
+x − 2 = t ∴ x − 2 = t 2 ∴ dx = 2t dt
+
+3
+t 3 + 2t
+t2 + 2
+2t dt = 2
+) dt
+dt = 2 ( t 2 − t + 3 −
+t +1
+t +1
+t +1
+t3 t2
+= 2( − + 3t − 3 ln t + 1 ) + C, missä t = x − 2.
+3 2
+
+=
+
+Tässä esimerkissä on ehkä tarpeetonta suorittaa sievennys
+pidemmälle.
+*Jos integroitavassa funktiossa esiintyy muotoa a 2 − x 2 oleva juuri= sin
+( −π / 2 ≤ t ≤ π / 2, a > 0 ) .
+lauseke, niin sopiva sijoitus on
+Tällöin nimittäin
+
+a 2 − x 2 = a 2 − a 2 sin 2 t = a 1 − sin 2 t = a cos t , dx = a cos t dt
+ts. integraalista häviää juurilauseke ja integraali muuttuu trigonometriseksi.
+Tyyppiesimerkki on seuraava:
+
+50
+4 - x 2 dx
+
+*Esim. 3
+
+sij. x = 2 sin t , dx = 2 cos t dt
+
+4 − 4 sin 2 t 2 cos t dt = 4
+
+=
+
+1 − sin 2 t cos t dt
+
+= 4 cos 2 t dt
+= 2t + 2 sin t cos t + C
+
+sin t = 2x , cos t = 1 − ( 2x )2 =
+
+4− x 2
+2
+
+= 2 arcsin 2x + 2x 4 − x 2 + C.
+
+*Jos integroitavassa funktiossa esiintyy muotoa a 2 + x 2 tai x 2 − a 2
+oleva juurilauseke, niin eräät mahdolliset sijoitukset ovat x = a tan t ja
+x = sina t . Yleensä näiden sijoitusten käyttö vaatii kuitenkin aika hyvää trigonometristen lausekkeitten käsittelytaitoa. Kaavastosta löytyy muitakin sopivia sijoituksia ja seuraavat kuusi valmista "perusintegraalia":
+2
+
+a 2 − x 2 dx = 2x a 2 − x 2 + a2 arcsin ax + C,
+2
+
+a 2 + x 2 dx = 2x a 2 + x 2 + a2 ln( x + a 2 + x 2 ) + C,
+2
+
+x 2 − a 2 dx = 2x x 2 − a 2 − a2 ln x + x 2 − a 2 + C,
+dx
+a2 − x2
+dx
+2
+
+a +x
+dx
+
+2
+
+x2 − a2
+
+Esim. 4
+
+= arcsin ax + C,
+= ln( x + a 2 + x 2 ) + C,
+= ln x + x 2 − a 2 + C.
+
+dt
+4−t
+
+2
+
+= arcsin 2t + C,
+
+dt
+2
+
+= ln t + t 2 − 4 + C.
+
+t −4
+
+*Jos integroitavassa funktiossa on esim. muotoa a 2 + b2 x 2 oleva lauseke,
+niin sijoituksella bx = t integrointi muuttuu edellisen kohdan mukaiseksi.
+*Jos integroitavassa funktiossa on muotoa ax 2 + bx + c , oleva osa, niin
+neliöinti ja neliöosan sijoitus t:ksi poistaa juuren alta 1. asteen termin ja
+integrointi palautuu edellisiin kohtiin kuten seuraava esimerkki osoittaa.
+
+51
+
+3 + 6 x − 9 x 2 dx =
+
+*Esim. 5
+
+3 − ( 9 x 2 − 6 x + 12 ) + 12 dx
+
+=
+
+4 − (3x − 1)2 dx
+
+=
+
+4 − t 2 ⋅ 13 dt = 13 ( 2t 4 − t 2 + 22 arcsin 2t ) + C
+
+3x − 1 = t ∴ 3dx = dt
+2
+
+= 3x6−1 3 + 6 x − 9 x 2 + 23 arcsin 3x2−1 + C.
+
+HARJOITUKSIA
+A, B
+6.1
+
+a)
+
+6.2
+
+a)
+
+6.3
+
+a)
+
+6.4
+
+a)
+
+1
+0
+
+4
+1
+0
+
+3 2
+x
+0
+
+6.6
+
+a)
+a)
+
+x 1 + x dx ,
+
+9
+
+6.5
+
+*6.7
+
+2
+
+1
+0
+
+b)
+
+dx
+,
+x +1
+
+b)
+
+dt
+,
+t +1
+
+*b)
+
+x 1 − x 2 dx ,
+
+1
+0
+
+x 1 + x dx ,
+
+x
+dx ,
+x −1
+
+dx
+
+1
+0
+
+4− x
+
+*b)
+
+c)
+
+dx
+.
+2x − 1 − 1
+
+c)
+.
+
+2
+
+1 2
+x
+0
+
+x2
+dx .
+2x
+
+1− x 2 dx .
+
+9 − x 2 dx (sij. x = 3 sin t)
+2 + x 2 dx ,
+
+0
+
+b)
+
+x 2 + 4 x + 8 dx ,
+
+−2
+
+1
+
+du
+
+0
+
+2 − u2
+
+,
+
+c)
+
+dt
+
+b)
+
+1
+
+du
+
+0
+
+2 + u2
+
+.
+
+.
+
+2
+
+t + 2t
+
+C
+6.8
+
+6.9
+
+a)
+
+3
+1
+
+dx
+x 4− x
+
+2
+
+,
+
+dx
+
+b)
+
+x
+
+2
+
+9− x
+
+2
+
+.
+
+dx
+
+Laske trig. sijoituksella: a)
+
+2
+
+x x −4
+6.10
+
+Laske
+
+1− x
+dx sijoituksella
+x
+
+( x > 0 ), b)
+
+1− x
+= t.
+x
+
+3
+1
+
+1+ x2
+dx .
+x
+
+52
+
+7
+
+Eksponentti-, logaritmi- ja hyperbelifunktiot
+
+Edellä on esitelty kolmen tärkeän funktiotyypin, murto-, trigonometristen- ja
+irrationaalifunktioiden integrointimenetelmiä. Täydennetään tätä luetteloa
+vielä lähinnä eksponentti- ja logaritmifunktioilla.
+7.1
+
+Eksponenttifunktioiden integrointitapoja
+
+1) e −2 x dx = − 12 e −2 x + C.
+
+Esim. 1
+
+2)
+
+2
+
+2
+
+2
+
+xe − x dx = − 12 e − x ⋅ ( −2 x ) dx = − 12 e − x + C.
+
+Jälkimmäisessä kohdassa oli mukana sopiva x:n potenssi sisäfunktion derivaataksi. Seuraavassa esimerkissä on mukana liian korkea x:n potenssi. Se
+poistuu
+.
+1
+
+Esim. 2
+
+0
+
+=
+
+1
+0
+
+xe
+
+−2 x
+
+dx
+
+u= x
+
+v ′ = e −2 x
+
+u′ = 1
+
+v = − 12 e −2 x
+
+x ⋅ ( − 12 e −2 x ) + 12
+
+1
+1 −2 x
+e
+dx = − 12 e −2 − 14 e −2 x
+0
+0
+
+= − 12 e −2 − 14 ( e −2 − e0 ) = 14 − 34 e −2 .
+On pystytty todistamaan, että integraalien
+
+Esim. 3
+
+e
+
+−x2
+
+dx (ns. virheintegraali) ja
+
+ex
+dx
+x
+
+arvoille ei ole olemassa mitään tavallista esitystapaa (ns. suljetussa muodossa). Näille integraaleille saadaan myöhemmin esitys sarjojen avulla.
+Kaavastosta löytyvät
+integraaleille
+
+osittaisintegroinnilla
+
+eax sin bx dx ja
+
+johdetut
+
+kaavat
+
+ainakin
+
+eax cos bx dx
+
+sekä kaava
+
+x n e x dx = e x ( x n − nx n −1 + n( n − 1)x n − 2 − +...+( −1)n n !) + C .
+
+53
+1 3 2x
+x e dx
+0
+
+Esim. 4
+=
+
+sij. 2 = ∴ x = 12 t , dx = 12 dt , t: 0...2
+
+2 1
+
+2 3 t
+
+2
+
+0
+
+0
+
+0
+
+( 2 t )3 e t ⋅ 12 dt = 161
+2
+
+1
+t e dt = 16
+
+et ( t 3 − 3t 2 + 3 ⋅ 2t − 3 ⋅ 2 ⋅1)
+
+2
+
+0
+
+= 161 [e ⋅ 2 − e ( −6 )] = 18 ( e + 3).
+(Toisin: 3 osittaisintegrointia.)
+7.2
+
+Logaritmifunktioiden integrointitapoja
+
+Päämenetelmänä voidaan ehkä pitää
+
+sij. ln x = t ∴ x = et , dx = et dt
+
+x ln x dx
+
+I=
+
+Esim. 5
+
+3t
+2
+
+et ⋅ t ⋅ e t dt =
+
+=
+
+.
+
+t e dt
+
+u=t
+
+3t
+
+v′ = e2
+
+3t
+
+u′ = 1 v = 23 e 2
+3t
+
+3t
+
+= 23 te 2 − 49 e 2 + C = 23 x x ln x − 49 x x + C.
+*Edelliseen esimerkkiin käy myös osittaisintegrointi seuraavasti:
+
+I=
+
+x ln x dx
+
+= 23 x x ln x − 23
+7.3
+
+u = ln x
+
+v′ = x
+
+u′ = 1x
+
+v = 23 x x
+
+Näin päin!
+
+x dx = 23 x x ln x − 49 x x + C.
+
+Hyperbelifunktiot
+x
+
+Hyperbelifunktioita sinh x = e −2e
+
+−x
+
+x
+
+, cosh x = e +2e
+
+−x
+
+sinh x
+ja tanh x = cosh
+x
+
+sisältäviä lausekkeita voidaan integroida esim. siten, että muutetaan ne
+eksponenttifunktiolausekkeiksi.
+Esim. 6
+
+2
+
+cosh x dx =
+
+e x + e− x 2
+(
+) dx = 14 ( e2 x + 2e x e − x + e −2 x ) dx
+2
+=1
+
+= 14 ( 12 e2 x + 2 x − 12 e −2 x ) + C
+e
+= 14 (
+
+2x
+
+− e −2 x
++ 2 x ) + C = 14 sinh 2 x + 2x + C.
+2
+
+54
+Hyperbelifunktioita voidaan käsitellä myös samantapaisesti kuin trigonometrisia funktioita. Hyperbelifunktiolla on nimittäin laskulakeja, jotka ovat
+lähes samanlaisia kuin trigonometristen funktioiden laskulait, ainoastaan + ja
+– merkeissä on eroja. Esimerkiksi
+(1)
+
+cosh 2 x − sinh 2 x = 1
+
+(2)
+
+sinh( x + y ) = sinh x cosh y + cosh x sinh y ,
+
+(3)
+
+cosh( x + y ) = cosh x cosh y + sinh x sinh y
+
+(4)
+
+sinh 2 x = 2 sinh x cosh x ,
+
+(5)
+
+cosh 2 x = cosh 2 x + sinh 2 x
+
+(6)
+
+D sinh x = cosh x , D cosh x = sinh x,
+
+(7)
+
+D tanh x =
+
+(– eikä +).
+
+(+ eikä –),
+
+(+ eikä –),
+
+1
+= 1 − tanh 2 x
+2
+cosh x
+
+(– eikä +)
+
+*Todistetaan laki (2):
+
+e x − e− x e y + e− y e x + e− x e y − e− y
+op. =
+⋅
++
+⋅
+2
+2
+2
+2
+= 14 e x e y + e x e − y − e − x e y − e − x e − y + e x e y − e x e− y + e− x e y − e− x e− y
+= 14 2e x e y − 2e − x e − y
+
+e x + y − e−( x + y )
+=
+= sinh( x + y ).
+2
+
+*Lait (1) ja (3) todistettaisiin vastaavasti. Lait (4) ja (5) seuraavat laeista (2)
+ja (3), kun x = y . Derivoimissäännöt (6) ja (7) todistetaan seuraavasti:
+
+D sinh x = D
+
+e x − e − x e x − e − x ⋅ ( −1)
+=
+= cosh x. Toinen vastaavasti.
+2
+2
+=1 lain (1) mukaan
+
+D tanh x = D
+
+1
+sinh x cosh x ⋅ cosh x − sinh x ⋅ sinh x
+.
+=
+=
+cosh x
+cosh 2 x
+cosh 2 x
+
+55
+Esim. 7 Lasketaan
+
+cosh 2 x dx uudelleen (vrt. Esim. 6), mutta nyt lakien
+
+(5) ja (1) nojalla.
+
+cosh 2 x = cosh 2 x + sinh 2 x = cosh 2 x + (cosh 2 x − 1) = 2 cosh 2 x − 1
+∴ cosh 2 x = 12 (cosh 2 x + 1). Täten
+
+cosh 2 x dx = 12 (cosh 2 x + 1) dx = 12 (
+
+sinh 2 x
++ x ) + C = 14 sinh 2 x + 2x + C .
+2
+
+HARJOITUKSIA
+A
+1 −3 x
+e dx ,
+0
+
+teϕt dt , c)
+
+7.1
+
+a)
+
+7.2
+
+Laske kaavaston kaavojen avulla
+a)
+
+7.3
+
+b)
+
+e − t sin ωt dt , b)
+
+Laske
+
+x 3 ln x dx
+
+2e x dx .
+
+x 4 e x dx .
+
+a) sopivalla sijoituksella, b) suoraan osittais-
+
+integroimalla.
+7.4
+
+7.5
+
+a)
+
+x sinh x dx , b)
+
+1
+0
+
+x cosh x dx c)
+
+a) D ln cosh( ax + b ) , b) D
+
+sinh 2 x dx .
+
+1
+.
+sinh x cosh x
+
+56
+
+B
+7.6
+
+7.7
+
+Todista, että
+
+cosh x + sinh x = e x
+cosh x − sinh x = e − x .
+
+Todista, että cosh 2 x − sinh 2 x = 1 .
+4 −x
+
+x2
+dx .
+ex
+
+7.8
+
+a)
+
+7.9
+
+Käyrän y = ln x ja x-akselin välinen alue välillä 1...e pyörähtää a) xakselin, b) y-akselin ympäri. Laske pyöräyskappaleen tilavuus.
+
+x e
+
+dx , b)
+
+7.10
+
+Laske
+
+ex
+dx (sij. e x = t ).
+−x
+1+ e
+
+7.11
+
+a)
+
+x 2 ln x dx , b)
+
+du
+.
+u ln u
+
+C
+7.12
+
+Trigonometriset- eli ympyräfunktiot (Circular functions) liittyvät
+ympyrään myös siten, että
+
+x = r cos t
+y = r sin t
+x = ± a cosh t
+on hypery = b sinh t
+belin eräs parametriesitys (joten hyperbelifunktiot ovat tekemisissä
+hyperbelin kanssa).
+
+on ympyrän parametriesitys. Osoita, että
+
+7.13
+
+Arkusfunktioiden integrointiin käyvät samantapaiset menetelmät kuin
+logaritmin integrointiin. Laske
+osittaisintegroinnilla.
+
+7.14
+
+Laske
+
+e 2t
+dt .
+et − e − t
+
+x arcsin x dx
+
+a) sijoituksella, b)
+
+57
+
+8
+
+Lisää integraalien sovelluksia
+
+8.1
+
+Funktion keskiarvo välillä [ , ]
+
+Jaetaan väli [a,b] n:ään yhtä suureen
+osaan. Merkitään yhden osavälin pituutta
+x :llä ja i:nnen osavälin keskipistettä
+ci :llä. Funktion arvojen f ( c1 ), ..., f ( cn )
+aritmeetinen keskiarvo on
+
+f ( c1 )+...+ f ( cn )
+n
+
+a
+
+f(c ) f(c2 )
+1
+
+c1
+
+c2
+
+x
+
+x
+
+cn b
+c3
+
+f(c )
+n
+
+lavennetaan x: llä
+
+f ( c1 ) ⋅ x +....+ f ( cn ) ⋅ x
+n⋅ x = b− a
+n⋅ x
+1 n
+1 b
+f ( ci ) ⋅ x →
+f ( x ) dx , kun x → 0.
+=
+∑
+b − a i =1
+b−a a
+=
+
+Saatu integraalilauseke esittää kaikkien väliin [a,b] kuuluvien
+funktionarvojen f(x) (joita on äärettömän monta) keskiarvoa. Sitä sanotaan
+funktion f keskiarvoksi välillä [a,b] ja merkitään esim. f k :lla. Siis
+
+=
+Esim. 1
+
+1
+−
+
+( )
+
+.
+
+Funktion y = sin x keskiarvo välillä [0,π] on
+
+fk =
+
+1 π
+1 π
+2
+sin x dx =
+( − cos x ) = .
+π −0 0
+π 0
+π
+
+*Esim. 2 Funktion f neliöllinen keskiarvo tarkoittaa funktion f 2 keskiarvon neliöjuurta. Laske jännitteen u = uɵ sin ωt tehollisarvo ueff
+(effective value) eli neliöllinen keskiarvo jaksovälillä [0,T].
+
+ueff
+
+2
+
+1 T 2
+uɵ ⋅ sin 2 ωt dt
+=
+T −0 0
+uɵ 2 ωT 2
+sin z dz
+=
+ωT 0
+
+=
+
+uɵ 2 2π 2
+sin z dz
+2π 0
+
+sij. ωt = z ∴ dt = ω1 dz,
+z: 0...ωT
+
+ωT = 2π
+
+sin 2 z = 12 (1 − cos 2 z )
+
+58
+
+uɵ 2 2π
+sin 2 z
+uɵ 2
+uɵ 2
+=
+(z −
+)=
+( 2π − 0 ) = . ∴
+4π 0
+2
+4π
+2
+8.2
+
+ɵ
+.
+2
+
+eff =
+
+Kaaren pituus
+
+Lasketaan käyrän y = f ( x ) kaaren pituus
+välillä [a, b] eli pisteestä A pisteeseen B.
+
+y = f(x) B
+
+ds
+
+dy
+
+dx
+
+Kaarialkio kohdassa x on
+
+A
+2
+
+= ( dx ) + ( dy )
+
+2
+
+dy = f ′( x ) ⋅ dx
+
+= [1 + f ′( x ) 2 ] ⋅ ( dx )2 = 1 + ′( )2 ⋅
+
+. a
+
+x
+
+b
+
+x+dx
+
+Kun x muuttuu a:sta b:hen, koko kaari saadaan kaarialkioiden "summana":
+
+1 + ′ ( )2
+
+=
+Esim. 3
+
+.
+
+Paraabelinkaaren y = x 2 , 0 ≤ x ≤ 1 pituus:
+
+s=
+
+1
+
+1 + 4 x dx
+
+0
+
+= 12
+
+sij. 2 x = t ∴ dx = 12 dt
+
+2
+
+2
+0
+
+t: 0 ... 2
+2
+
+1 + t 2 dt = 12 [ 2t 1 + t 2 + 12 ln( t + 1 + t 2 )]
+0
+
+= 14 [2 5 + ln( 2 + 5 )] ≈ 1,48.
+*8.3 Pyöräyspinnan ala
+ds
+
+*Käyrä y = f ( x ) pyörähtää x-akselin ympäri
+välillä [a, b].
+*Kun kaarialkio ds kohdassa x pyörähtää, a
+syntyy vyö, jonka pituus on 2π⋅f(x) ja leveys on
+ds. Täten vyön pinta-ala on
+
+dA = 2πf ( x ) ⋅ ds = 2πf ( x ) 1 + f ′( x )2 dx
+.
+
+f (x)
+x
+
+b
+
+59
+Koko pinta-ala on vöiden pinta-alojen "summa":
+
+( ) 1 + ′ ( )2
+
+= 2π
+Esim. 4
+
+.
+
+Paraabelinkaari y = x 2 , 0 ≤ x ≤ 1 pyörähtää x-akselin ympäri.
+Muodostuneen pinnan pinta-ala on
+
+A = 2π
+
+1 2
+x
+0
+
+1 + 4 x 2 dx ≈ 3,8097 .
+
+Karkean likiarvon saat esim. käyttämällä integraalin määritelmään perustuvaa keinoa ja 4 osaväliä. *Tarkka arvo olisi
+π
+[18 5 − ln( 2 + 5 )] .
+32
+8.4
+
+Työintegraali
+
+Jos matka-akselin s suuntainen voima F(s)
+kuljettaa kappaletta kohdasta s1 kohtaan s2 , se
+tekee työn
+
+=
+
+2
+
+( )
+
+F = F(s)
+s1
+
+s2
+
+s
+
+,
+
+1
+
+sillä kohdassa s ds:n pituisella matkalla työ on dW = F ( s ) ⋅ ds ja koko työ
+on osatöiden "summa" (vrt. I osa, s. 47).
+Esim. 5
+
+Kahden massapisteen välinen vetovoima on F = c
+
+m1m2
+. Kun
+r2
+
+etäisyys muutetaan arvosta r1 arvoon r2 , tehdään työ
+
+W = cm1m2
+
+r2 1
+r1 r
+
+dr = cm1m2
+2
+
+1
+1 1
+( − ) = cm1m2 ( − ) .
+r1
+r
+r1 r2
+r2
+
+voidaan soveltaa
+samaa ajattelutapaa. Silloin matkan s tilalla on
+tilavuus V ja voiman F tilalla on paine p, joka
+muuttuu V:n funktiona: p = p(V). Kun kaasu
+laajenee pienen määrän dV, se tekee työn
+
+dW = p(V ) ⋅ dV .
+
+p = p(V)
+
+V
+V1
+
+V2
+
+60
+Koko työ on osatöiden "summa":
+
+=
+
+2
+
+( )
+
+.
+
+1
+
+Esim. 6
+
+Ihannekaasulla on pV = nRT , missä n ja R ovat vakioita (moolimäärä ja kaasuvakio). Jos myös kaasun lämpötila T pidetään
+vakiona eli kyseessä on
+muutos, niin yhtälö on
+muotoa pV = vakio . Koska koko ajan paineen ja tilavuuden
+tulolla on sama arvo, tämän arvon pitää olla = alkupaineen p1 ja
+alkutilavuuden V1 tulon, ts.
+
+pV = p1V1 ∴ p = p1V1
+
+1
+.
+V
+
+Isotermisessä muutoksessa siis paine on kääntäen verrannollinen
+tilavuuteen. Työ
+
+W = p1V1
+8.5
+
+V2 1
+V1 V
+
+dV = p1V1
+
+V2
+V1
+
+ln V =
+
+1 1ln
+
+2
+
+.
+
+1
+
+Epäolennainen integraali
+
+Joissakin sovelluksissa joudutaan laskemaan integraaleja, joissa integroimisvälin [a,b] tilalla on äärettömyyteen ulottuva väli, esim. [a , ∞ ) .
+Esim. 7
+
+Esimerkissä 5 laskettiin työ, kun massapisteiden välimatka muutettiin arvosta r1 arvoon r2 . Jos välimatka muuttuu jostakin
+arvosta R äärettömyyteen (hyvin kauas), niin työ on
+
+W = cm1m2
+
+∞1
+
+∞1
+
+Rr
+
+Rr
+
+dr = − cm1m2
+2
+
+= − cm1m2 ( 0 −
+
+1
+cm m
+)= 1 2.
+R
+R
+
+Kyseessä on eräs ns.
+(improper
+integral), jonka laskeminen kävi lähes tavalliseen tapaan. Ylärajaa ∞ ei voida varsinaisesti "sijoittaa" integraalifunktioon 1r
+muuttujan r tilalle, vaan oikea ajattelutapa on, että 1r :n raja-arvo
+on 0, kun r → ∞ .
+Jos epäolennaisen integraalin arvo on äärellinen, sanotaan, että integraali
+(konvergoi). Muussa tapauksessa taas integraali
+(divergoi).
+
+61
+
+HARJOITUKSIA
+A
+8.1
+
+Laske funktion y = x 2 keskiarvo välillä [0,2].
+
+8.2
+
+Käyrällä y 2 = x 3 eli y = ± x 3/ 2 on origossa kärki. Piirrä kuva ja
+laske käyrän ylemmän puolikkaan pituus välillä [0,5].
+Laske Esimerkin 4 mukaisen alueen pinta-alan likiarvo, käyttämällä
+integraalin määritelmään perustuvaa keinoa ja 4 osaväliä.
+
+8.3
+8.4
+
+8.5
+
+x-akselin suuntainen, eksponentiaalisesti vähenevä voima F = 3e −2 x
+kuljettaa kappaletta x-akselia pitkin origosta äärettömyyteen. Laske
+työ.
+∞ 1
+dx suppenee ja sen arvo on 1/2,
+Osoita, että a) integraali
+2 x2
+∞1
+mutta b) integraali
+dx hajaantuu. Koska integroitavat funktiot
+2 x
+ovat > 0 integroimisvälillä, integraalit esittävät eräitä pinta-aloja.
+Piirrä havainnollistavat kuvat samaan koordinaatistoon.
+
+B
+8.6
+
+Kappale liikkuu suoraviivaisesti nopeudella v = v(t). Laske nopeuden
+keskiarvo aikavälillä [t1 , t2 ] .
+
+8.7
+
+Laske ketjuviivan y = cosh x pituus välillä [−1, 1] .
+
+8.8
+
+Käyrä y = f ( x ) pyörähtää y-akselin ympäri välillä [a,b], missä a ≥
+0. a) Johda muodostuneen pyöräyspinnan alalle laskukaava.
+b) Sovella tulosta perusparaabeliin välillä [0,1].
+
+8.9
+8.10
+
+Johda r-säteisen pallon pinta-alan kaava A = 4πr 2 .
+Adiabaattisessa muutoksessa kaasun paineen ja tilavuuden välillä on
+yhteys
+(1)
+
+pV κ = vakio ,
+
+missä eksponentti κ (kappa) on jonkin verran 1:tä suurempi luku
+(κ = c p / cV , 1 < κ ≤ 5 / 3). Laske tilavuudenmuutostyö, jos κ = 1,5 ja
+laissa (1) vakiolla on arvo 3. Piirrä vastaavan funktion p = 3 / V 1,5
+kuvaaja.
+8.11
+
+Laske käyrän y = xe −2 x ja x-akselin välisen äärettömyyteen ulottuvan alueen ala (piirrä kuva).
+
+62
+
+C
+8.12
+
+Keskiarvo f k täyttää ehdon f k ⋅ ( b − a ) =
+
+b
+a
+
+f ( x ) dx . Jos f(x) >0
+
+välillä [a,b], niin tämän yhtälön kumpikin puoli esittää tiettyä pintaalaa. Mikä geometrinen merkitys f k :lla siis tässä tapauksessa on?
+8.13
+
+Laske virranvoimakkuuden i = iɵ sin(ωt + ϕ ) neliöllinen keskiarvo
+välillä [0,T].
+
+8.14
+
+Jos köysi (vaijeri, kaapeli tms.) on ripustettu loivasti, ts. kuvassa b on paljon pienempi kuin a (merk. << ), niin köysi
+asettuu likimain paraabelin muotoon.
+
+!
+
+a) Johda köyden pituudelle likiarvokaava
+
+s≈
+
+6a 2 + 4 b 2
+,
+3a
+
+käyttäen tietoa, että yleisesti
+
+1 + z ≈ 1 + 12 z , jos z << 1
+(sillä op 2 − vp 2 = z 2 / 4 ≈ 0 ). b) Laske s:n likiarvokaavasta b, kun 2a
+= 30,0 m ja s = 31,0 m.
+8.15
+
+Funktion f(t)
+F(s) saadaan, kun tämä funktio
+kerrotaan "vaimennustekijällä" e − st (s > 0) ja integroidaan 0:sta
+äärettömään, siis
+
+F ( s) =
+
+∞ − st
+e f ( t ) dt .
+0
+
+Laske seuraavien funktioiden Laplace-muunnokset:
+a) f(t) = a (a = vakio),
+
+b) f(t) = t,
+
+c) f ( t ) = eat (s > a).
+
+63
+
+9
+
+Käyriä koskevia tuloksia
+
+9.1
+
+Kertaus
+
+Edellä on esitetty mm. seuraavat käyrää y = f ( x ) koskevat tulokset:
+1) Pisteeseen Po ( xo , yo ) piirretyn
+
+y − yo = f ′( xo )( x − xo ),
+
+y − yo = −
+
+ja
+
+yhtälöt ovat
+
+1
+( x − xo ) .
+f ′( x o )
+
+y
+Po
+
+2) Jos y ′′( xo ) > 0 , niin käyrä on negatiivisen y-akselin
+suuntaan kupera pisteessä Po ( xo , yo ) .
+3) Kaarialkio ja
+
+xo
+
+x
+
+ovat
+
+ds = 1 + f ′( x )2 dx ,
+
+s=
+
+b
+a
+
+1 + f ′( x )2 dx .
+
+*9.2 Kaaren painopiste
+*Pisteessä (x, y) olevan kaarialkion ds staattiset
+momentit ovat
+
+y
+x
+
+dS y = x ⋅ ds, dS x = y ⋅ ds
+
+ds
+
+y
+
+ja koko kaaren momentit ovat osien momenttien
+"summia", ts.
+
+Sy =
+
+b
+a
+
+x ds =
+
+b
+a
+
+x 1 + f ′( x ) 2 dx, S x =
+
+*Näitä käytetään kaaren
+
+b
+a
+
+y ds =
+
+b
+a
+
+x
+
+f ( x ) 1 + f ′( x )2 dx .
+
+y = f ( x ), a ≤ x ≤ b painopisteen ( x p , y p )
+
+laskemiseen seuraavasti. Jos kaaren pituus s ja
+
+(x p, yp )
+
+tunnettaisiin, niin kaaren momentit olisivat
+
+S y = x p ⋅ s, S x = y p ⋅ s
+*Esim.1
+
+(x,y)
+
+∴
+
+=
+
+,
+
+=
+
+.
+
+Laske paraabelinkaaren y = x 2 , 0 ≤ x ≤ 1 painopiste.
+Tässä esimerkissä f ( x ) = x 2 ,
+
+f ′( x ) = 2x , joten
+
+64
+
+s=
+
+1
+
+1 + 4 x 2 dx = 1,478... (laskettu aikaisemmin),
+
+0
+
+Sy =
+Sx =
+
+1
+
+0
+1 2
+x
+0
+
+∴xp =
+9.3
+
+1
+( 5 5 − 1) = 0,8483... ,
+x 1 + 4 x 2 dx = 12
+
+Sy
+s
+
+1 + 4 x 2 dx = 0,6063... (esim. MathCad-ohjelmalla)
+≈ 0,574,
+
+yp =
+
+Sx
+≈ 0,410.
+s
+
+Ratkaisemattoman funktion derivointi
+
+*Esim. 2 Piste (3,2) toteuttaa ellipsin x 2 + 4 y 2 = 25
+yhtälön. Tähän pisteeseen piirretyn tangentin kulmakerroin voidaan laskea derivointia
+käyttäen kahdella eri tavalla:
+
+(3,2)
+
+1) Ratkaistaan yhtälöstä y x:n funktiona:
+
+y = ( ± ) 12 25 − x 2
+(+ antaa ellipsin ylemmän puolikkaan) ja lasketaan sitten y ′(3) .
+2) Derivointi
+
+:
+
+Derivoidaan yhtälön x 2 + 4 y 2 = 25 kumpikin puoli erikseen.
+Termin x 2 derivointi käy tavalliseen tapaan, mutta termiä 4 y 2
+derivoitaessa täytyy huomata, että y on x:n funktio y = y ( x ) ,
+joten y 2 :n derivoinnissa on käytettävä yhdistetyn funktion derivoimissääntöä D y ( x )2 = 2 ⋅ y ( x )1 ⋅ y ′( x ) . Siis
+
+x 2 + 4 y 2 = 25
+
+derivoidaan termi termiltä
+muistaen, että y = y ( x )
+
+2x + 8 y ⋅ y ′ = 0
+∴ y′ = −
+
+x
+3
+∴ tangentin kulmakerroin k = − .
+4y
+8
+
+Derivaatan lausekkeeseen jäi myös y:tä, mutta tästä ei ole
+haittaa, koska tangentin sivuamispisteen kumpikin koordinaatti
+tunnetaan. *Lasketaan vielä toinen derivaatta y ′′ kyseisessä
+pisteessä (3,2):
+
+65
+
+2x + 8 y ⋅ y ′ = 0
+
+derivoidaan implisiittisesti
+(tulon derivointi)
+
+2 + 8 y ′ ⋅ y ′ + 8 y ⋅ y ′′ = 0
+25
+3
+.
+2 + 8 ⋅ ( − )2 + 8 ⋅ 2 ⋅ y ′′ = 0 ∴ y ′′ = −
+8
+128
+9.4
+
+Parametrimuotoisen funktion derivointi
+
+Useat tekniikassa esiintyvät käyrät esitetään parametrimuodossa:
+
+= ( )
+.
+= ( )
+Kullakin (kyseeseen tulevalla) parametrin t arvolla parametriesitys antaa
+käyrän yhden pisteen.
+Esim. 3
+
+Sykloidi syntyy, kun r-säteinen ympyrä vierii suoraa viivaa
+pitkin ja tarkastellaan vierivän ympyrän yhden pisteen liikettä
+(vrt. polkupyörän venttiilitapin liike). Jos vierintä tapahtuu pitkin
+x-akselia, sykloidin yhtälöt ovat (kuten alla todistetaan)
+
+x = r ( t − sin t )
+,
+y = r (1 − cos t )
+
+(1)
+
+missä t on seuraavan kuvan mukainen keskuskulma. Parametrin t
+arvoja 0:sta 2π:hin vastaa se sykloidin kaari, joka alkaa origosta.
+y
+
+x
+(t = 0)
+
+2πr
+(t = 2π)
+
+4πr
+
+*Todistetaan yhtälöt (1). Kuvan mukaan sykloidin yleisen
+pisteen P koordinaatit ovat
+
+y = r − r cos t = r (1 − cos t ) ja x = OQ − r sin t .
+Mutta OQ = kaari PQ (vierinnän takia) ja radiaanin määritelmän
+mukaan kaari PQ = r ⋅ t . Siis x = r ⋅ t − r sin t = r ( t − sin t ) .
+Sykloidin parametriyhtälöt (1) määrittelevät y:n x:n funktiona, sillä kutakin
+x:n arvoa vastaa yksikäsitteinen y:n arvo (vrt. kuva). Tämän funktion esitys
+tavallisessa ratkaistussa eli eksplisiittimuodossa y = f ( x ) on mutkikas
+
+66
+arkusfunktiolauseke. Derivaatta f ′( x ) saadaan kuitenkin helposti parametriesityksen avulla, sillä derivaatta = differentiaalien dy ja dx osamäärä:
+
+f ′( x ) =
+
+dy
+r sin t dt
+sin t
+=
+=
+.
+dx r (1 − cos t ) dt 1 − cos t
+
+Vastaavasti yleisesti paramertimuotoisen funktion
+(2)
+
+=
+
+x = x( t )
+derivaatta on
+y = y( t )
+
+′( )
+.
+′( )
+
+*Toisen derivaatan lauseke on mutkikkaampi:
+2
+
+=
+2
+
+′ ′′ − ′ ′′
+( ′ )3
+
+missä esim. x′ tarkoittaa samaa kuin x ′ ( t ) .
+*Tod. Sääntö (2) antaa derivaattafunktion itse asiassa parametrimuodossa:
+
+x = x( t )
+dy y ′( t ) ⇒
+=
+dx x ′( t )
+Esim. 4
+
+d2 y
+dx 2
+
+( 2)
+
+=
+
+d y ′( t )
+)
+(
+dt x ′( t )
+x ′( t )
+
+=
+
+y ′′( t ) ⋅ x ′( t ) − y ′( t ) ⋅ x ′′( t )
+x ′( t ) 2
+.
+x ′( t )
+
+Laske t:n arvoa π / 2 vastaava sykloidin piste sekä 1. ja 2. kertaluvun derivaatat tässä pisteessä, kun vierivän ympyrän säde on 2.
+t =π / 2
+
+x = 2( t − sin t ) = 2(π / 2 − 1) = π − 2
+y = 2(1 − cos t ) = 2(1 − 0) = 2
+
+x ′ = 2(1 − cos t ) = 2 x ′′ = 2 sin t = 2
+,
+.
+y ′ = 2 sin t = 2
+y ′′ = 2 cos t = 0
+
+dy y ′
+∴ = = 1,
+dx x ′
+
+d2 y 2⋅0 − 2⋅2
+1
+=
+=
+−
+.
+2
+dx 2
+23
+
+67
+9.5
+
+Parametrikäyrän kaaren pituus ja vastaavan alueen ala
+B
+
+*Oletetaan, että kun t kasvaa arvosta t1
+arvoon t2 , niin x kasvaa arvosta a arvoon b
+(kuva). Tällöin saadaan kertaalleen käyrä
+A:sta B:hen. Lasketaan kaari- ja pinta-alkiot
+kohdassa x, joka saadaan parametrin arvolla t:
+
+A
+
+ds
+dx
+
+ds = ( dx )2 + ( dy ) 2 , dA = y ⋅ dx , jos y > 0.
+
+a
+
+x=x(t)
+
+Koska
+
+dy
+
+b
+
+dx = x ′( t ) dt
+ja y = y ( t ) , niin
+dy = y ′( t ) dt
+ds = x ′( t )2 + y ′( t ) 2 dt ja dA = y ( t ) ⋅ x ′( t ) dt .
+
+Tästä saadaan kaaren AB pituudelle sekä käyrän ja x-akselin välisen alueen
+alalle kaavat
+
+s=
+
+t2
+t1
+
+x ′( t )2 + y ′(t )2 dt ,
+
+A=
+
+t2
+t1
+
+y ( t ) ⋅ x ′( t ) dt .
+
+*Pinta-alaa laskettaessa on huolehdittava siitä, että dA:n lauseke on
+positiivinen. Alkuoletus, että x(t) kasvaa t:n mukana, merkitsee samaa kuin
+se, että x ′( t ) > 0 integroimisvälillä. Jos x ′( t ) < 0 , niin t:n kasvaessa x:n
+arvot pienenevät eli käyrä "piirtyy" B:stä A:han. Jos x ′( t ) vaihtaa merkkiä
+välillä [t1 , t2 ] , niin käyrä piirtyy (osittain tai kokonaan) moneen kertaan ja
+integraali ei anna oikeaa pinta-alaa.
+9.6
+
+Käyrän kaarevuus
+
+Siirrytään käyrällä jostakin pisteestä A
+lähtien matka s eteenpäin pisteeseen P.
+Tangentin suuntakulma α muuttuu matkan s
+mukana, ts. α on matkan s funktio:
+α = α ( s ) . Lisäys s aiheuttaa suuntakulman
+muutoksen α.
+Suhde
+
+α
+
+kuvaa kaartumisen nopeutta
+
+s
+s:n pituisella välillä PQ. Sitä sanotaan
+keskikaarevuudeksi tällä välillä.
+
+α
+
+α = α( )
+
+( = 0)
+
+68
+Keskikaarevuuden raja-arvo
+
+= lim
+
+α
+
+→0
+
+=
+
+α
+
+on nimeltään käyrän
+. Se kuvaa käyrän kaartumisnopeutta pisteessä P. Suuri kaarevuus merkitsee, että käyrä kaartuu jyrkästi
+(P:n lähistöllä).
+Esim. 5
+
+Laske r-säteisen ympyrän kaarevuus.
+
+k = lim
+
+s→ 0
+
+α
+s
+
+= lim
+s→ 0
+
+s/r 1
+= .
+s
+r
+
+α
+
+α
+
+Siis r-säteisen ympyrän kaarevuus = 1/r.
+Jos käyrällä on kaarevuus k jossakin pisteessä P,
+niin edellisen tuloksen mukaan 1/k-säteisellä ympyrällä on sama kaarevuus
+1
+= k . Tällaisen ympyrän sädettä eli lukua
+1/ k
+
+ρ=
+sanotaan käyrän
+
+1
+
+(ρ = "roo")
+pisteessä P.
+
+Jos ρ-säteinen ympyrä asetetaan sellaiseen
+kohtaan, että sillä on yhteinen tangentti käyrän
+kanssa pisteessä P (vrt. kuva), niin P:ssä ympyrä ja
+käyrä sivuavat toisiaan ja ympyrä kaartuu yhtä
+nopeasti kuin käyrä. Tällainen
+liittyy siis hyvin käyrään pisteessä P.
+*Käyrän kaarevuus k ja kaarevuussäde ρ voivat itse
+asiassa olla myös negatiivisia. Näin käy, jos s:n
+kasvattaminen pienentää tangentin suuntakulmaa α,
+koska tällöin α / s on negatiivinen (viereinen
+kuva).
+Lause
+
+Käyrän y = f(x) kaarevuussäde pisteessä P(x,y) on
+
+[1 + ( y ′ )2 ]3 / 2
+ρ=
+y ′′
+.
+
+ρ
+
+α<0
+>0
+
+69
+
+*Tod .
+
+ρ=
+
+1 ds
+=
+k dα
+
+ds = 1 + ( y ′ )2 dx = [1 + ( y ′ )2 ]1/ 2 dx
+tan α = y ′ ∴α = arctan y ′ ∴ dα =
+
+[1 + ( y ′ )2 ]1/2 dx
+=
+y ′′ / [1 + ( y ′ ) 2 ] dx
+Esim. 6
+
+=
+
+1
+⋅ y ′′ dx
+1 + ( y ′ )2
+
+[1 + ( y ′ )2 ]3/ 2
+.
+y ′′
+
+Laske käyrän y = ln x kaarevuussäde pisteessä (1,0).
+
+y′ =
+
+1
+1
+, y ′′ = − 2 ∴ y ′(1) = 1,
+x
+x
+
+y ′′(1) = −1
+
+[1 + 12 ]3/ 2
+∴ρ =
+= −23/ 2 = −2 2 .
+−1
+1
+. Tätä tietoa käytetään
+y ′′
+esimerkiksi palkin taipumaviivan diff.yhtälön johtamisessa (lujuusopissa tai
+rakenteiden mekaniikassa).
+Jos y ′ ≈ 0 , niin edellisen lauseen mukaan ρ ≈
+
+*Parametrimuotoiselle käyrälle vastaava kaarevuussäteen lauseke on
+
+[( x ′ )2 + ( y ′ )2 ]3/ 2
+.
+ρ=
+x ′y ′′ − y ′x ′′
+*Mm. jyrsinnässä voidaan tarvita kaarevuussäteen ρ
+lisäksi kaarevuusympyrän keskipisteen eli ns.
+lausekkeita.
+
+( , )
+ρ
+
+*Kaarevuuskeskipisteelle (a, b) voidaan johtaa seuraavat lausekkeet, joista edellinen pari koskee käyrää
+y = f ( x ) ja jälkimmäinen parametrimuotoista käyrää
+(vrt. kaavasto):
+
+1 + ( y ′ )2
+a = x − y′ ⋅
+käyränä
+y ′′
+,
+2
+y
+=
+f
+x
+(
+)
+1 + ( y′)
+b= y+
+y ′′
+
+( x ′ )2 + ( y ′ )2
+a = x − y′ ⋅
+x ′y ′′ − y ′x ′′
+2
+
+b = y − x′ ⋅
+
+2
+
+( x′) + ( y′)
+x ′y ′′ − y ′x ′′
+
+( , )
+
+käyränä
+x = x( t ) .
+y = y( t )
+
+70
+*Kun piste P liikkuu käyrää pitkin, sen kaarevuuskeskipiste piirtää toisen
+käyrän, kaarevuuskeskipisteiden uran, jota sanotaan alkuperäisen käyrän
+. Kääntäen alkuperäistä käyrää sanotaan kaarevuuskeskipisteiden urakäyrän
+(esim. evolventtihammaspyörät).
+9.7
+
+Käyrä napakoordinaatistossa
+
+Monissa sovelluksissa (robotiikka, CAD,...) on luonnollista
+käyttää suorakulmaisen koordinaatiston sijaan joskus
+napakoordinaatteja, ts. esittää pisteen paikka tai paikan
+muutos (P:stä Q:hun) etäisyyden r (> 0) ja vaihekulman ϕ
+avulla.
+ϕ
+
+Jos napa-akselina on positiivinen x-akseli, pisteen P
+suorakulmaisten ja napakoordinaattien välillä on yhteys (vrt.
+kuva)
+
+x = r cos ϕ
+y = r sin ϕ
+
+r = x2 + y2
+ja kääntäen
+
+tan ϕ =
+
+y
+x
+
+⇒ ϕ =... (oikea neljännes!)
+
+Tavallista käyrän esitystä y = f ( x ) vastaa napakoordinaatistossa esitys
+
+r = r (ϕ ) .
+Antamalla tässä ϕ:lle arvoja sopivin välein, saadaan käyrä piirrettyä.
+Esim. 7
+
+Spiraalin r = 2ϕ kuvaaja on
+viereisen kuvan mukainen. Jos
+ϕ:llä on esim. arvo 3 (rad), niin r
+(ϕ = 3)
+saa arvon 6.
+
+*Yleisemmin ns. Arkhimedeen spiraalin
+= ϕ (missä k = vakio) sovellukset perustuvat siihen, että r kasvaa suoraan verrannollisena kulmaan ϕ.
+ϕ
+*Logaritminen spiraali
+taas esiintyy
+=
+leikkurien terissä, muotojyrsimissä yms. siksi, että
+tällä spiraalilla käyrän ja säteen välinen kulma on
+käyrän jokaisessa pisteessä samankokoinen, kuten
+voidaan todistaa.
+
+10
+=6
+
+10
+
+= 2ϕ
+
+71
+3π/4
+π/4=45°
+Esim. 8 Käyrän r = cos 2ϕ
+40°
+kuvaaja on vierei30°
+sen kuvan mukai20°
+nen. Kun ϕ kasvaa
+10°
+0:sta π/4:ään, niin
+1 0°
+r:n arvot pienenevät
+1:stä 0:aan. Sen jälkeen etäisyys r on negatiivinen aina ϕ:n arvoon
+3π/4 saakka, jolloin r tulee taas positiiviseksi ja saadaan käyrän
+pisteitä.
+
+*Voidaan myös sopia, että jos r on negatiivinen, niin vastaava piste
+on kyseisen etäisyyden päässä origosta, mutta sen vastakkaisella
+puolella. Näin ajatellen edellisestä käyrästä tulee "nelilehtinen".
+*9.8 Kaaren pituus ja pinta-ala napakoordinaatistossa
+*Kun käyränä on r = r (ϕ ) , niin kaaren AB pituudelle ja sektorimaisen
+alueen AOB pinta-alalle saadaan laskukaavat seuraavasti (vrt. kuva):
+Kohdassa ϕ r:llä on tietty arvo
+r(ϕ). Kun ϕ saa (äärettömän
+pienen) lisäyksen dϕ, niin pintaala saa sektorimaisen lisäyksen
+dA ja kaari lisäyksen ds.
+Pinta-alaa laskettaessa sektori
+dA
+voidaan
+korvata
+ympyränsektorilla, jonka säde
+on r(ϕ) ja kaari b = r (ϕ ) ⋅ dϕ
+(rad. määr.). Sektorin ala on
+siten
+
+ϕ = ϕ2
+
+ϕ
+ϕ
+= (ϕ )
+ϕ = ϕ1
+
+dA = 12 b ⋅ r (ϕ ) = 12 r (ϕ )2 dϕ .
+Kun kulman lisäys dϕ on (äärettömän) pieni, niin jäljelle jäävä sektorin osa
+on suorakulmainen kolmio (ts. b ja ds ovat likimain suoria). Pythagoraan
+lauseen mukaan
+
+ds = b2 + ( dr )2
+
+b = r(ϕ ) ⋅ dϕ , dr = r ′(ϕ ) dϕ (diff.)
+
+= r (ϕ )2 ( dϕ )2 + r ′(ϕ ) 2 ( dϕ )2
+= r (ϕ )2 + r ′(ϕ )2 dϕ .
+
+72
+Kun dA:n ja ds:n lausekkeet "summataan" ϕ 1 :stä ϕ 2 :een, saadaan tulokset
+
+A = 12
+
+ϕ2
+ϕ1
+
+r (ϕ )2 dϕ ,
+
+ϕ2
+
+s=
+
+ϕ1
+
+*Esim. 9 Laske edellisen esimerkin mukaisen käyrän r = cos 2ϕ rajoittaman alueen ala ja käyrän pituus.
+
+r (ϕ )2 + r ′(ϕ )2 dϕ
+3π / 4
+
+π/ 4
+
+1
+
+Neljäsosa käyrästä ja alasta
+saadaan kun ϕ muuttuu 0...π/4.
+Siten
+
+cos 2α = 2 cos2 α − 1
+
+π /4
+A = 4 ⋅ 12
+(cos 2ϕ ) 2 dϕ
+o
+
+=2
+
+∴ cos2 α = 12 (1 + cos 2α )
+
+π /4 1
+
+π /4
+
+0
+
+0
+
+s = 4⋅
+
+(1 + cos 4ϕ ) dϕ =
+2
+
+π /4
+0
+
+(ϕ +
+
+sin 4ϕ
+π
+)= .
+4
+4
+
+cos 2 2ϕ + 4 sin 2 2ϕ dϕ ≈ 4,844.
+
+HARJOITUKSIA
+A
+9.1
+
+Paraabelista y = 4 − x 2 jää x-akselin yläpuolelle osa. Laske tämän
+kaaren painopiste.
+
+9.2
+
+Laske käyrän y 2 + sin y + cos x = 0 tangentin kulmakerroin käyrällä
+olevassa pisteessä (π / 2,0 ) .
+
+9.3
+
+x = 2t 3
+dy
+d2 y
+.
+ja
+Laske
+, kun
+2
+dx
+dx 2
+y = 3t
+
+9.4
+
+Laske sykloidin yhden kaaren ja x-akselin välisen alueen pinta-ala.
+
+9.5
+
+Määritä ellipsin kaarevuussäde pisteessä (a,0). Ohje: käytä ellipsin
+parametriesitystä.
+
+9.6
+
+a) Piirrä logaritminen spiraali r = eϕ välillä −π ...π / 2 . b) Laske sen
+alueen ala, jota rajoittaa tämä kaari ja positiiviset x- ja y-akselit (ϕ
+muuttuu siis 0...π / 2 ).
+
+9.7
+
+Laske spiraalin r = 2ϕ , 0 ≤ ϕ ≤ π pituus.
+
+73
+9.8
+
+Piirrä käyrä r = sin 2ϕ ja laske sen rajoittaman kuvion ala.
+
+B
+9.9
+
+Laske käyrän y = 23 x x , 0 ≤ x ≤ 1 painopisteen y-koordinaatti.
+
+9.10
+
+Käyrälle x 2 y − 2 y 3 + 2 = 0 piirretään tangentti
+pisteesseen ( 3,−2) . Määritä näiden yhtälöt.
+
+9.11
+
+9.12
+
+ja
+
+normaali
+
+x = 3 cos t
+d2 y
+t:n arvoa 3π / 4 vastaavassa
+Piirrä ellipsi
+ja laske
+y = 5 sin t
+dx 2
+pisteessä.
+x = 4 cos t + 2 cos 2t
+positiivisen- vai negatiivisen yy = 4 sin t − 2 sin 2t
+akselin suuntaan kupera kohdassa t = π / 2 ?
+Onko käyrä
+
+9.13
+
+Laske sykloidin yhden kaaren pituus. (Ohje tarkan arvon laskemiseksi: 1 − cos t = 2 sin 2 2t , sillä cos 2α = 1 − 2 sin 2 α .)
+
+9.14
+
+y = ln x
+Määritä
+käyrän
+kaarevuusympyrän yhtälö.
+
+9.15
+
+pisteeseen
+
+(1,0)
+
+piirretyn
+
+1
++ 2 pisteeseen P( 0,3) piirretyn kaarevuusx +1
+ympyrän yhtälö. (Säteen saat myös laskemalla keskipisteen O ja
+pisteen P välisen etäisyyden.)
+Määritä käyrän y =
+
+9.16
+
+Laske spiraalin r = e2ϕ , 0 ≤ ϕ ≤ 2π pituus.
+
+9.17
+
+Piirrä käyrä r = cos3ϕ ja laske sen rajoittaman kuvion ala.
+
+9.18
+
+Piirrä käyrä r = sin 3ϕ ja laske sen rajoittaman kuvion ala.
+
+C
+9.19
+
+Laske r-säteisen
+(kuva).
+
+9.20
+
+Osoita, että ellipsin
+
+puoliympyränkaaren
+
+2
+
+2 +
+
+2
+2
+
+piirretyn tangentin yhtälö on
+
+painopiste
+
+= 1 pisteeseen ( x o , yo )
+2
+
++
+
+2
+
+= 1.
+
+74
+9.21
+
+Osoita (eliminoimalla parametri t), että
+
+x = t + 1t
+y = t − 1t
+
+on erään hyper-
+
+belin eräs parametriesitys. Laske tämän hyperbelin tangentin kulmakerroin pisteessä ( 2 12 ,1 12 ) .
+9.22
+
+Jana, jonka pituus on a, liikkuu niin, että sen päätepisteet ovat
+koordinaattiakseleilla (piirrä kuva, jossa näkyy tällainen jana useassa
+eri asemassa). Tällaisen janaparven "uloimmista" pisteistä muodostuu kyseisen parven
+, joka on tässä tapauksessa ns.
+. Asteroidille voidaan johtaa parametriyhtälöt
+
+x = a cos3 t
+3
+
+.
+
+y = a sin t
+a) Määritä asteroidin tangentti kohdassa t = π / 6 . b) Laske tämän
+tangentin leikkauspisteet A ja B koordinaatiakselien kanssa. c)
+Laske janan AB pituus (joksi pitäisi tulla a).
+9.23
+
+Kun r-säteinen ympyrä vierii origokeskisen R-säteisen ympyrän
+sisällä, vierivän ympyrän piste P (joka on alussa x-akselin ja Rsäteisen ympyrän leikkauspiste) piirtää ns.
+, jonka
+yhtälöt ovat (vrt. kaavasto)
+
+x = ( R − r ) cos t + r cos Rr− r t
+y = ( R − r )sin t − r sin Rr− r t
+a) Piirrä havainnollistava kuva (esim. r = 2 cm, R = 6 cm ).
+b) Osoita, että jos R = 2r, piste P liikkuu pitkin x-akselia. Tässä
+tapauksessa vierivän ympyrän halkaisijan PQ piste Q liikkuu pitkin
+y-akselia (symmetrian vuoksi). Siis janan liike niin, että janan
+päätepisteet pysyvät akseleilla, voidaan saada aikaan pyörimisliikkeen avulla. (Olisiko tällä
+tiedolla
+käyttöä tekniikassa?)
+c) Osoita, että jos R = 4r , hyposykloidista tulee asteroidi (edellinen
+harj.).
+9.24
+
+Laske asteroidin kaaren pituus ja sen rajoittaman pinnan ala.
+
+75
+
+x = x( t )
+saadaan vastaavasti kuin
+
+y = y( t )
+
+9.25
+
+z = z( t )
+tasokäyrällä
+
+lauseke
+
+s=
+
+t2
+t1
+
+( x ′ )2 + ( y ′ )2 + ( z ′ )2 dt .
+
+Laske
+
+sovelluksena
+
+x = r cos t
+y = r sin t
+z = 2hπ t
+yhden kierroksen pituus. (Se saataisiin
+alkeellisesti alla olevasta kuvasta.)
+
+´
+2π
+
+9.26
+
+Missä pisteessä käyrän y = ln x kaarevuus on (itseisarvoltaan) suurimmillaan?
+
+9.27
+
+Määritä perusparaabelin evoluutta.
+
+9.28
+
+Määritä sykloidin evoluutta.
+
+9.29
+
+Käyrä r = r (ϕ ) saadaan parametrimuotoon seuraavasti:
+
+x = r cos ϕ
+y = r sin ϕ
+
+r = r (ϕ )
+
+⇒
+
+x = r (ϕ ) cos ϕ
+(ϕ parametrina).
+y = r(ϕ )sin ϕ
+
+Laske tämän tiedon avulla Arkhimedeen spiraalin r = kϕ kaarevuussäde ja kaarevuuskeskipiste (jälkimmäinen lasku on työläs).
+9.30
+
+on eräs ns.episykloidin erikoistapaus. Se syntyy, kun asäteinen ympyrä vierii samankokoisen ympyrän ulkopuolella.
+a) Hahmottele tämän perusteella kardioidin kuva. Jos kardioidin
+kärki siirretään origoon, yhtälö voidaan esittää napakoordinaatistossa
+muodossa r = a (1 − cos ϕ ) . b) Laske kardioidin rajoittaman alueen
+ala.
+ϕ
+
+c) Laske kardioidin kaarenpituus. (Ohje: 1 − cos ϕ = 2 sin 2 2 ).
+
+76
+
+*10 Integraalin derivointi parametrin suhteen
+10.1 Parametri integroimisrajoissa
+
+f ( x ) dx arvo on parvi x:n funktioita: F ( x ) + C . Jos nämä
+
+Integraalin
+
+funktiot derivoidaan integroimismuuttujan x suhteen, saadaan alkuperäinen
+funktio f ( x ) , ts.
+
+d
+dx
+
+f ( x ) dx = f ( x ) .
+
+Tämä tulos ilmaisee integroinnin ja derivoinnin käänteisyyden toisiinsa
+nähden.
+Jos määrätyn integraalin
+
+b
+a
+
+f ( x ) dx rajat ovat vakioita, niin
+
+d b
+f ( x ) dx = 0
+dx a
+
+(sillä vakion derivaatta = 0).
+
+Jos sensijaan esim. ylärajan b tilalla on jokin parametri t, koko määrätyn
+integraalin arvo on t:n funktio ja tästä voidaan laskea derivaatta t:n suhteen:
+t
+a
+
+( )
+
+=
+
+d t
+d
+F ( x ) = [ F ( t ) − F ( a )] = F ′( t ) − 0 = ( ) .
+dt a
+dt
+
+Tulos: Jos integraalin ylärajana on parametri t ja alaraja on vakio, niin
+integraalin derivaatta t:n suhteen saadaan, kun yläraja sijoitetaan integroitavaan funktioon integroimismuuttujan tilalle.
+Esim. 1
+
+t sin x
+
+sin t
+(Tätä integraalia ei pystytä laskemaan
+.
+1
+x
+t
+tavalliseen tapaan, mutta sen derivaatta pystytään siis laskemaan.)
+Dt
+
+dx =
+
+*Jos b:n tilalla on t:n funktio b(t), niin yhdistetyn funktion derivoimissäännön (ketjusäännön) nojalla
+
+d b( t )
+d
+d b( t )
+f ( x ) dx =
+F ( x ) = [ F ( b( t ) − F ( a )] = F ′( b( t )) ⋅ b′( t ) .
+dt a
+dt a
+dt
+Esim. 2
+
+Dt
+
+3t sin x
+1
+
+x
+
+dx =
+
+sin 3t
+sin 3t
+.
+⋅3 =
+3t
+t
+
+77
+10.2 Parametri integroitavassa funktiossa
+Parametri t voi olla myös integroitavassa funktiossa f, joka on tällöin itse
+asiassa kahden muuttujan x ja t funktio f(x, t), ja integraali on muotoa
+b
+a
+
+f ( x , t ) dx .
+
+Koska integraalia laskettaessa integroimisrajat sijoitetaan x:n paikalle
+integraalifunktioon F(x,t), tämän integraalin arvo on pelkästään t:n funktio ja
+voidaan kysyä sen derivaattaa t:n suhteen:
+
+d b
+f ( x , t ) dx = ?
+dt a
+Jos integraali ajatellaan "summaksi", seuraava tulos ilmaisee sen, että tämä
+"summa" voidaan derivoida termi termiltä:
+
+( ,)
+
+=
+
+∂
+∂
+
+( ,) .
+
+Yhtälön oikealla puolella derivoitava funktio on kahden muuttujan funktio,
+joten kyseessä on osittaisderivaatan laskeminen t:n suhteen. Tätä tulosta
+(jota ei perustella tarkemmin), sanotaan myös
+, sillä vasemmalla puolella funktio integroidaan ensin ja
+derivoidaan senjälkeen ja oikealla puolella tehdään päinvastoin. Seuraava
+esimerkki vaatii tällaisen vaihdon, sillä funktio sinx tx ei integroidu x:n
+suhteen tavallisessa mielessä.
+
+Esim. 3
+
+2 ∂ sin tx
+2 cos tx ⋅ x
+d 2 sin tx
+dx
+dx =
+dx =
+1 ∂t
+1
+x
+dt 1 x
+x
+2 sin tx
+2
+= cos tx dx =
+= 1t (sin 2t − sin t ).
+1
+1
+t
+
+Huomaa, että derivoinnissa ∂∂t sinxtx on x vakio, kun taas integraalissa
+
+2
+1
+
+sin tx dx on t vakio.
+
+78
+
+HARJOITUKSIA
+A
+10.1
+10.2
+
+Derivoi a)
+Laske
+
+t
+0
+
+sin 2 ω dω , b)
+
+t3
+
+cos( x 2 + 1) dx .
+
+0
+
+d 2
+( tx + t 2 ) dx kahdella eri tavalla:
+0
+dt
+
+a) merkityssä järjestyksessä, ts. suorittamalla ensin integrointi ja
+sitten derivointi,
+b) vaihtamalla ensin derivoinnin ja integroinnin järjestys.
+Kummastakin pitäisi tulla sama tulos.
+
+B
+10.3
+
+b
+
+Miten derivoidaan integraali
+
+a
+
+f ( x ) dx t:n suhteen, jos alarajan a
+
+tilalla on a) t, b) t:n funktio a(t).
+10.4
+
+Derivoi a)
+
+2
+1
+
+3e
+
+x ln( x 2 + t ) dx , b)
+
+2
+
+tx
+
+x
+
+dx .
+
+C
+10.5
+
+Johda laskukaava derivaatalle
+
+10.6
+
+a)
+
+10.7
+
+Taivutusmomentti
+(kuva)
+
+d b( t )
+f ( x ) dx .
+dt a ( t )
+
+d 3 cos ωt
+d 3 cos ωt
+dω , b)
+dt .
+dt 1 ω
+dω 1 ω
+kohdassa
+
+x
+
+on
+
+( )
+( )
+
+x
+
+M x = Ax − ( x − u)q( u) du
+0
+
+x
+
+x
+
+0
+
+0
+
+= Ax − x q( u ) du +
+Laske M x′′ .
+
+uq( u )du.
+
++
+
+79
+
+11
+
+Numeerisia menetelmiä
+
+11.1 Haarukointi ja iterointi (kertaus)
+Esim. 1
+
+Määritä yhtälön 2 x 3 − x − 3 = 0 reaalijuuret. Mahdolliset rationaalijuuret ovat muotoa p/q, missä p on 3:n tekijä ( ±1 tai ± 3) ja
+q on 2:n posit. tekijä (1 tai 2). Täten kokeiltaviksi luvuiksi jäävät
+±1, ± 12 , ± 3, ± 32 . Mikään näistä ei toteuta yhtälöä, joten yhtälöllä
+ei ole rationaalijuuria.
+Kirjoitetaan yhtälö muotoon
+(1)
+
+x 3 = 12 x + 32
+
+ja piirretään käyrät y = x 3 ja y = 12 x + 23 .
+Kuvan mukaan yhtälöllä (1) on vain yksi
+reaalijuuri x ≈ 1,3 (sillä tämä x antaa kummallekin y:lle saman arvon eli toteuttaa
+yhtälön (1)). Tarkennetaan tätä likiarvoa
+seuraava taulukko):
+Esim. kohdassa 1,3 lausekkeen
+2 x 3 − x − 3 likiarvo on paljon
+lähempänä 0:aa kuin kohdassa
+1,2. Siksi seuraavaksi arvaukseksi on valittu 1,28 (eikä 1,25).
+
+(ks.
+
+x
+
+2x 3 − x − 3
+
+1,2
+
+– (0,744)
+
+1,4
+
++ (1,088)
+
+1,3
+
++ (0,094, siis lähes 0)
+
+1,28
+
+– (0,085...)
+
+1,29
+
++ (0,003...)
+
+1,289
+
+– (0,0005...)
+
+1,2895
+
+–
+
+Taulukon mukaan
+1,289|5 < x < 1,2900,
+joten katkaisussa 3. desimaali 9
+korottuu. ∴ x ≈1,290.
+Esim. 2
+
+Sama
+. Ratkaistaan
+yhtälöstä "yksi x erilleen", esim.
+
+x = 3 ( x + 3) / 2 ∴ iterointi-algoritmi on x n +1 = 3 ( x n + 3) / 2 .
+,
+..., x3 = 1,2897..., x4 = 1,28963.... ,
+x1 = 1,3 ; x2 = 11290
+x5 = 1,289624..., x6 = 1,289624... ∴ x ≈1,28962.
+
+80
+11.2 Newtonin menetelmä (tangenttimenetelmä)
+Edellisten esimerkkien yhtälö on muotoa f ( x ) = 0 , missä f(x) on polynomifunktiona jatkuva. Haarukointi on tällaisille funktioille varma menetelmä
+juuren likiarvon x1 parantamiseksi, koska siinä "haarukointiväli" pienenee
+joka askeleella vähintään puoleen.
+Iterointi sen sijaan ei toimi aina, sillä x n -arvot eivät aina lähene n:n kasvaessa mitään äärellistä raja-arvoa, ts. jono x1, x2 ,... voi hajaantua. Silloin kun
+iterointi toimii, se toimii yleensä nopeasti, ts. muutamalla askeleella saadaan
+jo hyvä likiarvo. Sama koskee seuraavaa Newtonin menetelmää.
+Olkoon x1 yhtälön f ( x ) = 0 reaalijuuren likiarvo (joka on saatu esim.
+graafisesti tai teknillisissä tehtävissä tunnetaan usein asiayhteydestä).
+Käyrän y = f ( x ) pisteeseen ( x1 , f ( x1 ))
+piirretyn tangentin yhtälö on
+
+= f( )
+1
+
+y − f ( x1 ) = f ′( x1 )( x − x1 ) .
+
+( ,f ( 1))
+1
+
+2
+3
+
+Lasketaan tämän leikkauspiste ( x2 ,0) xakselin kanssa:
+
+3
+
+2
+
+1
+
+0 − f ( x1 ) = f ′( x1 )( x2 − x1 )
+
+−
+
+f ( x1 )
+f ( x1 )
+.
+= x2 − x1 ∴ x2 = x1 −
+f ′( x1 )
+f ′( x1 )
+
+Otetaan x2 uudeksi lähtöarvoksi, jolloin saadaan vastaavasti
+
+x3 = x 2 −
+
+f ( x2 )
+.
+f ′( x 2 )
+
+Jatkamalla samaan tapaan saadaan
++1 =
+
+Esim. 3
+
+−
+
+(
+′(
+
+)
+.
+)
+
+Tarkastellaan samaa yhtälöä kuin edellä. Silloin
+
+f ( x ) = 2 x 3 − x − 3,
+
+f ′( x ) = 6 x 2 − 1 ∴ x n +1 = x n −
+
+2 xn3 − xn − 3
+.
+6 xn 2 − 1
+
+81
+Tästä saadaan peräkkäin x:n likiarvoiksi
+
+1,3, 1,28971... 1,28962390..., 1,289623901... ∴ x ≈ 1,2896239.
+Seuraava kuva havainnollistaa sellaista tilannetta, jossa x:n arvot lähtevät
+hajaantumaan ja Newtonin menetelmä ei siksi toimi.
+
+2
+1
+
+3
+
+11.3 Numeerinen derivointi
+Numeerinen derivointi eli derivaatan likiarvon
+laskeminen perustuu yksinkertaisimmillaan derivaatan määritelmään. Sen mukaan
+f( + )
+1
+
+(2)
+
+f ′( x1 ) ≈
+
+f ( x1 + h ) − f ( x1 )
+, jos h ≈ 0 .
+h
+
+f(
+
+1
+
+)
+
+Geometrisesti tämä merkitsee, että pisteeseen P
+1 1+
+piirretyn tangentin kulmakertoimen tilalla käytetään
+sekantin PQ kulmakerrointa (vrt. kuva). Jos merkitään x:n "lisättyä" arvoa
+x2 :lla, ts. x1 + h = x2 ∴ h = x2 − x1 , niin (2) voidaan kirjoittaa myös
+muotoon
+
+f ′( x1 ) ≈
+
+f ( x2 ) − f ( x1 )
+, jos x2 − x1 ≈ 0 .
+x2 − x1
+
+eli muotoon
+
+f ′( x1 ) ≈
+
+y2 − y1
+, jos x2 − x1 ≈ 0 .
+x2 − x1
+
+tang.
+
+Derivaatalle eli pisteeseen P piirretyn tangentin
+kulmakertoimelle saadaan ehkä parempi likiarvo,
+jos sekantin PQ kulmakertoimen sijalla käytetään
+sekantin AQ kulmakerrointa (vrt. kuva). Tällöin
+
+f ′( x n ) ≈
+
+f ( x n +1 ) − f ( x n −1 )
+.
+x n +1 − x n −1
+
+n-1
+
+n
+
+n+1
+
+82
+Jos x n = x ,
+
+x n +1 = x + h, x n −1 = x − h , niin tämä tulos saa muodon
+
+f ′( x ) ≈
+
+(3)
+
+f ( x + h) − f ( x − h)
+.
+2h
+
+Eräs mahdollisuus olisi myös käyttää sekanttien AP ja PQ kulmakertoimien
+keskiarvoa.
+Esim. 4
+
+Jos f ( x ) = ln( x + x ) , ja h = 0,01 , niin
+
+f ′(1) ≈
+
+ln(1,01 + 1,01) − ln(1 + 1)
+= 0,746...
+0,01
+
+1
+
+Jos käytetään kohdan x = 1 kummallakin
+puolella olevia kohtia x + h = 1,01 ja
+x − h = 0,99 , saadaan parempi likiarvo
+
+f ′(1) ≈
+
+ln(1,01 + 1,01) − ln( 0,99 + 0,99 )
+= 0,750021...
+0,02
+
+Tarkka derivaatan arvo on 0,75.
+Numeeriseen derivointiin joudutaan tyytymään mm. silloin, kun funktion
+analyyttistä lauseketta ei ole tiedossa, vaan funktio tunnetaan esim.
+piirturin piirtämänä käyränä tai parien ( xi , yi ) muodostamana taulukkona
+(datatietoina).
+Toinen derivaatta f ′′( x ) on ensimmäisen derivaatan f ′( x ) derivaatta. Jos
+käytetään (2):ta vastaavaa ajattelutapaa, niin
+
+f ′( x + h ) − f ′( x )
+f ′′( x ) ≈
+≈
+h
+
+f ( x + h + h) − f ( x + h) f ( x + h) − f ( x )
+−
+h
+h
+.
+h
+
+Tämä sievenee muotoon
+
+f ′′( x ) ≈
+
+f ( x + 2h) − 2 f ( x + h) + f ( x )
+.
+h2
+
+*Minkä muodon saat, jos käytät (3):a vastaavaa ajattelutapaa?
+
+83
+11.4 Numeerinen integrointi suorakulmiomenetelmällä
+Integraalin likiarvon laskemiseen on tähän saakka käytetty integraalin määritelmän antamaa tulosta
+b
+a
+
+f ( x ) dx ≈ f ( c1 ) x +⋯+ f ( cn ) x ,
+
+missä ci :t ovat
+pisteitä.
+
+1
+
+2
+
+n
+
+x -osavälien keski-
+
+Menetelmää sanotaan
+,
+koska siinä erikoistapauksessa, että f ( ci ) > 0 ,
+edellisen summan termi f ( ci ) x antaa
+xkantaisen ja f ( ci ) :n korkuisen suorakulmion alan
+(vrt. kuva). Tässä tapauksessa siis integraalin
+laskeminen korvataan suorakulmioiden alojen
+summaamisella.
+
+f( 2)
+
+f ( 1)
+1
+
+2
+
+Tällä erikoistapauksella voidaan myös perustella
+sitä, että jos f(x) muuttuu aika lineaarisesti osaväleillä, niin edellinen kaava
+antaa aika hyvän likiarvon integraalille. Tällöin nimittäin kunkin
+suorakulmion ala on aika hyvin samansuuruinen kuin vastaava käyrän ja xakselin välinen ala.
+Suorakulmiomenetelmässä käyrän tilalla käytetään kullakin osavälillä vaakaviivaa, ts. vakiofunktiota eli 0:nnen asteen polynomia. Koko käyrä korvataan
+siis porrasfunktiolla, joten menetelmää voitaisiin sanoa myös porrasmenetelmäksi.
+Yhden osavälin pituutta
+
+x = b −n a merkitään yleensä h:lla, jolloin tulos
+
+voidaan esittää muodossa
+(4)
+
+( )
+
+≈
+
+∑ ( ) , missä
+
+=
+
+−
+
+.
+
+=1
+
+*Mieti miten tekisit tästä tietokoneohjelman (Basicillä, Pascalilla tms).
+Käytä apuna tietoja c1 = a + h / 2 ja ci +1 = ci + h .
+*Osavälien ei tarvitse suorakulmiomenetelmässä olla yhtä pitkiä eikä
+pisteiden ci osavälien keskipisteitä, vaan tämä likiarvomenetelmä voidaan
+esittää yleisemmin seuraavasti:
+
+84
+
+Jaetaan
+integroimisväli
+[a,
+b]
+1
+2
+n
+osaväleihin, joiden pituudet ovat
+... n x , ja
+kultakin
+=
+1x, 2 x,
+=
+0
+1
+2
+n-1
+n
+osaväliltä valitaan yksi x:n arvo.
+Merkitään i:nneltä väliltä valittua x:n arvoa ci :llä ( i = 1,2,..., n ) . Silloin
+(5)
+
+≈∑ ( )
+
+( )
+
+.
+
+=1
+
+11.5 Puolisuunnikasmenetelmä
+Puolisuunnikasmenetelmässä käyrä korvataan pisteiden Po , P1 ,... kautta kulkevalla murtoviivalla, ts. kullakin osavälillä
+käyrän tilalla käytetään 1. asteen polynomifunktiota.
+
+o
+1
+o
+1
+
+1
+
+o
+
+3
+
+2
+2
+
+Jos
+erityisesti
+f (x) > 0 ,
+3
+2
+suorakulmioiden tilalle tulee "pystyssä
+3
+olevia"
+puolisuunnikkaita.
+Esim.
+ensimmäisen
+puolisuunnikkaan
+ala
+saadaan,
+kun
+"kantasivujen"
+y1 ja y2
+keskiarvo
+kerrotaan
+puolisuunnikkaan korkeudella h. Koko integraalin likiarvo on siten summa
+(6)
+
+b
+a
+
+f ( x ) dx ≈
+
+yo + y1
+y + y2
+y + y3
+y + yn
+⋅h+ 1
+⋅h + 2
+⋅ h+⋯+ n −1
+⋅ h.
+2
+2
+2
+2
+
+Puolisuunnikasmenetelmässä siis osaväliltä lasketun arvon f ( ci ) tilalle
+kaavoissa (4) ja (5) tulee välin päätepistearvojen keskiarvo
+
+y i−1 + y i
+. (Tämä
+2
+
+pitää paikkansa vaikka y i :t eivät olisi positiivisia tai jako ei olisi tasavälinen.) Tulos (6) sievenee muotoon
+
+( )
+
+≈ ⋅(
+
+2
+
++
+
+1+
+
+2 +⋯+
+
+−1 +
+
+2
+
+) , missä
+
+=
+
+−
+
+.
+
+*Puolisuunnikassääntöä (Trapezoidal Rule) on helppo käyttää, koska siinä ei
+tarvita funktion arvoja muuta kuin osavälien päätepisteissä. Esimerkiksi
+edellisen kuvan mukaisella funktiolla sääntö antaa hyvän likiarvon, sillä
+ensimmäinen termi summassa (6) (ensimmäisen puolisuunnikkaan ala) on
+jonkin verran liian pieni, toinen on suunnilleen oikeankokoinen ja kolmas
+termi jonkin verran liian suuri (liian vähän negatiivinen).
+
+85
+11.6 Simpsonin sääntö
+Puolisuunnikassäännössä korvattiin käyrän kahta peräkkäistä pistettä vastaavat käyränosat Po P1 , P1P2 , P2 P3 ,... suorilla.
+korvataan kolmea peräkkäistä pistettä vastaavat käyränosat Po P1 P2 ,
+P2 P3 P4 ,. P4 P5 P6 ,... paraabelin kaarilla, mikä antaa yleensä paremman
+likiarvon (approksimaation), vrt. seuraava kuva Osavälejä tarvitaan tällöin
+parillinen määrä (muuten viimeiseen osaan täytyy soveltaa esim.
+puolisuunnikassääntöä).
+Jaetaan
+
+siis väli [a, b]
+määrään osavälejä,
+joiden pituudet ovat
+
+=
+
+P1
+
+P2
+
+P6
+
+Po
+
+−
+
+P3
+
+.
+
+Korvataan kolmea ensimmäistä
+pistettä Po P1 P2 vastaava käyränosa näiden pisteiden kautta kulkevalla paraabelinkaarella
+
+yo
+
+y1
+
+y2
+
+y3
+
+xo
+
+x1
+
+x2
+
+x3
+
+P5
+P4
+
+x4
+
+x5
+
+x6
+
+y = ax 2 + bx + c .
+Paraabelin kertoimet saadaan pisteiden Po P1 P2 koordinaattien perusteella.
+Kun vastaavan integraalinosan I02 =
+paraabelin antamaa integraalia I02 ≈
+
+x2
+
+f ( x ) dx likiarvona käytetään
+
+xo
+
+x2
+xo
+
+( ax 2 + bx + c ) dx , niin lopputulos
+
+on (kuten voidaan todistaa)
+(7)
+
+I 02 ≈ h3 ( yo + 4 y1 + y2 )
+
+Vastaavasti
+
+I 24 ≈ h3 ( y2 + 4 y3 + y4 )
+I 46 ≈ h3 ( y4 + 4 y5 + y6 )
+
+⋮
+Kun nämä lasketaan yhteen, koko integraalille saadaan likiarvo
+
+( )
+
+≈ 3 ⋅(
+
+missä osavälien lukumäärä
+
++ 4 1 + 2 2 + 4 3 + 2 4 +⋯+4
+on parillinen ja
+
+= − .
+
+−1 +
+
+),
+
+86
+Laske käyrän y = sin 2 x kaaren pituus yhden jakson väliltä.
+
+Esim. 5
+
+Jakson pituus on 2π / 2 = π , joten yksi jaksoväli on esim. [0, π ] .
+π
+
+s=
+
+0
+
+1 + f ′( x )2 dx =
+
+π
+0
+
+1 + 4 cos2 2 x dx
+g( x )
+
+≈
+
+π /4
+3
+
+Simpson, 4 osaväliä
+∴h = π / 4
+
+[ g ( 0 ) + 4 ⋅ g (π / 4 ) + 2 ⋅ g(π / 2) + 4 ⋅ g (3π / 4 ) + g(π )] ≈ 4,436.
+
+Vaikka yleensä Simpsonin menetelmä on aikaisempia menetelmiä tehokkaampi, tässä esimerkissä Simpsonin säännön antama likiarvo on huono,
+sillä oikea s:n arvo on s = 5,270367... Puolisuunnikassääntö antaisi neljällä
+osavälillä paremman likiarvon 5,083... ja alkeellisin suorakulmiomenetelmä
+likiarvon 5,441... Käyrän y = g ( x ) muoto on sellainen, että käyrän korvaaminen kahdella paraabelin kaarella onnistuu huonosti (vrt. seuraava kuva).
+Puolisuunnikassäännön mukainen murtoviiva sopii paraabeleja paremmin
+yhteen tämän käyrän kanssa.
+
+= ( )
+
+π/2
+
+Esim. 6
+
+Tynnyrin korkeus on h, pohjien alat
+ovat A ja C sekä poikkileikkausala
+A
+keskellä on B. Johda tilavuudelle likiarvokaava Simpsonin säännöllä.
+0
+
+π
+
+B
+
+C
+x
+
+x
+
+h/2
+
+h
+
+Jos poikkileikkaus kohdassa x on
+A(x), niin dx:n levyisen levyn tilavuus
+dV = A( x ) dx ja koko tilavuus on
+"summa"
+
+V=
+
+h
+0
+
+A( x ) dx ≈
+
+h/ 2
+[ A( 0 ) + 4 A( h / 2) + A( h )] = [ + 4 + ]
+3
+6
+
+(Simpson, 2 osaväliä, pituudet h/2).
+
+87
+
+HARJOITUKSIA
+A
+11.1
+
+Ratkaise a) haarukoimalla, b) iteroimalla, c) Newtonin menetelmällä
+yhtälö x 3 = x + 1 neljän numeron tarkkuudella.
+
+11.2
+
+Määritä Newtonin menetelmällä seuraavien yhtälöiden juuret kolmen
+desimaalin tarkkuudella:
+a) sin x − x + 2 = 0 , b) ln x − x + 2 = 0 .
+
+11.3
+
+Laske a) suorakulmio-, b) puolisuunnikas-, c) Simpsonin menetelmällä integraalin
+
+1 dx
+0 1+ x 2
+
+likiarvo, käyttäen 4 osaväliä. Vertaa tulok-
+
+sia tarkkaan arvoon.
+
+B
+11.4
+
+Laske yhtälön x 4 − 2 x 3 + x 2 − 8 x + 12 = 0 rationaalijuuri ja sitten
+tangenttimenetelmällä irrationaalijuuren 3-numeroinen likiarvo.
+(Poista rationaalijuurta vastaava tekijä ensin jakamalla.)
+
+11.5
+
+Jatka esimerkkiä 4, laskemalla samalle funktiolle f ( x ) = ln( x + x )
+toisen derivaatan f ′′(1) likiarvon eri tavoilla ja vertaa tuloksia
+tarkkaan arvoon.
+
+11.6
+
+Laske a) Simpsonin säännöllä, b) puolisuunnikassäännöllä integraalin
+
+π
+0
+
+x 2 cos x dx likiarvo. Käytä 4 osaväliä. (Tarkan arvon saisit
+
+kahdella osittaisintegroinnilla.)
+11.7
+
+Laske Simpsonin säännöllä
+
+2 ln x
+
+1 x +1
+
+dx , 6 osaväliä. Huomaa: kun
+
+osavälejä on 6, niin likiarvokaavassa on 7 termiä (miksi?)
+3
+
+1 + x 3 dx puolisuunnikassäännöllä, 6 osaväliä.
+
+11.8
+
+Laske
+
+11.9
+
+Laske Simpsonin säännöllä, 8 osaväliä,
+
+0
+
+8
+
+dx .
+4 1+ x 3
+
+88
+11.10 Laske
+
+9 sin x
+1
+
+x
+
+dx Simpsonin säännöllä, 4 osaväliä. (Laskin RAD-
+
+näytölle!)
+
+11.11 Viereisen kuvan tapaisen pyöräyskappaleen
+halkaisija mitattiin 10,0 mm:n välein ja tulokset
+olivat mm:issä 10,0 13,0 18,0 24,0 40,0 60,0
+ja 90,0. Laske kappaleen tilavuus.
+
+C
+11.12 Ympyrän kaari b on 20% jännettä a
+pidempi. Laske keskuskulma. Ohje: käytä
+radiaanin määritelmää ja kulman α / 2
+siniä.
+(Tämä
+ongelma
+tuli
+eteen
+teknikkotason lujuusopissa.)
+
+1,2
+/2
+
+α
+
+11.13 Tiedetään, että eräs kokeellinen käyrä on
+esim. polynomimuotoinen, joten se kaartuu
+"tasaisesti", ilman äkkimutkia. Oletetaan,
+että käyrältä tunnetaan lähekkäin olevat arvoparit
+
+( x n − 2 , y n − 2 ), ( x n −1 , y n −1 ), ( x n , y n ), ( x n +1 , y n +1 ), ( x n + 2 , y n + 2 ) .
+Johda toiselle derivaatalle
+kaikkia viittä lähipistettä.
+
+f ′′( x n ) likiarvokaava. Käytä apuna
+
+89
+
+Vastauksia
+1.1
+
+y = ln x + 2 1.2 y = − 12 (cos 2 x − 3) ( eli y = sin 2 x + 1)
+
+1.3
+
+y = 13 x 3 − 12 x 2 + 2 16 ,
+b) y = Ce cos x
+
+y = − ln x + 2 x − 1 .
+
+1.5 a) xy = 8 , b) y =
+
+b) y = Ce cos x 1.7
+
+3 x2
+
+y = − ln x + x ln 2 + 1 − ln 2 1.11
+
+1.12
+
+s = so + vo t − 12 gt 2 1.13
+
+1.15
+
+y = 14 e 2 x ( x − 1) + C1x + C2
+
+y = ± x 2 + 2 x − 2 , hyperbeli, kp. ( −1,0) ,
+2
+
+a) y = Ce −2 x , b) y =
+
+3 1.14
+
+2
+
+1.6 a) y = Ce x / 2 ,
+
+y = 14 ( e −2 x + sin 2 x − cos 2 x )
+
+1.10
+
+puoliakselit
+
+x
+x −1
+
+2
+
+a) y = Ce x / 2 ,
+
+1.8 a) y = Ce −2 x + 12 x − 14 ,
+
+y = Ce 4
+
+b) y = Ce −2 x + 12 e 4 x 1.9
+
+1.4
+
+1
+ln x + C
+
+dT
+= k (T − Tymp ) , T = (50 − 40 ⋅ e kt ) oC
+dt
+o
+n. 49,4 C ( 49,375 o C ) 1.18 a) y = Ce x − 12 e − x
+
+y = Ce3x − 2 1.16
+1.17
+
+b) y = e − x ( x + C ) 1.19
+
+i = e −2t + 34 (sin 2t − cos 2t )
+
+(= e −2t + 3 4 2 sin( 2t − π / 4) ) 1.20
+q
+( x 4 − 2 Lx 3 + L3 x )
+24 EI
+
+1.21
+
+q
+( Lx − x 2 ) ,
+2
+q
+y = 24 EI ( x 4 − 4 Lx 3 + 6 L2 x 2 ) ,
+
+qL4
+
+y max = 8 EI 1.22 0,990e −2t + 0,00630 sin100πt − 0,990 cos100πt
+1.23
+1.24
+
+a) 44%, b) klo 15.05, c) 9,5%
+y = C cos2 x + sin x cos x − x cos2 x 1.25
+
+2.1
+
+a) y = e −8 x ( C1 + C2 x ) , b) y = C1 sin 2 x + C2 cos 2 x
+c) y = e − x ( C1 + C2 x ) + 19 e 2 x ,
+
+2.2
+
+311
+i = 700
+π (1 − cos100πt ) .
+
+y = 12 ( e x − e − x − xe − x )
+
+2.3
+
+a) y = C1e2 x + C2 e −2 x − 13 e − x , b) y = C1 sin x + C2 cos x − 12 x cos x
+
+2.4
+
+b) s = 2 sin( t + π / 4 ) 2.5 a) s = 32 e − t − 12 e −5t , b) s = e −3t (1 + 4t )
+c) s = e − t (sin 2t + cos 2t ) eli s = 2e − t sin( 2t + π / 4)
+
+2.6
+
+a) y = 2 sin 2 x + 5 cos 2 x + 2 sin x − cos x
+b) y = 3 − e −2 x − sin 2 x − cos 2 x .
+
+2.8
+
+a) y = C1e2 x + C2e −2 x − 12 x − 14 , b) y = C1 + C2e 4 x + x 2 + 14 x
+
+90
+c) y = C1 + C2e − x − 12 (sin x + cos x ) .
+2.10 a) y = C1e2 x + C2 e −2 x − 1 , b) y = e2 x − 1 .
+
+2.9
+
+y = 16 ( e − x − e −7 x )
+
+2.11
+
+y = 3e x ( x − 1) + 12 x 2 + 2 x + 4 .
+
+2.12
+
+s = 12 sin 2t + 3 12 cos 2t + sin t − 12 cos t .
+
+2.13
+
+s = e −3t ( C1 + C2t ) + 4e −2 t 2.14
+
+s = C1 + C2 e −2 t − 85 (sin 2t + cos 2t )
+
+2.15
+2.16
+
+s = 3 − e −2t − sin 2t − cos 2t .
+a) y = C1 sin 3x + ( C2 − 13 x ) cos 3x ,
+
+b) y = e −2 x ( C1 + C2 x + 3x 2 ) .
+
+2.17
+
+s′′ + ω o 2 s = 0 ,
+
+2.18
+
+i = UR e RC ,
+
+2.20
+
+a) q = e −400t ( C1 sin 300t + C2 cos 300t ) + 2,4 ⋅10−3 ,
+
+− 1 t
+
+s′′ + 2δs′ + ω o 2 s = 0 , s′′ + 2δs′ + ω o 2 s = K o sin ωt .
+− 1 t
+
+q = CU (1 − e RC )
+
+b) i = 2e −400t sin 300t
+
+2.19 i = 5e − t sin 2t
+
+y = C1 + C2e x + C3e 2 x − xe x
+
+2.21
+
+2.22
+
+y = C1 ln x + x 3 / 9 + C2
+
+2.24
+
+y = C1e 2 x + C2 e − 2 x + x − 1 ,
+
+2.23
+
+r = 2± 3
+
+z = C1 ( −1 − 2 )e 2 x + C2 ( −1 + 2 )e 2x + x + 12 .
+−kt
+
+mg
+
+2.25
+
+a) v ′ + mk v r = g ,
+
+2.26
+
+a) s = 5km (1 − e m ) ,
+
+3.1
+
+π / 3, π / 2, 0, − π / 3, − 5π / 12, 0,644, ei, − 3π / 2
+
+3.2
+3.3
+
+π / 6, 0, π / 2, 5π / 6, 17π / 12, 0,927, ei, 4π
+π / 3, − π / 6, 1107
+, , π 2 / 12, 0,322
+
+3.4
+
+a) −
+
+−kt
+
+c)
+
+3.5
+3.6
+
+b) v = Ce m + k ,
+
+1
+x4 − x2
+
+6
+
+1 − 9t 2
+3
+a)
+,
+1 + 9x 2
+
+(= −
+
+,
+
+−t
+
+1
+x x2 −1
+
+),
+
+1
+,
+( 2 x + 2) x
+
+b)
+
+1
+arcsin x ⋅ 1 − x 2
+
+1− x2
+2e2 x
+c) 4 x
+.
+e +1
+
+b) −2 1 − x 2 + C , c) 4π / 3 , 3.7
+
+c) 7π / 12
+
+3.8
+
+π / 9 3.9 a) π / 18 ,
+3.10
+
+,
+
+x2
+
+a) π / 6 ,
+
+c) ln t + t 2 − 4 + C
+
+mg
+.
+k
+
+b) s = 15(1 − e 3 ) .
+
+d) 2 x arcsin x +
+b)
+
+c) v∞ =
+
+a) π / 4 , b) 12 ln 2 ,
+
+b) 16 ln
+
+1
+arctan x 2+ 3 + C
+2
+
+s−3
++C,
+s+3
+
+91
+3.11.
+
+1
+
+ln x + 2 + x 2 + 4 x + C 3.13. a)
+2
+
+c)
+
+x + 1 x 2 + 2x − 3
+
+1
+
+3.14
+
+3.17
+
+a) π 3 / 6 ,
+
+3.18
+
+a) 2x − arctan x + C b)
+
+b)
+
+arctan
+
+2 2
+
+, b)
+
+1
+
+,
+2 x − x2
+x − x2
+1
+b − π 3π − b
+3.16
+,
+4
+4
+1+ x2
+
+2x + 1
++C,
+2
+
+c) ln
+
+4+2 3
+≈ 0,355
+3+ 5
+
+x 2 − 4 + ln x + x 2 − 4 + C ,
+
+c) 13 ln(3x + 1 + 9 x 2 ) + C
+
+3.23
+3.24
+
+x1 = arcsin a + n ⋅ 2π
+x = π + ( − arcsin a ) + n ⋅ 2π
+.
+b) 1
+x2 = π − arcsin a + n ⋅ 2π
+x2 = 2π − ( − arcsin a ) + n ⋅ 2π
+Tämä sievenee niin, että b)-kohdan kaikki kulmat saadaan a)-kohdan
+ratkaisukaavoista (sillä kun n kulkee kaikki kokonaisluvut, samoin
+tekee n+1), vrt. kaavasto. 3.20 ks. kaavasto,
+x
+π
+D op = integr. funktio 3.22 arccos x = − arctan
+2
+1− x2
+Käytä tulosta arccos( − x ) = π − arccos x ja arkussinin parittomuutta.
+a) x = 12 sin( y + 34π ) , b) π − 2 , c) π − 4 , d) 6 − 2π , e) −π / 3
+
+3.25
+
+a) y = π2 − x ,
+
+4.1
+
+a) 1 − ln 2 ,
+
+4.2
+
+a)
+
+3.19
+
+3.21
+
+4.3
+
+4.7
+4.8
+
+a)
+
+b) y = π2 + x − 2π = x − 32π
+c) x 2 − x + 12 ln 2 x + 1 + C
+
+b) − x − ln x − 1 + C ,
+
+1
+ln( x 2 + 1) − arctan x + C ,
+2
+
+b) 1 + ln 2 − π4
+
+3
+2
+1
+1
+( x + 1) 2
+a)
+− , b)
+−
+4.4 a) ln
++ C,
+x+2 x
+s −1 s +1
+x
+x−3
+3s − 1
+2
+−
+4.6 3 ln 2 − ln 3 − 16
++C
+4.5
+b) ln
+2
+2x − 1
+s + s +1 s
+Huomaa, että a)-kohdan sulkulauseke on jaoton, b)-kohdan ei.
+a) x + 13 ln x − 1 − 43 ln x + 2 + C ,
+b) 3 ln x + 1 − ln( x 2 + 9) − 13 arctan 3x + C
+
+4.10
+
+−
+
+2
+1
+2s + 1
++
++
+s + 1 ( s + 1)2 s2 + 1
+
+2
+1
+b) + ln 2x + 12 arctan 2x + C
+x +4
+x
+
+4.13
+
+ln 2 π 3
++
+3
+9
+
+4.11
+
+4.9
+
+1
+ln x x−1 + C
+4
+
+a) 12 ( 5 ln x + ln x + 2 ) + C ,
+
+( x − 1)2
+1
+π ln 2
+4.12 a) + ln
++ C , b) −
+2
+2
+x
+x
+
+4.14 ln x − 1 + ln( x 2 + x + 2 ) −
+
+2x + 1
+2
+arctan
++ C.
+7
+7
+
+92
+4.15
+
+a) Joko kaikki lineaarisia tai lineaarinen ja 2. asteen tekijä.
+b) Lineaarisia tekijöitä on 0, 2 tai neljä, muut toisen asteen tekijöitä.
+
+5.1
+
+a) 16 ( 3 + 1) , b) 0
+
+5.3
+
+a) 0, b) 18 ( 2 cos 2 x − cos 4 x ) + C 5.4
+b) −1 / tan 2x + C
+
+5.7
+
+a) ln 2 ,
+
+5.9
+
+a) 1 + 3 , b)
+
+5.2 a) 14 tan 4 − 1 , b) π / 2
+5.6
+
+1
+arctan 2
+2
+b) 12 ln tan x + 14 tan 2 x + C
+
+5.8
+5.10
+5.11
+
+6.1
+
+4
+a) 13 ( 2 2 − 1) , b) 15
+(1 + 2 ) , c)
+
+6.2
+
+a)
+
+2 x − 2 ln( x + 1) + C , b)
+
+2 x − 1 + ln 2 x − 1 − 1 + C
+6.4
+
+6.9
+
+7.1
+7.2
+
+7.3
+
+(3π + 3ω − 3 ) / (9ω 2 )
+
+a) sij. ωt = u ja palautuskaava,
+ɵɵ
+ui
+T cos ϕ
+2
+2 2
+x x +C
+5
+2
+( x − 1) x − 1 + 2 x − 1 + C ,
+3
+6.3 a) 2 + 2 ln 43 , b) π / 6
+
+c)
+
+6.6 a) 12 3 + ln 1+ 3 , b) π / 4 ,
+
+a) 1/3, b) π / 16
+
+6.5 81π / 16
+
+c) ln 1+ 3
+
+a) 2 2 + 2 ln( 2 − 1) , b) ln t + 1 + t 2 + 2t + C .
+
+2
+
+6.8
+
+a) ln tan 2x + C ,
+
+a) 14 sin 2t − 12 ( t + 1) cos 2t + C , b) 16/15
+
+2 − ln( 32 + 2 )
+
+b)
+
+2/15 5.5
+
+6.7
+
+2
+
+9 − x2
+3 − 3)) , b) −
++C
+9x
+1
+sin 2 t + cos 2 t
+dt
+=
+dt
+a) − 12 arcsin 2x + C , b) Vihje:
+sin t cos 2 t
+sin t cos 2 t
+1
+= cos −2 t sin t dt +
+dt , Vastaus: 2 − 12 ln 3 − ln tan π8 eli
+sin t
+6.10 x 1−x x − arctan 1−x x + C
+2 − 2 − 12 ln 3 − ln( 2 − 1)
+
+a) − 12 ln(
+
+π
+
+3 tan 12 ) ( = − 12 ln( 2
+
+e3 − 1
+eϕt (ϕt − 1)
+, b)
++ C,
+a)
+3e3
+ϕ2
+
+c) 2 2e x + C
+
+e− t
+a) − 2 (sin ωt + ω cos ωt ) + C ,
+ω +1
+x 4
+b) e ( x − 4 x 3 + 12 x 2 − 24 x + 24) + C
+1 4
+x ( 4 ln x − 1) + C
+16
+
+7.4
+
+a) x cosh x − sinh x + C , b) 1 − 1 / e
+
+= sinh 1 − cosh 1 + 1, c) 14 (sinh 2 x − 2 x ) + C = 18 ( e 2 x − e −2 x − 4 x ) + C
+7.5
+
+a) a tanh( ax + b ) ,
+
+7.7
+
+a) a tanh x , b)
+
+b)
+
+−4 cosh 2 x
+sinh 2 2 x
+
+− cosh 2 x
+−4
+=
+sinh 2 x cosh 2 x sinh 2 x tanh 2 x
+
+93
+7.8
+
+a) − e − x ( x 4 + 4 x 3 + 12 x 2 + 24 x + 24) + C , b) − e − x ( x 2 + 2 x + 2) + C
+
+7.9
+
+a) π ( e − 2 ) , b)
+
+π
+2
+
+( e2 + 1)
+
+7.10
+
+e x − ln( e x + 1) + C
+
+3
+
+x
+(3 ln x − 1) + C ,
+9
+
+7.11
+
+a)
+
+7.13
+
+( x2 − 14 )arsc sin x + 14 x 1 − x 2 + C
+
+7.14
+
+et + 12 ln e t −1 + C
+
+8.4
+
+3/2
+
+8.7
+
+2 sinh 1 = e − 1 / e 8.8 a) A = 2π x 1 + f ′( x )2 dx , b) π6 (5 5 − 1)
+
+8.9
+
+vrt. pallon tilavuuden laskukaavan johtaminen pyöräyskappaleen yhteydessä (I osa, s. 65)
+8.10 W = 6 ⋅ (1 / V10,5 − 1 / V2 0,5 ) . Kyseessä
+
+b) ln ln u + C
+
+2
+
+t
+
+e +1
+
+8.1 4/3
+
+8.2
+
+335/27
+
+8.3 3,71
+
+s( t2 )− s( t1 )
+t2 − t1 , joka on = keskinopeus tällä aikavälillä
+
+8.6
+
+8.15
+
+on vain potenssin V −1,5 integrointi, ei sen pahempi asia!
+1/4
+8.12 f k :llä on sellainen arvo, että suoran y = f k ja x-akselin
+väliin jää välille [a, b] yhtä suuri alue kuin käyrän y = f(x) ja xakselin väliin 8.13 iɵ / 2 8.14 b) 3,35 m
+a) F(s) = a/s, b) F(s) = 1 / s2 , c) F ( s ) = s −1 a (s > a).
+
+9.1
+
+( 0; 20,23 / 9,294 ) ≈ ( 0; 2,18 ) 9.2 1
+
+8.11
+
+9.3
+
+1 / t ja − 1 / ( 6t 4 )
+
+9.4
+
+3πr 2
+1 π
+( e − 1)
+4
+
+9.7 π 1 + π 2 + ln(π + 1 + π 2 ) ≈ 12,2
+
+9.5
+
+b2 / a
+
+9.8
+
+Kuten r = cos 2ϕ , mutta 45o kiertyneenä, A = π / 4
+
+9.9
+
+yp ≈
+
+9.11
+
+−10 2 / 9
+
+9.6
+
+0,3484
+≈ 0,286
+1,219
+
+kupera.
+
+9.12
+
+9.13
+
+9.10
+d2y
+dx 2
+
+8r
+
+4 x + 5 y = 2 , 5 x − 4 y = 23
+
+= 14 > 0 , siis negatiivisen y-akselin suuntaan
+9.14 x 2 + y 2 − 6 x + 4 y + 5 = 0
+5 4π
+( e − 1)
+2
+
+9.15
+
+x 2 + y 2 − 2 x − 8 y + 15 = 0
+
+9.17
+
+"kolmiapila", A = π / 4 9.18 "kolmiapila", A = π / 4 9.19 ( 0, π2 r )
+
+9.21
+
+hyperbeli, jonka puoliakselit ovat 2 ja 2, k = 5 / 3 9.24 6R, 83 πR 2
+
+9.25
+
+( 2πr )2 + h2
+
+9.26
+
+9.16
+
+(1 / 2 ,− 12 ln 2 )
+
+94
+
+9.27
+
+a = −4 x 3
+
+Parametrimuodossa
+
+(parametrina x), ts. jos merkitään
+
+b = 3x 2 + 12
+
+paraabelin pisteen P x-koordinaattia t:llä ja kaarevuuskeskipistettä
+
+( x , y ) :llä, niin
+sykloidi)
+
+b=k
+
+x = −4t 3
+y = 3t 2 + 12
+
+9.29
+
+x = r ( t + sin t )
+(sekin on eräs
+y = − r (1 − cos t )
+
+9.28
+
+k[1 + ϕ 2 ]3/ 2
+ϕ cos ϕ − sin ϕ − ϕ 2 sin ϕ
+, a=k
+,
+ρ=
+2 +ϕ2
+2 + ϕ2
+
+ϕ sin ϕ + cos ϕ + ϕ 2 cos ϕ
+2 +ϕ2
+
+(missä kulma ϕ on radiaaneissa.
+
+Näitä tuloksia tarvittiin jyrsimen ohjelmoinnissa.)
+9.30
+
+a) "lumpeenlehti", b) 3πa 2 / 2 ,
+
+10.1
+
+a) sin 2 t , b) 3t 2 cos( t 6 + 1)
+
+10.3
+
+a) − f ( t ) , b) − f ( a ( t )) ⋅ a ′( t ) 10.4 a) 12 ln 41++tt , b) 1t ( e3t − e 2t )
+
+10.5
+
+d b( t )
+f ( x ) d ( x ) = f ( b( t ) ⋅ b′( t ) − f ( a( t )) ⋅ a ′( t )
+dt a ( t )
+
+10.6
+
+a) 1t (cos 3t − cos t ) , b)
+
+10.7
+
+−q( x )
+
+11.3
+
+tarkka arvo π / 4
+
+11.6
+
+a) –6,24 (tarkka arvo −2π )
+
+11.8
+
+7,395 (tarkempi arvo 7,3414...)
+0,29188...)
+
+11.9
+
+0,292 (tarkempi arvo
+
+11.10 0,712 (tarkempi arvo 0,71895...)
+
+11.11
+
+77,0 ⋅103 mm3
+
+11.12 2,053
+
+11.1
+
+1
+
+ω
+
+2
+
+c) 8a
+10.2 2 + 4t
+
+( 3 cos 3ω − cos ω ) − 23 (sin 3ω − sin ω )
+
+1,325
+
+ω
+
+11.2
+
+a) 2,554
+
+11.4 2 ja 1,63
+
+b) 0,159 ja 3,146
+
+11.5 tarkka arvo −11 / 16
+
+11.7 0,1472
+
+

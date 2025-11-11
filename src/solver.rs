@@ -38,15 +38,17 @@ pub struct Solver {
     zero_gain_streak: u32,
     window_cap_fraction: f64,
     last_world_len: usize,
+    /// Cycle-laskuri jotta voidaan tehdä harvemmin päivittyviä operaatioita
+    cycle_count: u32,
 }
 
 impl Solver {
-    const MIN_ACCEPT_GAIN: i32 = 25; // hylkää mikromallit joista nettohyöty pieni
+    const MIN_ACCEPT_GAIN: i32 = 3; // Salli vieläkin pienemmät hyödyt (aiemmin 5, alussa 25)
     const PATTERN_BANK_FILE: &'static str = "pattern_bank.json";
-    const DICTIONARY_MIN_LEN: usize = 4;
-    const DICTIONARY_MAX_LEN: usize = 32;
-    const DICTIONARY_CAPACITY: usize = 256;
-    const DICTIONARY_MATCH_LIMIT: usize = 64;
+    const DICTIONARY_MIN_LEN: usize = 3; // Lyhyemmät sanat (aiemmin 4)
+    const DICTIONARY_MAX_LEN: usize = 64; // Pidemmät lauseet (aiemmin 32)
+    const DICTIONARY_CAPACITY: usize = 512; // Enemmän sanoja/lauseita (aiemmin 256)
+    const DICTIONARY_MATCH_LIMIT: usize = 128; // Enemmän matcheja (aiemmin 64)
     #[allow(dead_code)]
     const GRAMMAR_MIN_SEQ: usize = 2;
     #[allow(dead_code)]
@@ -75,6 +77,7 @@ impl Solver {
             zero_gain_streak: 0,
             window_cap_fraction: window_fraction.clamp(0.1, 1.0),
             last_world_len: 0,
+            cycle_count: 0,
         }
     }
 
@@ -103,6 +106,7 @@ impl Solver {
                     zero_gain_streak: 0,
                     window_cap_fraction: window_fraction.clamp(0.1, 1.0),
                     last_world_len: 0,
+                    cycle_count: 0,
                 };
                 // Rakennetaan sanakirja ladatuista Dictionary-malleista
                 solver.rebuild_dictionary();
@@ -128,9 +132,24 @@ impl Solver {
         self.stats.reset_cycle();
         self.decay_recent_gains();
         let mut current_quota = self.processing_quota; // Ota syklin budjetti
+        
+        // Päivitä cycle-laskuri
+        self.cycle_count += 1;
 
         self.refresh_focus_window(world);
-        self.refresh_dictionary(world);
+        
+        // Päivitä sanakirja harvemmin - anna patternien ehtiä muodostua!
+        if self.cycle_count <= 40 {
+            // Alussa useammin (joka 10. sykli)
+            if self.cycle_count % 10 == 0 {
+                self.refresh_dictionary(world);
+            }
+        } else {
+            // Myöhemmin harvemmin (joka 20. sykli)
+            if self.cycle_count % 20 == 0 {
+                self.refresh_dictionary(world);
+            }
+        }
 
         while current_quota > 0 {
             self.refresh_focus_window(world);
@@ -256,6 +275,33 @@ impl Solver {
 
         self.adjust_window_size_after_cycle(world);
         self.refresh_focus_window(world);
+        
+        // REKURSIIVINEN PAKKAUS: Etsi malleja jo pakatusta datasta
+        let world_pressure = world.data.len() as f64 / world.memory_limit as f64;
+        
+        // AGGRESSIVE CASCADE REPACK vain kun world lähes täynnä (>92%)
+        if world_pressure > 0.92 && world.data.len() >= 500 {
+            println!("  ⚠️ World lähes täynnä ({:.1}%) - cascade repack!", world_pressure * 100.0);
+            self.repack_compressed_data(world, evaluator);
+        } 
+        // NORMAL REPACK HARVEMMIN - anna datan kasvaa ensin!
+        else {
+            let should_repack = if self.cycle_count <= 60 {
+                // Alussa kerran per 20 sykliä
+                self.cycle_count % 20 == 0
+            } else if self.cycle_count <= 120 {
+                // Keskivaiheessa kerran per 30 sykliä
+                self.cycle_count % 30 == 0
+            } else {
+                // Loppuvaiheessa kerran per 50 sykliä
+                self.cycle_count % 50 == 0
+            };
+            
+            if should_repack && world.data.len() >= 500 {
+                self.repack_compressed_data(world, evaluator);
+            }
+        }
+        
         self.update_cost_breakdown(world, evaluator);
     }
 
@@ -608,15 +654,32 @@ impl Solver {
         let mut best_match: Option<(Patch, u32, usize)> = None; // (patch, pattern_id, saved_bytes)
 
         // --- UUSI OSA ALKAA ---
-        const EXPLOIT_BEAM_WIDTH: usize = 100; // Testaa vain 100 parasta mallia
+        const EXPLOIT_BEAM_WIDTH: usize = 350; // Testaa 350 parasta mallia (aiemmin 200) - varmistaa että kaikki 300 mallia pankissa käydään läpi
 
-        // 1. Kerää ehdokkaat ja lajittele ne `recent_gain` mukaan
-        let mut candidates: Vec<&Pattern> = self.known_patterns.iter().collect();
-        // Lajitellaan laskevaan järjestykseen (paras ensin)
-        candidates.sort_by(|a, b| b.recent_gain.partial_cmp(&a.recent_gain).unwrap_or(Ordering::Equal));
+        // 1. Kerää ehdokkaat ja PRIORISOI DICTIONARY-MALLIT
+        let mut dict_patterns: Vec<&Pattern> = Vec::new();
+        let mut other_patterns: Vec<&Pattern> = Vec::new();
+        
+        for pattern in &self.known_patterns {
+            match pattern.operator {
+                Operator::Dictionary { .. } => dict_patterns.push(pattern),
+                _ => other_patterns.push(pattern),
+            }
+        }
+        
+        // Lajittele Dictionary-mallit estimated_gain mukaan (suurempi ensin)
+        dict_patterns.sort_by(|a, b| b.recent_gain.partial_cmp(&a.recent_gain).unwrap_or(Ordering::Equal));
+        
+        // Lajittele muut mallit normaalisti
+        other_patterns.sort_by(|a, b| b.recent_gain.partial_cmp(&a.recent_gain).unwrap_or(Ordering::Equal));
 
-        // 2. Ota vain N parasta
-        let patterns_to_check = candidates.into_iter().take(EXPLOIT_BEAM_WIDTH);
+        // 2. KAIKKI Dictionary-mallit ensin, sitten muut beam widthiin asti
+        let dict_count = dict_patterns.len();
+        if dict_count > 0 {
+            println!("  🔎 Exploit: {} Dictionary-mallia, {} muuta mallia", dict_count, other_patterns.len());
+        }
+        let patterns_to_check = dict_patterns.into_iter()
+            .chain(other_patterns.into_iter().take(EXPLOIT_BEAM_WIDTH.saturating_sub(dict_count)));
         // --- UUSI OSA LOPPUU ---
 
         // Käy läpi VAIN PARHAAT tunnetut mallit ja löydä paras
@@ -719,14 +782,19 @@ impl Solver {
         if let Some(p) = self.find_ngram_reference(slice, 4, 20) { // 4-20 tavua (sanat)
             consider(p);
         }
+        
+        // 1b. Lyhyemmät n-grammit (3-byte patterns jotka toistuvat usein)
+        if let Some(p) = self.find_ngram_reference(slice, 3, 6) { // 3-6 tavua (lyhyet toistot)
+            consider(p);
+        }
 
         // 2. Backref (LZ-viittaukset)
-        if let Some(p) = self.find_backref(world, 4, 16384) { // min len 4, max distance 16KB
+        if let Some(p) = self.find_backref(world, 3, 16384) { // min len 3 (aiemmin 4), max distance 16KB
             consider(p);
         }
 
         // 3. Delta-sekvenssit
-        if let Some(p) = self.find_delta_sequence(slice, 6) {
+        if let Some(p) = self.find_delta_sequence(slice, 5) { // 5 tavua (aiemmin 6) - salli lyhyemmät sekvenssit
             consider(p);
         }
 
@@ -737,6 +805,11 @@ impl Solver {
 
         // 5. Run-length (viimeisenä)
         if let Some(p) = self.find_any_run_length(slice, 3) {
+            consider(p);
+        }
+        
+        // 6. Lyhyet run-lengthit (2-byte runs voivat olla hyödyllisiä)
+        if let Some(p) = self.find_any_run_length(slice, 2) {
             consider(p);
         }
 
@@ -1178,11 +1251,27 @@ impl Solver {
         let mut candidates: Vec<(Vec<u8>, WordStats)> = counts
             .into_iter()
             .filter_map(|(word, mut stats)| {
-                if stats.count < 2 {
+                let len = word.len();
+                
+                // Dynaaminen kynnys: ALHAISEMPI (löytää enemmän)
+                let min_count = if len >= 15 {
+                    2 // Pitkät lauseet (15+ tavua): 2 kertaa riittää
+                } else if len >= 8 {
+                    2 // Keskipitkät (8-14): 2 kertaa
+                } else if len >= 5 {
+                    3 // Lyhyet sanat (5-7): 3 kertaa
+                } else {
+                    4 // Hyvin lyhyet (3-4): 4 kertaa
+                };
+                
+                if stats.count < min_count {
                     return None;
                 }
-                let len = word.len();
-                let estimated_gain = (len.saturating_sub(3) as f64) * (stats.count as f64 - 1.0);
+                
+                // Bonusta pidemmille sekvensseille
+                let length_bonus = if len >= 20 { 2.0 } else if len >= 10 { 1.5 } else { 1.0 };
+                let estimated_gain = (len.saturating_sub(3) as f64) * (stats.count as f64 - 1.0) * length_bonus;
+                
                 if estimated_gain <= 0.0 {
                     return None;
                 }
@@ -1195,14 +1284,30 @@ impl Solver {
             return;
         }
 
+        // Priorisoi pidemmät sekvenssit (lauseet) ja sitten estimated_gain
         candidates.sort_by(|a, b| {
+            // 1. Vertaile pituutta (pidempi parempi)
+            let len_cmp = b.0.len().cmp(&a.0.len());
+            if len_cmp != Ordering::Equal {
+                return len_cmp;
+            }
+            // 2. Jos samanpituisia, vertaile estimated_gain
             b.1
                 .estimated_gain
                 .partial_cmp(&a.1.estimated_gain)
                 .unwrap_or(Ordering::Equal)
         });
 
-        for (word, stats) in candidates.into_iter().take(Self::DICTIONARY_CAPACITY) {
+        let top_candidates: Vec<_> = candidates.into_iter().take(Self::DICTIONARY_CAPACITY).collect();
+        
+        if !top_candidates.is_empty() {
+            let longest = top_candidates.iter().map(|(w, _)| w.len()).max().unwrap_or(0);
+            let avg_len = top_candidates.iter().map(|(w, _)| w.len()).sum::<usize>() / top_candidates.len();
+            println!("  📖 Sanakirja: {} ehdokasta, pisin: {} tavua, keskim: {} tavua", 
+                     top_candidates.len(), longest, avg_len);
+        }
+        
+        for (word, stats) in top_candidates {
             self.ensure_dictionary_word(word, stats);
         }
     }
@@ -1243,6 +1348,16 @@ impl Solver {
         self.next_pattern_id += 1;
         let mut pattern = Pattern::new(pattern_id, Operator::Dictionary { word_id });
         pattern.recent_gain = stats.estimated_gain;
+        
+        // Debug: näytä lisätty sana
+        let word_preview = if word.len() <= 20 {
+            String::from_utf8_lossy(&word).to_string()
+        } else {
+            format!("{}...", String::from_utf8_lossy(&word[..20]))
+        };
+        println!("    + Sana #{}: \"{}\" ({} tavua, {} krt, gain: {:.1})", 
+                 word_id, word_preview, word.len(), stats.count, stats.estimated_gain);
+        
         self.known_patterns.push(pattern);
         self.forget_if_needed();
     }
@@ -1319,6 +1434,163 @@ impl Solver {
         }
 
         best.map(|(patch, _)| patch)
+    }
+
+    /// REKURSIIVINEN PAKKAUS: Etsi toistuvia sekvenssejä JO PAKATUSTA datasta
+    fn repack_compressed_data(&mut self, world: &mut World, evaluator: &crate::evaluator::Evaluator) {
+        if world.data.len() < 10 {
+            return;
+        }
+
+        println!("  🔄 MULTI-PASS REPACK: Etsitään meta-malleja syvällisesti...");
+
+        let total_quota_budget = 500; // Kokonaisbudjetti kaikille kierroksille
+        let mut total_used_quota = 0;
+        let mut total_applied = 0;
+        let mut pass_number = 1;
+        
+        // MULTI-PASS: Jatka repackaamista kunnes ei löydy enää mitään tai quota loppuu
+        loop {
+            if total_used_quota >= total_quota_budget {
+                println!("    ⏱ Quota-budjetti käytetty ({} operaatiota)", total_quota_budget);
+                break;
+            }
+            
+            println!("    🔍 Pass #{}: Skannataan world.data ({} tavua)...", pass_number, world.data.len());
+            
+            // Skannaa koko world.data ja etsi toistuvia byte-sekvenssejä
+            let mut counts: HashMap<Vec<u8>, usize> = HashMap::new();
+            
+            // Etsi 4-48 tavun sekvenssejä
+            for len in 4..=48 {
+                if len > world.data.len() {
+                    break;
+                }
+                for start in 0..=world.data.len().saturating_sub(len) {
+                    let slice = world.data[start..start + len].to_vec();
+                    
+                    // BONUS: Jos sekvenssi sisältää OP_DICT operaattoreita, se on meta-pattern!
+                    let dict_ops_count = slice.iter().filter(|&&b| b == OP_DICT).count();
+                    let bonus = if dict_ops_count > 0 { 2 } else { 1 };
+                    
+                    *counts.entry(slice).or_insert(0) += bonus;
+                }
+            }
+
+            // Löydä parhaat ehdokkaat
+            let mut candidates: Vec<(Vec<u8>, usize)> = counts
+                .into_iter()
+                .filter(|(_seq, count)| *count >= 2)
+                .collect();
+            
+            if candidates.is_empty() {
+                println!("    ✓ Pass #{}: Ei löytynyt uusia toistuvia sekvenssejä - valmis!", pass_number);
+                break;
+            }
+
+            // Lajittele: pisin ensin, sitten useimmin toistuva
+            candidates.sort_by(|a, b| {
+                let len_cmp = b.0.len().cmp(&a.0.len());
+                if len_cmp != Ordering::Equal {
+                    return len_cmp;
+                }
+                b.1.cmp(&a.1)
+            });
+
+            let mut pass_applied = 0;
+            let pass_quota_budget = (total_quota_budget - total_used_quota).min(200); // Max 200 per pass
+            let mut pass_used_quota = 0;
+
+            // Yritä käyttää 20 parasta sekvenssiä per pass
+            for (seq, count) in candidates.into_iter().take(20) {
+                if pass_used_quota >= pass_quota_budget {
+                    break;
+                }
+
+                // Luo uusi Dictionary-entry
+                let estimated_gain = (seq.len().saturating_sub(3) as f64) * (count as f64 - 1.0);
+                if estimated_gain <= 0.0 {
+                    continue;
+                }
+
+                let mut stats = WordStats::default();
+                stats.count = count;
+                stats.estimated_gain = estimated_gain;
+
+                // Lisää sanakirjaan
+                self.ensure_dictionary_word(seq.clone(), stats);
+
+                // Sovella tätä mallia heti
+                let cost_before = evaluator.calculate_total_cost(world);
+                let mut changed = false;
+
+                // Etsi ja korvaa KAIKKI esiintymät
+                let mut i = 0;
+                while i <= world.data.len().saturating_sub(seq.len()) {
+                    if &world.data[i..i + seq.len()] == seq.as_slice() {
+                        // Löytyi! Korvaa Dictionary-viittauksella
+                        if let Some(&word_id) = self.dictionary_lookup.get(&seq) {
+                            let new_data = vec![
+                                OP_DICT,
+                                (word_id & 0xFF) as u8,
+                                ((word_id >> 8) & 0xFF) as u8,
+                            ];
+                            
+                            world.data.splice(i..i + seq.len(), new_data.iter().cloned());
+                            changed = true;
+                            pass_applied += 1;
+                            i += 3; // Hyppää uuden viittauksen yli
+                        } else {
+                            i += 1;
+                        }
+                    } else {
+                        i += 1;
+                    }
+                }
+
+                if changed {
+                    let cost_after = evaluator.calculate_total_cost(world);
+                    let gain = evaluator.calculate_gain(cost_before, cost_after);
+                    println!("      ✓ Meta-malli: {} tavua, {} krt → {} tavua säästetty", 
+                             seq.len(), count, gain);
+                    
+                    // Päivitä recent_gain jotta exploit käyttää tätä mallia
+                    if let Some(&word_id) = self.dictionary_lookup.get(&seq) {
+                        for pattern in &mut self.known_patterns {
+                            if let Operator::Dictionary { word_id: pid } = pattern.operator {
+                                if pid == word_id {
+                                    pattern.recent_gain = gain as f64 * 10.0;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                pass_used_quota += 10;
+            }
+
+            total_applied += pass_applied;
+            total_used_quota += pass_used_quota;
+            
+            if pass_applied == 0 {
+                println!("    ✓ Pass #{}: Ei sovellettu uusia malleja - valmis!", pass_number);
+                break;
+            } else {
+                println!("    ✓ Pass #{}: {} mallia sovellettu, jatketaan...", pass_number, pass_applied);
+                pass_number += 1;
+                
+                // Rajoita kierrosten määrää
+                if pass_number > 10 {
+                    println!("    ⚠ Maksimi 10 passia saavutettu");
+                    break;
+                }
+            }
+        }
+
+        if total_applied > 0 {
+            println!("  ✅ Multi-pass repack valmis: {} mallia sovellettu {} passissa", total_applied, pass_number - 1);
+        }
     }
 }
 
