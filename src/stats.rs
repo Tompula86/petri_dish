@@ -5,6 +5,8 @@ pub struct Stats {
     pub gain_per_quota_exploit: f64,
     /// Gain per quota explore-strategialle
     pub gain_per_quota_explore: f64,
+    /// Gain per quota meta-learning strategialle
+    pub gain_per_quota_meta: f64,
     /// C(models): Mallien koodauskustannus
     pub c_models: usize,
     /// C(residual): Jäljellä olevan datan kustannus
@@ -12,9 +14,12 @@ pub struct Stats {
     /// Yhteensä kulutettu quota tässä syklissä
     pub quota_spent_exploit: u32,
     pub quota_spent_explore: u32,
+    pub quota_spent_meta: u32,
+    pub quota_spent_seek: u32,
     /// Yhteensä säästetty tavuja tässä syklissä
     pub bytes_saved_exploit: i32,
     pub bytes_saved_explore: i32,
+    pub bytes_saved_meta: i32,
 }
 
 impl Stats {
@@ -22,12 +27,16 @@ impl Stats {
         Stats {
             gain_per_quota_exploit: 0.0,
             gain_per_quota_explore: 0.0,
+            gain_per_quota_meta: 0.0,
             c_models: 0,
             c_residual: 0,
             quota_spent_exploit: 0,
             quota_spent_explore: 0,
+            quota_spent_meta: 0,
+            quota_spent_seek: 0,
             bytes_saved_exploit: 0,
             bytes_saved_explore: 0,
+            bytes_saved_meta: 0,
         }
     }
 
@@ -35,8 +44,11 @@ impl Stats {
     pub fn reset_cycle(&mut self) {
         self.quota_spent_exploit = 0;
         self.quota_spent_explore = 0;
+        self.quota_spent_meta = 0;
+        self.quota_spent_seek = 0;
         self.bytes_saved_exploit = 0;
         self.bytes_saved_explore = 0;
+        self.bytes_saved_meta = 0;
     }
 
     /// Päivitä exploit-tilastot
@@ -63,6 +75,15 @@ impl Stats {
             self.gain_per_quota_explore = 
                 self.bytes_saved_explore as f64 / self.quota_spent_explore as f64;
         }
+        if self.quota_spent_meta > 0 {
+            self.gain_per_quota_meta = 
+                self.bytes_saved_meta as f64 / self.quota_spent_meta as f64;
+        }
+    }
+
+    /// Päivitä seek-tilastot (ikkunan siirto)
+    pub fn record_seek(&mut self, quota_spent: u32) {
+        self.quota_spent_seek += quota_spent;
     }
 
     /// Päivitä kustannuskomponentit
@@ -78,6 +99,6 @@ impl Stats {
 
     /// Kokonaisquota käytetty tässä syklissä
     pub fn total_quota_spent(&self) -> u32 {
-        self.quota_spent_exploit + self.quota_spent_explore
+        self.quota_spent_exploit + self.quota_spent_explore + self.quota_spent_meta + self.quota_spent_seek
     }
 }

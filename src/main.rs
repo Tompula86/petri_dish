@@ -5,6 +5,7 @@ mod pattern;
 mod operator;
 mod feeder;
 mod stats;
+mod scheduler;
 
 use world::World;
 use feeder::Feeder;
