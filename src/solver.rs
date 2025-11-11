@@ -1,5 +1,5 @@
 use crate::world::{World, Patch};
-use crate::operator::{Operator, OP_RLE};
+use crate::operator::{Operator, OP_RLE, OP_LZ};
 use crate::pattern::Pattern;
 use crate::stats::Stats;
 
@@ -19,6 +19,7 @@ pub struct Solver {
 }
 
 impl Solver {
+    const MIN_ACCEPT_GAIN: i32 = 12; // hylkää mikromallit joista nettohyöty pieni
     pub fn new(processing_quota: u32, pattern_bank_capacity: usize) -> Self {
         Solver {
             processing_quota,
@@ -63,7 +64,6 @@ impl Solver {
                         world.apply_patch(&global_patch);
                         let cost_after = evaluator.calculate_total_cost(world);
                         let gain = evaluator.calculate_gain(cost_before, cost_after);
-                        
                         if gain > 0 {
                             quota_cost = 1;
                             self.stats.record_exploit(quota_cost, gain);
@@ -86,8 +86,7 @@ impl Solver {
                 },
 
                 crate::scheduler::Action::Explore => {
-                    let window_data = world.get_window_data();
-                    if let Some(patch) = self.explore(window_data) {
+                    if let Some(patch) = self.explore(world) {
                         // TÄRKEÄÄ: Muunna paikallinen patch globaaliksi
                         let global_patch = patch.clone_with_offset(world.window.start);
 
@@ -101,11 +100,11 @@ impl Solver {
                         let cost_after = evaluator.calculate_total_cost(world);
                         let gain = evaluator.calculate_gain(cost_before, cost_after);
                         
-                        if gain <= 0 {
+                        if gain < Solver::MIN_ACCEPT_GAIN {
                             world.rollback(&global_patch, original_data);
                             quota_cost = 10;
                             self.stats.record_explore(quota_cost, 0);
-                            println!("  ✗ Explore: Malli hylätty (tappio: {} tavua)", -gain);
+                            println!("  ✗ Explore: Malli hylätty (liian pieni hyöty: {} tavua)", gain);
                         } else {
                             quota_cost = 10;
                             self.stats.record_explore(quota_cost, gain);
@@ -230,6 +229,10 @@ impl Solver {
     fn identify_operator(&self, patch: &Patch) -> Operator {
         if patch.new_data.len() == 3 && patch.new_data[0] == OP_RLE {
             Operator::RunLength(patch.new_data[1], patch.new_data[2] as usize)
+        } else if patch.new_data.len() == 4 && patch.new_data[0] == OP_LZ {
+            let dist = (patch.new_data[1] as usize) | ((patch.new_data[2] as usize) << 8);
+            let len = patch.new_data[3] as usize;
+            Operator::BackRef(dist, len)
         } else {
             // Oletus: RunLength jos tuntematon
             Operator::RunLength(0, 0)
@@ -249,17 +252,45 @@ impl Solver {
                         return Some((patch, pattern.id));
                     }
                 }
+                Operator::BackRef(distance, length) => {
+                    // Hyödynnä LZ-tyylistä viittausta jos sekä lähde- että kohdeikkuna ovat
+                    // näkyvissä tässä ikkunassa.
+                    let dist = *distance;
+                    let len = (*length).min(255);
+                    if data_slice.len() >= len && dist > 0 {
+                        // Skannaa kaikki mahdolliset kohde-alkiot ikkunassa
+                        let max_start = data_slice.len().saturating_sub(len);
+                        for i in 0..=max_start {
+                            // Lähdealueen täytyy osua ikkunaan
+                            if i < dist { continue; }
+                            let src = i - dist;
+                            // Varmista, että myös lähde-alue mahtuu viipaleeseen
+                            if src + len > data_slice.len() { continue; }
+                            if &data_slice[i..i+len] == &data_slice[src..src+len] {
+                                let new_data = vec![
+                                    OP_LZ,
+                                    (dist & 0xFF) as u8,
+                                    ((dist >> 8) & 0xFF) as u8,
+                                    len as u8,
+                                ];
+                                let patch = Patch { range: i..(i + len), new_data };
+                                return Some((patch, pattern.id));
+                            }
+                        }
+                    }
+                }
             }
         }
         None
     }
 
-    /// Explore: Etsi uusia malleja
-    /// Tällä hetkellä: etsii RunLength-malleja (3+ samaa peräkkäistä tavua)
-    /// HUOM: Patch.range on paikallinen ikkunan suhteen!
-    fn explore(&self, data_slice: &[u8]) -> Option<Patch> {
-        const MIN_RUN_LENGTH: usize = 3; // Alennettu 5:stä 3:een
-        self.find_any_run_length(data_slice, MIN_RUN_LENGTH)
+    /// Explore: yritä ensin BackRef (LZ), sitten run-length fallback
+    fn explore(&self, world: &World) -> Option<Patch> {
+        if let Some(p) = self.find_backref(world, 5, 16384) { // min len 5, max distance 16KB
+            return Some(p);
+        }
+        let slice = world.get_window_data();
+        self.find_any_run_length(slice, 3)
     }
 
     /// Apufunktio: etsi mitä tahansa RunLength-mallia
@@ -320,6 +351,51 @@ impl Solver {
             }
         }
 
+        None
+    }
+
+    /// LZ-tyylinen backreference etsimällä ikkunan alun (ws) pisin match edeltävästä datasta
+    fn find_backref(&self, world: &World, min_len: usize, max_distance: usize) -> Option<Patch> {
+        let data = &world.data;
+        let ws = world.window.start;
+        let we = world.window.end.min(data.len());
+        if we - ws < min_len + 1 { return None; }
+
+        let mut best_target = 0usize;
+        let mut best_src = 0usize;
+        let mut best_len = 0usize;
+
+        // Tutki muutama kohde ikkunassa (alku, 1/4, 1/2, 3/4)
+        let span = we - ws;
+        let candidates = [ws + 1, ws + span/4, ws + span/2, ws + (3*span/4)].into_iter()
+            .filter(|&t| t > ws && t + min_len <= we);
+
+        for target in candidates {
+            let max_dist = (target - ws).min(max_distance);
+            let max_len_possible = (we - target).min(255);
+            let search_start = target.saturating_sub(max_dist);
+            for src in search_start..target {
+                let mut l = 0usize;
+                while l < max_len_possible && data[src + l] == data[target + l] {
+                    l += 1;
+                }
+                if l > best_len {
+                    best_len = l;
+                    best_src = src;
+                    best_target = target;
+                    if l == max_len_possible { break; }
+                }
+            }
+        }
+
+        if best_len >= min_len {
+            let distance = best_target - best_src;
+            let enc_len = best_len.min(255);
+            let new_data = vec![OP_LZ, (distance & 0xFF) as u8, ((distance >> 8) & 0xFF) as u8, enc_len as u8];
+            // Paikallinen range offset = best_target - ws
+            let local_start = best_target - ws;
+            return Some(Patch { range: local_start..(local_start + enc_len), new_data });
+        }
         None
     }
 }

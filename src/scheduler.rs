@@ -51,9 +51,17 @@ impl Scheduler {
                 return Action::Explore;
             }
         }
-
-        // Oletuksena: AINA Explore
-        Action::Explore
+        // Fallback: päätä explore vs. window shift
+        // Kasvata ikkunansiirron todennäköisyyttä kun paine kasvaa
+        let shift_prob = (1.0 - self.explore_vs_shift_prob) + (world_pressure * 0.2);
+        if rng.gen_range(0.0..1.0) < shift_prob.min(0.6) {
+            Action::ShiftWindow
+        } else if rng.gen_range(0.0..1.0) < 0.3 {
+            // Siemennä myös exploit-tilastoja
+            Action::Exploit
+        } else {
+            Action::Explore
+        }
     }
 
     /// Kasvata exploit-biasia (meta-operaatiosta hyödyntämiseen)
