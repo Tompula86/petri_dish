@@ -33,29 +33,21 @@ Tämä dokumentti kuvaa tavoitteen, arkkitehtuurin ja etenemissuunnitelman järj
 
 - Ei ulkoisia ML-kirjastoja tai valmista pakkausta – heuristiikka ja meta-heuristiikka sallittuja.
 - Reprodusoitavuus: deterministiset kokeet siemenellä.
-- Budjetit: World ~100 kB; Solver "aivot" esim. 16–64 kB (tarkennetaan); prosessointiquota (aika/iteraatiot) run-kierrosta kohti.
+- Budjetit: World oletus 10 kB (ympäristömuuttujilla säädettävissä); Solver "aivot" esim. 16–64 kB (tarkennetaan); prosessointiquota (aika/iteraatiot) run-kierrosta kohti.
 - Turvallisuus: Operaattorit eivät saa korruptoida Worldin rakennetta; muutokset ovat "transaktioita" palautusmahdollisuudella.
 
 
 ## Arkkitehtuuri (korkean tason kuva)
 
-- World: byte-viipale + metatieto (kustannus, segmentit, jäännösmerkinnät).
-- Feeder (Syöttäjä): tuo sisään uutta dataa virrana konfiguroitulla nopeudella (esim. 1 kB/sykli) ja luo dynaamisen paineen tilasta ja ajasta.
-- FocusWindow (Tarkennusikkuna): pieni työmuisti-ikkuna (esim. 4 kB), jossa Solver operoi; ikkunan siirto (seek) ja luku (read) maksavat quota-yksiköitä.
-- Solver (Agentti):
-  - known_patterns: Vec<Pattern>
-  - processing_quota: u32
-  - stats: käyttömäärät, säästö/byte, viimeisin hyöty ja strategia-kohtaiset tuottavuudet (gain per quota)
-  - live(world): pääsilmukka, joka interleavoi exploit/explore/meta/forget, hallitsee ikkunaa ja reagoi Feederin luomaan paineeseen
-- Evaluator: kustannusfunktio (MDL-tyyppinen) + hyväksyntä-ehto
-- Scheduler: dynaamisesti budjetoi quota-aikaa eri strategioille (nopea exploit, hidas explore, meta-opit) tuottavuusmittareiden ja paineen mukaan
-- PatternBank: rajallinen, käyttöön ja hyötyyn perustuva säilytys/unohtaminen
-- Operator DSL/IR: pieni väliesityskieli operaatioille ja niiden parametreille
+- World: byte-viipale + metatieto (kustannus, segmentit, jäännösmerkinnät); oletus 10 kB, säädettävissä ympäristömuuttujilla.
+- Feeder (Syöttäjä): tuo sisään uutta dataa virrana konfiguroitulla nopeudella ja skaalaa feed_ratea automaattisesti vapaan tilan mukaan.
+- FocusWindow: dynaaminen rullaava ikkuna (128 B → min(PETRI_WINDOW_FRACTION · world_limit, world_limit)), jonka koko kasvaa eksponentiaalisesti nolla-hyötyjaksojen perusteella ja joka kattaa koko maailman deterministisesti.
+- Solver (Agentti): pitää PatternBankia, Stats-tilaa ja Scheduleria; pääsilmukka interleavoi exploit/explore/meta/forget sekä hallitsee FocusWindow-tilaa.
+- Evaluator: kustannusfunktio (MDL), joka hyväksyy vain nettohyötyä tuottavat muutokset.
+- Scheduler: jakaa quota-budjetin strategioiden kesken, priorisoi ShiftWindow-rullausta kun hyöty pysähtyy ja tukee meta-oppimista.
+- PatternBank: rajallinen kilpailullinen muisti (RunLength, BackRef, Dictionary, GrammarRule, GeneralizedBackRef, ...).
+- Operator DSL/IR: kompakti bytemuotoinen esitys operaattoreille; meta-taso voi muodostaa uusia Operaattori-perheitä (Dictionary-sanat, Grammar-säännöt, BackRef-yleistykset).
 
-
-## Kustannusfunktio (heuristinen MDL)
-
-Tavoite on minimoida
 
 C_total = C(models) + C(residual)
 
@@ -82,7 +74,7 @@ Riskibudjetti: rajattu osuus kierroksesta voi hyväksyä myös pieniä negatiivi
   3) Meta-learn: etsi malleja malleista PatternBankissa; yleistykset (esim. toisto-operaattorin abstraktointi).
   4) Forget: jos PatternBank täynnä, poista vähiten hyödyllinen (LFU/"least saved bytes"/ikäpainotus).
   5) Risk-askel (valinnainen): käytä pientä riskibudjettia negatiivisen Δ:n kokeiluihin lupaavilla alueilla.
-  6) Siirrä FocusWindowa (seek) tarpeen mukaan; maksa seek/read -kustannus quotasta.
+  6) Siirrä FocusWindow systemaattisesti (ShiftWindow) seuraavaan stride-positioon; kasvata ikkunaa kun nolla-hyötyjakso ylittyy.
   7) Päivitä stats ja quota-budjetit; Feeder työntää sisään uutta dataa; jos tila loppuu, siirry "hätätilaan" (nopeat, korkea gain/quota -operaatiot).
 
 
@@ -110,7 +102,8 @@ Pattern voi olla enum + parametrit; Operator voidaan erottaa erilliseksi IR:ksi.
 
 ## Dynaaminen paine: Feeder ja ajan arvo
 
-- Feeder tuo uutta dataa jokaisen live()-syklin päätteeksi (esim. r kB/kierros).
+- Feeder tuo uutta dataa jokaisen live()-syklin päätteeksi (perusnopeus 200 B/sykli, laskee automaattisesti jos muistipaine kasvaa).
+- Konfigurointi: PETRI_FEED_RATE ja PETRI_WORLD_LIMIT -ympäristömuuttujilla voi nostaa/laskaa perusnopeutta ja worldin muistikattoa kokeita varten.
 - Jos World olisi täyttymässä, Solver priorisoi nopeasti sovellettavat mallit, jotka vapauttavat tilaa ennen ylivuotoa.
 - Ajan arvo: ajankäyttö on eksplisiittinen kustannus. Scheduler nostaa scorea, joka maksimoi E[gain]/E(quota). Paineen kasvaessa λ kasvaa (aika on kalliimpaa), mikä ohjaa kohti nopeita voittoja.
 - Backpressure: jos edes nopeilla voitoilla ei pysytä tasapainossa, Feeder voidaan hidastaa tai pysäyttää kokeellisesti (konfiguroitava politiikka).
@@ -118,10 +111,12 @@ Pattern voi olla enum + parametrit; Operator voidaan erottaa erilliseksi IR:ksi.
 
 ## Tarkennusikkuna (Focus Window) ja paikallisuus
 
-- Ikkunan koko: oletus 4 kB (tarkennettavissa). Solverilla on pääsy vain ikkunaan ja sen välittömään puskurialueeseen.
-- Kustannukset: seek (siirrä ikkunaa) ja read (täytä/virkistä puskuria) kuluttavat quota-yksiköitä.
-- Strategiat: coarse scan → hot spot -löytö → fine scan; ikkuna liikkuu heuristiikalla, joka maksimoi odotetun gain/quota.
-- Emergentti käytös: paikalliset operaattorit ja “paluu kuumiin pisteisiin”; vähentää globaalin O(N)-skannauksen tarvetta.
+- Ikkunan koko: lähtö 128 B, kasvaa eksponentiaalisesti (×1.5) aina kun useampi sykli tuottaa nolla-hyödyn; maksimi = min(PETRI_WINDOW_FRACTION · world_limit, world_limit).
+- Stride ≈ window_size/2, jolloin rullaava ShiftWindow kattaa koko datan deterministisesti (wrap-around) ennen palaamista alkuun.
+- Kustannukset: seek ja read kuluttavat quota-yksiköitä; ShiftWindow-toiminto raportoidaan stats.quota_spent_seek-mittarin kautta.
+- Strategiat: coarse scan → hot spot → fine scan; tuore data korjataan nopeasti, mutta systemaattinen rullaus takaa myös vanhan datan revisiitin.
+- Paineesta riippuva kasvun rajoitus: kun world muistista käytössä suuri osuus, ikkuna kasvaa vain jos PatternBank ei löydä uusia voittoja; muuten koko pidetään kompaktina.
+- Emergentti käytös: isot mallit löytyvät rullauksen seurauksena, pienet mallit käsitellään tailissa nopeasti.
 
 
 ## Riskibudjetti: pakeneminen paikallisista minimeistä
@@ -341,9 +336,17 @@ Näistä voidaan tuottaa radiaalikaavio tai trendi dashboardissa.
   - 3.2: PatternBank + oppiminen (lisää löydetyt mallit pankkiin)
   - Kriteeri: toistuva ajo nopeutuu ja paranee, koska exploit hyödyntää opittuja malleja
 
-- Vaihe 2.5: FocusWindow
-  - Tavoite: ikkunan hallinta; seek/read-kustannukset; perusheuristiikka ikkunan liikkeelle
-  - Kriteeri: globaalit skannaukset korvautuvat pääosin ikkunapohjaisilla käsittelyillä ilman hyötyjen romahtamista
+- Vaihe 2.5: FocusWindow 2.1
+  - Tavoite: rullaava, deterministinen ikkunaskannaus (stride ≈ window/2, wrap-around) joka kasvaa eksponentiaalisesti nolla-hyötyjaksojen perusteella ja kunnioittaa PETRI_WINDOW_FRACTION -rajaa.
+  - Kriteeri: jokainen tavupositio käydään läpi ≤2·(world_len/window_stride) syklissä, ja ikkuna laajenee itsestään kun exploit/explore-gain pysyy nollassa ≥3 sykliä.
+
+- Vaihe 2.6: Dictionary 2.0
+  - Tavoite: jatkuva n-grammien ingestion koko worldista, sanakirjan ylläpito (cap 256 sanaa), sekä exploit/explore -polku joka käyttää pisimpiä sanoja ensin.
+  - Kriteeri: PatternBank sisältää Dictionary-malleja, jotka tuottavat nettohyötyä; stats.gain_per_quota_exploit ei jää nollaan kun data sisältää toistuvia sanoja.
+
+- Vaihe 2.7: Grammar Induction
+  - Tavoite: explore_meta kerää operaattorivirran, tunnistaa toistuvat operaattorijonot ja luo Operator::GrammarRule-säännöt + soveltaa niitä paikallisesti.
+  - Kriteeri: vähintään yksi GrammarRule tallentuu PatternBankiin ja tuottaa säästöä testidatassa; meta-tilastot raportoivat uuden sääntöperheen syntymisen.
 
 - Vaihe 4: Meta-mallit ja unohtaminen
   - 4.1: meta-learn PatternBankista, yleistysoperaattorit
@@ -437,8 +440,8 @@ fn live(&mut self, world: &mut World, feeder: &mut Feeder) {
     // 5) Risk step (rare)
     if self.scheduler.allow_risk() { quota -= self.risky_probe(world); }
 
-    // 6) Window management
-    if self.should_shift_window() { quota -= world.shift_window(); }
+  // 6) Window management
+  self.sync_focus_window(world);
   }
 
   // 7) Intake new data; emergency mode if near overflow

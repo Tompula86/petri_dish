@@ -12,26 +12,62 @@ use feeder::Feeder;
 use evaluator::Evaluator;
 use solver::Solver;
 
+use std::env;
 use std::fs::File;
 use std::io::Write;
+
+struct Config {
+    world_limit: usize,
+    feed_rate: usize,
+    window_fraction: f64,
+}
+
+impl Config {
+    const DEFAULT_WORLD_LIMIT: usize = 10_000;
+    const DEFAULT_FEED_RATE: usize = 200;
+    const DEFAULT_WINDOW_FRACTION: f64 = 0.8;
+
+    fn load() -> Self {
+        let world_limit = env::var("PETRI_WORLD_LIMIT")
+            .ok()
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(Self::DEFAULT_WORLD_LIMIT);
+
+        let feed_rate = env::var("PETRI_FEED_RATE")
+            .ok()
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(Self::DEFAULT_FEED_RATE);
+
+        let window_fraction = env::var("PETRI_WINDOW_FRACTION")
+            .ok()
+            .and_then(|v| v.parse::<f64>().ok())
+            .map(|f| f.clamp(0.1, 1.0))
+            .unwrap_or(Self::DEFAULT_WINDOW_FRACTION);
+
+        Config { world_limit, feed_rate, window_fraction }
+    }
+}
 
 fn main() {
     println!("=== Petrimalja Älykkyyelle: VAIHE 6 - Striimaava Data ===\n");
 
-    // Luo World (rajoitettu 50 kB, paine kovenee!)
-    let mut world = World::new(50_000);
+    let config = Config::load();
+
+    // Luo World (rajoitettu, oletus 10 kB)
+    let mut world = World::new(config.world_limit);
     
     // Luo Feeder, joka lukee "./data"-kansiosta
-    let mut feeder = Feeder::new(3_000, "./data")
+    let mut feeder = Feeder::new(config.feed_rate, "./data")
         .expect("Datakansion lukeminen epäonnistui. Varmista, että kansio './data' on olemassa.");
 
     // Luo Evaluator ja Solver
     let evaluator = Evaluator::new();
-    let mut solver = Solver::load_or_new(1000, 150); // 150 patternin kapasiteetti (kasvuvaraa teksteille)
+    let mut solver = Solver::load_or_new(1000, 150, config.window_fraction); // 150 patternin kapasiteetti (kasvuvaraa teksteille)
 
     println!("\nAloitustilanne:");
     println!("  World kapasiteetti: {} tavua", world.memory_limit);
-    println!("  Feeder nopeus: {} tavua/sykli", feeder.feed_rate);
+    println!("  Feeder perusnopeus: {} tavua/sykli", config.feed_rate);
+    println!("  Ikkunan maks. osuus worldista: {:.0}%", config.window_fraction * 100.0);
     println!("  Solver: {} mallia ladattu muistista", solver.known_patterns.len());
     
     // Avaa CSV-tiedosto

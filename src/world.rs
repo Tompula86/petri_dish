@@ -35,6 +35,33 @@ impl World {
         }
     }
 
+    /// Kuinka paljon tilaa on vielä vapaana
+    pub fn free_space(&self) -> usize {
+        self.memory_limit.saturating_sub(self.data.len())
+    }
+
+    /// Laske maksimi-ikkunan koko annetulla murto-osalla muistista
+    #[allow(dead_code)]
+    pub fn limit_fraction(&self, fraction: f64) -> usize {
+        let capped_fraction = fraction.clamp(0.0, 1.0);
+        ((self.memory_limit as f64) * capped_fraction).round() as usize
+    }
+
+    /// Aseta ikkuna ankkuroituna datan loppuun
+    #[allow(dead_code)]
+    pub fn set_window_tail(&mut self, window_size: usize) {
+        if self.data.is_empty() {
+            self.window = 0..0;
+            return;
+        }
+
+        let clamped = window_size.min(self.data.len());
+        let end = self.data.len();
+        let start = end.saturating_sub(clamped);
+        self.window = start..end;
+    }
+
+    #[allow(dead_code)]
     pub fn load_data(&mut self, data: Vec<u8>) -> Result<(), &'static str> {
         if data.len() > self.memory_limit {
             return Err("Data exceeds memory limit");
@@ -69,16 +96,5 @@ impl World {
         let start = self.window.start.min(self.data.len());
         let end = self.window.end.min(self.data.len());
         &self.data[start..end]
-    }
-
-    /// Siirrä ikkunaa ja palauta siirron quota-kustannus
-    /// (Yksinkertainen malli: 1 quota + 1 per 1000 siirrettyä tavua)
-    pub fn shift_window(&mut self, new_start: usize, window_size: usize) -> u32 {
-        let new_end = new_start + window_size;
-        let distance = (new_start as i32 - self.window.start as i32).abs() as u32;
-        self.window = new_start..new_end;
-
-        let quota_cost = 1 + (distance / 1000);
-        quota_cost
     }
 }

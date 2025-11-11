@@ -1,5 +1,5 @@
 use crate::world::{World, Patch};
-use crate::operator::{Operator, OP_DELTA, OP_LZ, OP_RLE, OP_XOR};
+use crate::operator::{Operator, OP_DELTA, OP_DICT, OP_GRAMMAR, OP_LZ, OP_RLE, OP_XOR};
 use crate::pattern::Pattern;
 use crate::stats::Stats;
 use std::cmp::Ordering;
@@ -18,19 +18,44 @@ pub struct Solver {
     pub stats: Stats,
     /// Scheduler: päättää strategiset valinnat
     pub scheduler: crate::scheduler::Scheduler,
-    /// Sanakirja: word_id -> word bytes; käytetään Dictionary-operaattoreissa
-    dictionary: HashMap<u32, Vec<u8>>,
+    /// Sanakirja: word_id -> word metadata
+    dictionary_words: HashMap<u32, DictionaryWord>,
     /// Käänteinen sanakirja: word bytes -> word_id; nopeaan hakuun
-    word_to_id: HashMap<Vec<u8>, u32>,
+    dictionary_lookup: HashMap<Vec<u8>, u32>,
     /// Seuraava vapaa word_id
     next_word_id: u32,
+    /// Grammar-säännöt meta-oppimista varten
+    #[allow(dead_code)]
+    grammar_rules: HashMap<u32, GrammarRule>,
+    #[allow(dead_code)]
+    grammar_lookup: HashMap<Vec<OperatorKey>, u32>,
+    #[allow(dead_code)]
+    next_grammar_id: u32,
+    /// Ikkunan hallinta
+    window_size: usize,
+    window_stride: usize,
+    current_window_start: usize,
+    zero_gain_streak: u32,
+    window_cap_fraction: f64,
+    last_world_len: usize,
 }
 
 impl Solver {
-    const MIN_ACCEPT_GAIN: i32 = 12; // hylkää mikromallit joista nettohyöty pieni
+    const MIN_ACCEPT_GAIN: i32 = 25; // hylkää mikromallit joista nettohyöty pieni
     const PATTERN_BANK_FILE: &'static str = "pattern_bank.json";
+    const DICTIONARY_MIN_LEN: usize = 4;
+    const DICTIONARY_MAX_LEN: usize = 32;
+    const DICTIONARY_CAPACITY: usize = 256;
+    const DICTIONARY_MATCH_LIMIT: usize = 64;
+    #[allow(dead_code)]
+    const GRAMMAR_MIN_SEQ: usize = 2;
+    #[allow(dead_code)]
+    const GRAMMAR_MAX_SEQ: usize = 4;
 
-    pub fn new(processing_quota: u32, pattern_bank_capacity: usize) -> Self {
+    pub fn new(processing_quota: u32, pattern_bank_capacity: usize, window_fraction: f64) -> Self {
+        const BASE_WINDOW_SIZE: usize = 128;
+        let initial_stride = (BASE_WINDOW_SIZE / 2).max(32);
+
         Solver {
             processing_quota,
             known_patterns: Vec::new(),
@@ -38,14 +63,23 @@ impl Solver {
             pattern_bank_capacity,
             stats: Stats::new(),
             scheduler: crate::scheduler::Scheduler::new(),
-            dictionary: HashMap::new(),
-            word_to_id: HashMap::new(),
+            dictionary_words: HashMap::new(),
+            dictionary_lookup: HashMap::new(),
             next_word_id: 0,
+            grammar_rules: HashMap::new(),
+            grammar_lookup: HashMap::new(),
+            next_grammar_id: 0,
+            window_size: BASE_WINDOW_SIZE,
+            window_stride: initial_stride,
+            current_window_start: 0,
+            zero_gain_streak: 0,
+            window_cap_fraction: window_fraction.clamp(0.1, 1.0),
+            last_world_len: 0,
         }
     }
 
     /// Lataa Solver aiemmin tallennetuista malleista, tai luo uuden jos tiedostoa ei ole
-    pub fn load_or_new(processing_quota: u32, pattern_bank_capacity: usize) -> Self {
+    pub fn load_or_new(processing_quota: u32, pattern_bank_capacity: usize, window_fraction: f64) -> Self {
         if let Ok(contents) = std::fs::read_to_string(Self::PATTERN_BANK_FILE) {
             if let Ok(patterns) = serde_json::from_str::<Vec<Pattern>>(&contents) {
                 let max_id = patterns.iter().map(|p| p.id).max().unwrap_or(0);
@@ -57,9 +91,18 @@ impl Solver {
                     pattern_bank_capacity,
                     stats: Stats::new(),
                     scheduler: crate::scheduler::Scheduler::new(),
-                    dictionary: HashMap::new(),
-                    word_to_id: HashMap::new(),
+                    dictionary_words: HashMap::new(),
+                    dictionary_lookup: HashMap::new(),
                     next_word_id: 0,
+                    grammar_rules: HashMap::new(),
+                    grammar_lookup: HashMap::new(),
+                    next_grammar_id: 0,
+                    window_size: 128,
+                    window_stride: 64,
+                    current_window_start: 0,
+                    zero_gain_streak: 0,
+                    window_cap_fraction: window_fraction.clamp(0.1, 1.0),
+                    last_world_len: 0,
                 };
                 // Rakennetaan sanakirja ladatuista Dictionary-malleista
                 solver.rebuild_dictionary();
@@ -67,7 +110,7 @@ impl Solver {
             }
         }
         println!("  🆕 Luodaan uusi Solver (ei aiempia malleja)");
-        Self::new(processing_quota, pattern_bank_capacity)
+        Self::new(processing_quota, pattern_bank_capacity, window_fraction)
     }
 
     /// Tallenna tunnetut mallit levylle
@@ -86,13 +129,11 @@ impl Solver {
         self.decay_recent_gains();
         let mut current_quota = self.processing_quota; // Ota syklin budjetti
 
-        // Alusta ikkuna jos se on tyhjä
-        if world.window.start == world.window.end {
-            let window_size = 4096.min(world.data.len());
-            world.window = 0..window_size;
-        }
+        self.refresh_focus_window(world);
+        self.refresh_dictionary(world);
 
         while current_quota > 0 {
+            self.refresh_focus_window(world);
             // Kysy schedulerilta mitä tehdä
             let pressure = world.data.len() as f64 / world.memory_limit as f64;
             let action = self.scheduler.decide_next_action(
@@ -139,8 +180,10 @@ impl Solver {
                 },
 
                 crate::scheduler::Action::Explore => {
-                    // Kokeile ensin Dictionary-entry rakentamista (50% todennäköisyydellä)
-                    let try_dictionary = rand::random::<f64>() < 0.5;
+                    // --- KORJAUS: Poistetaan buginen Dictionary-logiikka käytöstä ---
+                    // Dictionary täyttää PatternBankin 0-hyödyn malleilla ennen kuin ne on testattu.
+                    // Kaikki mallit täytyy pakottaa todistamaan arvonsa ennen muistiin pääsyä.
+                    let try_dictionary = false; // Alkuperäinen: rand::random::<f64>() < 0.5;
                     
                     if try_dictionary {
                         let slice = world.get_window_data();
@@ -172,25 +215,17 @@ impl Solver {
                 },
 
                 crate::scheduler::Action::ShiftWindow => {
-                    // Siirrä ikkunaa, mutta älä kuluta koko quotaa
-                    let data_len = world.data.len();
-                    if data_len == 0 || data_len <= 4096 {
-                        // Ei dataa tai kaikki mahtuu yhteen ikkunaan — ei kannata siirtää
-                        quota_cost = 1;
-                        self.stats.record_seek(quota_cost);
-                        println!("  🔍 ShiftWindow: Ei tarvetta siirtää ikkunaa (kustannus: {})", quota_cost);
-                    } else {
-                        // Siirrä ikkunaa satunnaiseen paikkaan
-                        use rand::Rng;
-                        let mut rng = rand::thread_rng();
-                        let new_start = rng.gen_range(0..data_len);
-                        let window_size = 4096.min(data_len - new_start);
-                        // Kiinteä kustannus välttää liian kalliita siirtoja
-                        quota_cost = 5; 
-                        world.window = new_start..(new_start + window_size);
-                        self.stats.record_seek(quota_cost);
-                        println!("  🔍 ShiftWindow: Siirryttiin kohtaan {} (kustannus: {} quota)", new_start, quota_cost);
-                    }
+                    self.advance_window(world);
+                    self.refresh_focus_window(world);
+                    quota_cost = 2;
+                    self.stats.record_seek(quota_cost);
+                    let window = &world.window;
+                    println!(
+                        "  🔍 ShiftWindow: uusi ikkuna {}..{} ({} tavua)",
+                        window.start,
+                        window.end,
+                        window.len()
+                    );
                 },
 
                 crate::scheduler::Action::MetaLearn => {
@@ -213,7 +248,110 @@ impl Solver {
             }
         }
 
+        if self.stats.total_gain() <= 0 {
+            self.zero_gain_streak = self.zero_gain_streak.saturating_add(1);
+        } else {
+            self.zero_gain_streak = 0;
+        }
+
+        self.adjust_window_size_after_cycle(world);
+        self.refresh_focus_window(world);
         self.update_cost_breakdown(world, evaluator);
+    }
+
+    /// Päivitä tarkennusikkuna systemaattiseen rullaustilaan
+    fn refresh_focus_window(&mut self, world: &mut World) {
+        if world.data.is_empty() {
+            world.window = 0..0;
+            self.current_window_start = 0;
+            self.last_world_len = 0;
+            return;
+        }
+
+        let data_len = world.data.len();
+        if data_len > self.last_world_len {
+            // Uutta dataa saapunut: hyppää lähelle loppua, jotta uudet sanomat käsitellään nopeasti
+            let tail_start = data_len.saturating_sub(self.window_size);
+            if tail_start > self.current_window_start {
+                self.current_window_start = tail_start;
+            }
+            self.last_world_len = data_len;
+        }
+
+        self.window_size = self.window_size.min(data_len).max(64);
+        self.window_stride = (self.window_size / 2).max(32);
+
+        if self.window_size >= data_len {
+            world.window = 0..data_len;
+            self.current_window_start = 0;
+            return;
+        }
+
+        if self.current_window_start + self.window_size > data_len {
+            self.current_window_start = data_len.saturating_sub(self.window_size);
+        }
+
+        let start = self.current_window_start;
+        let end = (start + self.window_size).min(data_len);
+        let adjusted_start = if end - start < self.window_size {
+            end.saturating_sub(self.window_size)
+        } else {
+            start
+        };
+
+        self.current_window_start = adjusted_start;
+        world.window = adjusted_start..(adjusted_start + self.window_size.min(data_len - adjusted_start));
+    }
+
+    /// Siirrä ikkunaa eteenpäin systemaattisesti
+    fn advance_window(&mut self, world: &World) {
+        if world.data.is_empty() {
+            self.current_window_start = 0;
+            return;
+        }
+
+        let data_len = world.data.len();
+        if self.window_size >= data_len {
+            self.current_window_start = 0;
+            return;
+        }
+
+        let stride = self.window_stride.max(1);
+        let mut next_start = self.current_window_start.saturating_add(stride);
+        if next_start + self.window_size >= data_len {
+            next_start = 0;
+        }
+        self.current_window_start = next_start;
+    }
+
+    fn adjust_window_size_after_cycle(&mut self, world: &World) {
+        const BASE_WINDOW_SIZE: usize = 128;
+        const ZERO_STREAK_THRESHOLD: u32 = 3;
+        const GROWTH_FACTOR: f64 = 1.5;
+
+        let mut max_allowed = ((world.memory_limit as f64) * self.window_cap_fraction).round() as usize;
+        max_allowed = max_allowed.max(BASE_WINDOW_SIZE);
+
+        if self.zero_gain_streak >= ZERO_STREAK_THRESHOLD && self.window_size < max_allowed {
+            let expanded = (self.window_size as f64 * GROWTH_FACTOR).round() as usize;
+            self.window_size = expanded
+                .min(max_allowed)
+                .min(world.memory_limit)
+                .max(BASE_WINDOW_SIZE);
+            self.window_stride = (self.window_size / 2).max(32);
+            self.zero_gain_streak = 0;
+        }
+
+        if world.data.len() < self.window_size {
+            self.window_size = world
+                .data
+                .len()
+                .max(BASE_WINDOW_SIZE.min(world.data.len()));
+            self.window_stride = (self.window_size / 2).max(32);
+            self.current_window_start = self
+                .current_window_start
+                .min(world.data.len().saturating_sub(self.window_size));
+        }
     }
 
     /// Häivytä recent_gain-arvoja, jotta vanhentuneet mallit menettävät painoaan
@@ -389,7 +527,6 @@ impl Solver {
 
     /// Tunnista operaattori Patchista (yksinkertaistettu)
     fn identify_operator(&self, patch: &Patch) -> Operator {
-        use crate::operator::OP_DICT;
         if patch.new_data.len() == 3 && patch.new_data[0] == OP_RLE {
             Operator::RunLength(patch.new_data[1], patch.new_data[2] as usize)
         } else if patch.new_data.len() == 4 && patch.new_data[0] == OP_LZ {
@@ -414,6 +551,9 @@ impl Solver {
         } else if patch.new_data.len() == 3 && patch.new_data[0] == OP_DICT {
             let word_id = (patch.new_data[1] as u32) | ((patch.new_data[2] as u32) << 8);
             Operator::Dictionary { word_id }
+        } else if patch.new_data.len() == 3 && patch.new_data[0] == OP_GRAMMAR {
+            let rule_id = (patch.new_data[1] as u32) | ((patch.new_data[2] as u32) << 8);
+            Operator::GrammarRule { rule_id }
         } else {
             // Oletus: RunLength jos tuntematon
             Operator::RunLength(0, 0)
@@ -515,6 +655,10 @@ impl Solver {
                     }
                     result
                 }
+                Operator::BackRefRange { .. } => {
+                    // Meta-operaattori: varsinainen backrefin valinta tapahtuu exploratiossa
+                    None
+                }
                 Operator::DeltaSequence { start, delta, len } => {
                     self.find_delta_sequence_exact(data_slice, *start, *delta, *len)
                         .map(|p| (p, pattern.id))
@@ -526,6 +670,10 @@ impl Solver {
                 Operator::Dictionary { word_id } => {
                     self.find_dictionary_word(data_slice, *word_id)
                         .map(|p| (p, pattern.id))
+                }
+                Operator::GrammarRule { .. } => {
+                    // Grammar-operaattorit eivät vielä ole käytössä eksploitatiossa
+                    None
                 }
             };
 
@@ -562,6 +710,10 @@ impl Solver {
                 best_patch = Some(patch);
             }
         };
+
+        if let Some(p) = self.find_dictionary_patch(slice) {
+            consider(p);
+        }
 
         // 1. Pidemmät n-grammit (sanat, lauseet)
         if let Some(p) = self.find_ngram_reference(slice, 4, 20) { // 4-20 tavua (sanat)
@@ -960,8 +1112,8 @@ impl Solver {
     /// vain word_id:t. Todellisuudessa Dictionary-mallit tulisi rakentaa uudelleen
     /// datasta, mutta nyt tyhjennämme sanakirjan ladattaessa.
     fn rebuild_dictionary(&mut self) {
-        self.dictionary.clear();
-        self.word_to_id.clear();
+        self.dictionary_words.clear();
+        self.dictionary_lookup.clear();
         self.next_word_id = 0;
         // TODO: Jos haluamme säilyttää Dictionary-malleja, pitää tallentaa myös sanakirja
         // tai rakentaa se uudelleen datasta
@@ -969,8 +1121,8 @@ impl Solver {
 
     /// Etsi sanakirjasta word_id:tä vastaava sana ja skannaa data sitä vastaan
     fn find_dictionary_word(&self, data: &[u8], word_id: u32) -> Option<Patch> {
-        let word = self.dictionary.get(&word_id)?;
-        let word_len = word.len();
+        let word = self.dictionary_words.get(&word_id)?;
+        let word_len = word.bytes.len();
         
         if word_len == 0 || word_len > data.len() {
             return None;
@@ -978,8 +1130,7 @@ impl Solver {
 
         // Etsi ensimmäinen esiintymä
         for start in 0..=data.len().saturating_sub(word_len) {
-            if &data[start..start + word_len] == word.as_slice() {
-                use crate::operator::OP_DICT;
+            if &data[start..start + word_len] == word.bytes.as_slice() {
                 let new_data = vec![
                     OP_DICT,
                     (word_id & 0xFF) as u8,
@@ -997,67 +1148,219 @@ impl Solver {
 
     /// Rakenna uusi Dictionary-entry: etsi toistuva 4-20 tavun sekvenssi (sana),
     /// lisää sanakirjaan ja luo Pattern
-    fn build_dictionary_entry(&mut self, data: &[u8], min_len: usize, max_len: usize) -> Option<Pattern> {
-        let max_len = max_len.min(data.len());
-        
-        // Etsi toistuvia sekvenssejä (vähintään 2 esiintymää)
-        let mut best: Option<(Vec<u8>, usize)> = None; // (word, count)
-        
-        for len in (min_len..=max_len).rev() { // Aloita pisimmistä
+    fn build_dictionary_entry(&mut self, _data: &[u8], _min_len: usize, _max_len: usize) -> Option<Pattern> {
+        // Vanha logiikka korvataan Dictionary 2.0 -virralla; jätetään paluu None, jotta satunnaiset kutsut eivät riko logiikkaa.
+        None
+    }
+
+    fn refresh_dictionary(&mut self, world: &World) {
+        let data = &world.data;
+        if data.len() < Self::DICTIONARY_MIN_LEN * 2 {
+            return;
+        }
+
+        let mut counts: HashMap<Vec<u8>, WordStats> = HashMap::new();
+        for len in Self::DICTIONARY_MIN_LEN..=Self::DICTIONARY_MAX_LEN {
+            if len > data.len() {
+                break;
+            }
+            for start in 0..=data.len().saturating_sub(len) {
+                let slice = data[start..start + len].to_vec();
+                let entry = counts.entry(slice).or_insert_with(WordStats::default);
+                entry.count += 1;
+            }
+        }
+
+        if counts.is_empty() {
+            return;
+        }
+
+        let mut candidates: Vec<(Vec<u8>, WordStats)> = counts
+            .into_iter()
+            .filter_map(|(word, mut stats)| {
+                if stats.count < 2 {
+                    return None;
+                }
+                let len = word.len();
+                let estimated_gain = (len.saturating_sub(3) as f64) * (stats.count as f64 - 1.0);
+                if estimated_gain <= 0.0 {
+                    return None;
+                }
+                stats.estimated_gain = estimated_gain;
+                Some((word, stats))
+            })
+            .collect();
+
+        if candidates.is_empty() {
+            return;
+        }
+
+        candidates.sort_by(|a, b| {
+            b.1
+                .estimated_gain
+                .partial_cmp(&a.1.estimated_gain)
+                .unwrap_or(Ordering::Equal)
+        });
+
+        for (word, stats) in candidates.into_iter().take(Self::DICTIONARY_CAPACITY) {
+            self.ensure_dictionary_word(word, stats);
+        }
+    }
+
+    fn ensure_dictionary_word(&mut self, word: Vec<u8>, stats: WordStats) {
+        if word.len() < Self::DICTIONARY_MIN_LEN {
+            return;
+        }
+
+        if let Some(&id) = self.dictionary_lookup.get(&word) {
+            if let Some(entry) = self.dictionary_words.get_mut(&id) {
+                entry.frequency = stats.count;
+                entry.recent_gain = stats.estimated_gain;
+            }
+            return;
+        }
+
+        if self.dictionary_words.len() >= Self::DICTIONARY_CAPACITY {
+            self.evict_weak_dictionary_word();
+            if self.dictionary_words.len() >= Self::DICTIONARY_CAPACITY {
+                return;
+            }
+        }
+
+        let word_id = self.next_word_id;
+        self.next_word_id += 1;
+        self.dictionary_lookup.insert(word.clone(), word_id);
+        self.dictionary_words.insert(
+            word_id,
+            DictionaryWord {
+                bytes: word.clone(),
+                frequency: stats.count,
+                recent_gain: stats.estimated_gain,
+            },
+        );
+
+        let pattern_id = self.next_pattern_id;
+        self.next_pattern_id += 1;
+        let mut pattern = Pattern::new(pattern_id, Operator::Dictionary { word_id });
+        pattern.recent_gain = stats.estimated_gain;
+        self.known_patterns.push(pattern);
+        self.forget_if_needed();
+    }
+
+    fn evict_weak_dictionary_word(&mut self) {
+        let candidate = self
+            .dictionary_words
+            .iter()
+            .min_by(|a, b| {
+                a.1.recent_gain
+                    .partial_cmp(&b.1.recent_gain)
+                    .unwrap_or(Ordering::Equal)
+            })
+            .map(|(id, _)| *id);
+
+        if let Some(word_id) = candidate {
+            let remove_key = self
+                .dictionary_lookup
+                .iter()
+                .find(|(_, id)| **id == word_id)
+                .map(|(k, _)| k.clone());
+
+            if let Some(key) = remove_key {
+                self.dictionary_lookup.remove(&key);
+            }
+
+            self.dictionary_words.remove(&word_id);
+            self.known_patterns.retain(|pattern| {
+                !matches!(pattern.operator, Operator::Dictionary { word_id: id } if id == word_id)
+            });
+        }
+    }
+
+    fn find_dictionary_patch(&self, data: &[u8]) -> Option<Patch> {
+        if self.dictionary_words.is_empty() || data.len() < Self::DICTIONARY_MIN_LEN {
+            return None;
+        }
+
+        let mut words: Vec<(&u32, &DictionaryWord)> = self.dictionary_words.iter().collect();
+        words.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
+
+        let mut best: Option<(Patch, i32)> = None;
+        for (word_id, word) in words.into_iter().take(Self::DICTIONARY_MATCH_LIMIT) {
+            let len = word.len();
             if len > data.len() {
                 continue;
             }
-            
-            let mut seen = HashMap::new();
+
             for start in 0..=data.len().saturating_sub(len) {
-                let seq = &data[start..start + len];
-                *seen.entry(seq.to_vec()).or_insert(0) += 1;
-            }
-            
-            for (seq, count) in seen {
-                if count >= 2 {
+                if &data[start..start + len] == word.bytes.as_slice() {
+                    let saved = len as i32 - 3;
+                    if saved <= 0 {
+                        break;
+                    }
+                    let new_data = vec![
+                        OP_DICT,
+                        (*word_id & 0xFF) as u8,
+                        ((*word_id >> 8) & 0xFF) as u8,
+                    ];
+                    let patch = Patch {
+                        range: start..(start + len),
+                        new_data,
+                    };
                     match &best {
-                        None => best = Some((seq, count)),
-                        Some((_, best_count)) if count > *best_count => {
-                            best = Some((seq, count));
+                        None => best = Some((patch, saved)),
+                        Some((_, best_saved)) if saved > *best_saved => {
+                            best = Some((patch, saved));
                         }
                         _ => {}
                     }
+                    break;
                 }
             }
-            
-            if best.is_some() {
-                break; // Löytyi pidempi, ei tarvitse etsiä lyhyempiä
-            }
         }
-        
-        let (word, _occurrences) = best?;
-        
-        // Tarkista onko sana jo sanakirjassa
-        if let Some(&existing_id) = self.word_to_id.get(&word) {
-            // Sana on jo olemassa, käytä sitä
-            let pattern_id = self.next_pattern_id;
-            self.next_pattern_id += 1;
-            
-            let pattern = Pattern::new(
-                pattern_id,
-                Operator::Dictionary { word_id: existing_id },
-            );
-            return Some(pattern);
-        }
-        
-        // Lisää uusi sana sanakirjaan
-        let word_id = self.next_word_id;
-        self.next_word_id += 1;
-        self.dictionary.insert(word_id, word.clone());
-        self.word_to_id.insert(word.clone(), word_id);
-        
-        let pattern_id = self.next_pattern_id;
-        self.next_pattern_id += 1;
-        
-        Some(Pattern::new(
-            pattern_id,
-            Operator::Dictionary { word_id },
-        ))
+
+        best.map(|(patch, _)| patch)
     }
 }
+
+    #[derive(Clone)]
+    struct DictionaryWord {
+        bytes: Vec<u8>,
+        frequency: usize,
+        recent_gain: f64,
+    }
+
+    impl DictionaryWord {
+        fn len(&self) -> usize {
+            self.bytes.len()
+        }
+    }
+
+    #[derive(Default, Clone)]
+    struct WordStats {
+        count: usize,
+        estimated_gain: f64,
+    }
+
+    #[derive(Clone)]
+    #[allow(dead_code)]
+    struct GrammarRule {
+        #[allow(dead_code)]
+        id: u32,
+        #[allow(dead_code)]
+        sequence: Vec<OperatorKey>,
+        #[allow(dead_code)]
+        encoded_len: usize,
+    }
+
+    #[derive(Hash, Eq, PartialEq, Clone)]
+    #[allow(dead_code)]
+    enum OperatorKey {
+        RunLength(u8, usize),
+        GeneralizedRunLength(usize),
+        BackRef(usize, usize),
+        BackRefRange { min_distance: usize, max_distance: usize, len: usize },
+        Delta(u8, i8, usize),
+        Xor(Vec<u8>, u8, usize),
+        Dictionary(u32),
+        Grammar(u32),
+    }

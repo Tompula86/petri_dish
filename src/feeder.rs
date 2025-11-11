@@ -8,6 +8,7 @@ use std::path::PathBuf;
 /// Feeder: "Striimaa" dataa kaikista .txt-tiedostoista annetussa kansiossa.
 pub struct Feeder {
     pub feed_rate: usize,
+    base_feed_rate: usize,
     file_paths: Vec<PathBuf>, // Lista kaikista .txt-tiedostoista
     current_file_index: usize, // Monesko tiedosto menossa
     current_file: Option<BufReader<File>>, // Kahva auki olevaan tiedostoon
@@ -43,6 +44,7 @@ impl Feeder {
 
         Ok(Feeder {
             feed_rate,
+            base_feed_rate: feed_rate,
             file_paths,
             current_file_index: 0,
             current_file: None, // Avataan tiedosto vasta kun 'feed' kutsutaan
@@ -83,6 +85,22 @@ impl Feeder {
 
         // Nyt meillä pitäisi olla tiedosto auki. Luetaan siitä.
         if let Some(ref mut file) = self.current_file {
+            // Sovita syötteen koko nykyiseen vapaaseen tilaan
+            let free_space = world.free_space();
+            if free_space == 0 {
+                return Err("OVERFLOW: World täynnä! Solver ei vapauta tilaa tarpeeksi nopeasti.".to_string());
+            }
+
+            let adaptive_cap = (free_space / 2).max(1);
+            self.feed_rate = self.base_feed_rate.min(free_space).min(adaptive_cap);
+            if self.feed_rate != self.base_feed_rate {
+                println!(
+                    "  📥 Feeder: hidastetaan syöttöä {} tavuun (vapaa tila: {})",
+                    self.feed_rate,
+                    free_space
+                );
+            }
+
             // Luodaan puskuri *vain* tarvittavalle määrälle
             let mut buffer = vec![0u8; self.feed_rate];
             
