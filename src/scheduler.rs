@@ -16,6 +16,7 @@ pub struct Scheduler {
     pub exploit_bias_prob: f64,
     pub explore_vs_shift_prob: f64,
     pub meta_prob: f64,
+    pub risk_budget_ratio: f64,
 }
 
 impl Scheduler {
@@ -25,12 +26,25 @@ impl Scheduler {
             exploit_bias_prob: 0.7,
             explore_vs_shift_prob: 0.9, // Priorisoi explore/exploit yli shift
             meta_prob: 0.01,
+            risk_budget_ratio: 0.1,
         } 
     }
 
     /// Päättää seuraavan toimenpiteen tilastojen perusteella
-    pub fn decide_next_action(&self, stats: &Stats, world_pressure: f64) -> Action {
+    pub fn decide_next_action(
+        &self,
+        stats: &Stats,
+        world_pressure: f64,
+        remaining_quota: u32,
+        cycle_quota: u32,
+    ) -> Action {
         let mut rng = rand::thread_rng();
+
+        // Riskibudjetti: pakota pieni osa quotasta explorointiin joka kierroksella
+        let required_explore_quota = (self.risk_budget_ratio * cycle_quota as f64).ceil() as u32;
+        if stats.quota_spent_explore < required_explore_quota && remaining_quota >= 10 {
+            return Action::Explore;
+        }
 
         // Satunnaisesti meta-oppiminen  
         let roll = rng.gen_range(0.0..1.0);

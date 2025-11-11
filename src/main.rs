@@ -26,12 +26,13 @@ fn main() {
 
     // Luo Evaluator ja Solver
     let evaluator = Evaluator::new();
-    let mut solver = Solver::new(1000, 50); // 50 patternin kapasiteetti
+    let mut solver = Solver::load_or_new(1000, 50); // 50 patternin kapasiteetti
 
     println!("Aloitustilanne:");
     println!("  World kapasiteetti: {} tavua", world.memory_limit);
     println!("  Feeder nopeus: {} tavua/sykli", feeder.feed_rate);
     println!("  Feeder virta: (generaattori, ei rajallista dataa)");
+    println!("  Solver: {} mallia ladattu muistista", solver.known_patterns.len());
     
     // Avaa CSV-tiedosto
     let mut csv_file = File::create("results.csv").expect("CSV-tiedoston luonti epäonnistui");
@@ -92,6 +93,11 @@ fn main() {
                 break;
             }
         }
+    }
+
+    // Tallenna oppiminen ennen loppua
+    if let Err(e) = solver.save_patterns() {
+        println!("⚠️  Mallien tallennus epäonnistui: {}", e);
     }
 
     // Loppuraportti

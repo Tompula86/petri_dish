@@ -1,5 +1,5 @@
 use crate::world::World;
-use crate::operator::{OP_RLE, OP_LZ};
+use crate::operator::{OP_DELTA, OP_LZ, OP_RLE, OP_XOR};
 
 /// Evaluator (Arvioija): mittaa kokonaiskustannuksen ja hyväksyy vain muutokset, 
 /// jotka parantavat nettoa.
@@ -33,6 +33,21 @@ impl Evaluator {
                 // [OP_LZ, dist_lo, dist_hi, len]
                 c_models += 4;
                 i += 4;
+            } else if data[i] == OP_DELTA && i + 3 < data.len() {
+                // [OP_DELTA, len, start, delta]
+                c_models += 4;
+                i += 4;
+            } else if data[i] == OP_XOR && i + 4 < data.len() {
+                let key_len = data[i + 3] as usize;
+                let op_len = 5 + key_len; // [OP_XOR, len_lo, len_hi, key_len, base, key_bytes...]
+                if i + op_len <= data.len() {
+                    c_models += op_len;
+                    i += op_len;
+                } else {
+                    // Virheellinen op-koodi tulkitaan residuaaliksi
+                    c_residual += 1;
+                    i += 1;
+                }
             } else {
                 // Raaka data: kustannus = 1 tavu
                 c_residual += 1;
