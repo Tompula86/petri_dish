@@ -1,11 +1,11 @@
-use crate::world::{World, Patch};
-use crate::operator::{Operator, OP_DELTA, OP_DICT, OP_GRAMMAR, OP_LZ, OP_RLE, OP_XOR};
+use crate::operator::{OP_DELTA, OP_DICT, OP_GRAMMAR, OP_LZ, OP_RLE, OP_XOR, Operator};
 use crate::pattern::Pattern;
 use crate::stats::Stats;
+use crate::world::{Patch, World};
 use std::cmp::Ordering;
 use std::collections::{HashMap, HashSet};
 
-/// Solver (Ratkaisija): toimija, jolla on oma sisäinen tila ja pieni "aivot"-muisti; 
+/// Solver (Ratkaisija): toimija, jolla on oma sisäinen tila ja pieni "aivot"-muisti;
 /// se etsii, keksii ja soveltaa malleja.
 pub struct Solver {
     pub processing_quota: u32,
@@ -82,11 +82,19 @@ impl Solver {
     }
 
     /// Lataa Solver aiemmin tallennetuista malleista, tai luo uuden jos tiedostoa ei ole
-    pub fn load_or_new(processing_quota: u32, pattern_bank_capacity: usize, window_fraction: f64) -> Self {
+    pub fn load_or_new(
+        processing_quota: u32,
+        pattern_bank_capacity: usize,
+        window_fraction: f64,
+    ) -> Self {
         if let Ok(contents) = std::fs::read_to_string(Self::PATTERN_BANK_FILE) {
             if let Ok(patterns) = serde_json::from_str::<Vec<Pattern>>(&contents) {
                 let max_id = patterns.iter().map(|p| p.id).max().unwrap_or(0);
-                println!("  ♻️  Ladattiin {} mallia tiedostosta {}", patterns.len(), Self::PATTERN_BANK_FILE);
+                println!(
+                    "  ♻️  Ladattiin {} mallia tiedostosta {}",
+                    patterns.len(),
+                    Self::PATTERN_BANK_FILE
+                );
                 let mut solver = Solver {
                     processing_quota,
                     known_patterns: patterns,
@@ -121,7 +129,11 @@ impl Solver {
     pub fn save_patterns(&self) -> Result<(), Box<dyn std::error::Error>> {
         let json = serde_json::to_string_pretty(&self.known_patterns)?;
         std::fs::write(Self::PATTERN_BANK_FILE, json)?;
-        println!("  💾 Tallennettu {} mallia tiedostoon {}", self.known_patterns.len(), Self::PATTERN_BANK_FILE);
+        println!(
+            "  💾 Tallennettu {} mallia tiedostoon {}",
+            self.known_patterns.len(),
+            Self::PATTERN_BANK_FILE
+        );
         Ok(())
     }
 
@@ -132,12 +144,12 @@ impl Solver {
         self.stats.reset_cycle();
         self.decay_recent_gains();
         let mut current_quota = self.processing_quota; // Ota syklin budjetti
-        
+
         // Päivitä cycle-laskuri
         self.cycle_count += 1;
 
         self.refresh_focus_window(world);
-        
+
         // Päivitä sanakirja harvemmin - anna patternien ehtiä muodostua!
         if self.cycle_count <= 40 {
             // Alussa useammin (joka 10. sykli)
@@ -173,19 +185,23 @@ impl Solver {
 
                         let cost_before = evaluator.calculate_total_cost(world);
                         let original_data = world.get_data_in_range(global_patch.range.clone());
-                        
+
                         world.apply_patch(&global_patch);
                         let cost_after = evaluator.calculate_total_cost(world);
                         let gain = evaluator.calculate_gain(cost_before, cost_after);
                         if gain > 0 {
                             quota_cost = 1;
                             self.stats.record_exploit(quota_cost, gain);
-                            
+
                             // Päivitä mallin tilastot
-                            if let Some(pattern) = self.known_patterns.iter_mut().find(|p| p.id == pattern_id) {
-                                pattern.record_usage(gain);
-                                println!("  ✓ Exploit onnistui (pattern #{}, säästö: {} tavua, käytetty {} kertaa)", 
-                                         pattern_id, gain, pattern.usage_count);
+                            if let Some(pattern) =
+                                self.known_patterns.iter_mut().find(|p| p.id == pattern_id)
+                            {
+                                pattern.record_usage(gain, self.cycle_count);
+                                println!(
+                                    "  ✓ Exploit onnistui (pattern #{}, säästö: {} tavua, käytetty {} kertaa)",
+                                    pattern_id, gain, pattern.usage_count
+                                );
                             }
                         } else {
                             world.rollback(&global_patch, original_data);
@@ -196,14 +212,14 @@ impl Solver {
                         quota_cost = 1; // Yritys maksoi
                         self.stats.record_exploit(quota_cost, 0);
                     }
-                },
+                }
 
                 crate::scheduler::Action::Explore => {
                     // --- KORJAUS: Poistetaan buginen Dictionary-logiikka käytöstä ---
                     // Dictionary täyttää PatternBankin 0-hyödyn malleilla ennen kuin ne on testattu.
                     // Kaikki mallit täytyy pakottaa todistamaan arvonsa ennen muistiin pääsyä.
                     let try_dictionary = false; // Alkuperäinen: rand::random::<f64>() < 0.5;
-                    
+
                     if try_dictionary {
                         let slice = world.get_window_data();
                         if let Some(pattern) = self.build_dictionary_entry(slice, 4, 20) {
@@ -211,12 +227,19 @@ impl Solver {
                             let pattern_id = pattern.id;
                             self.known_patterns.push(pattern);
                             self.stats.record_explore(quota_cost, 0); // Ei apply'd vielä, nolla gain tässä vaiheessa
-                            println!("  ✓ Explore: Dictionary-sana #{} lisätty (word_id: {:?})", pattern_id, 
-                                     match &self.known_patterns.last().unwrap().operator {
-                                         Operator::Dictionary { word_id } => word_id,
-                                         _ => &0,
-                                     });
-                            println!("  📚 PatternBank: {}/{} mallia muistissa", self.known_patterns.len(), self.pattern_bank_capacity);
+                            println!(
+                                "  ✓ Explore: Dictionary-sana #{} lisätty (word_id: {:?})",
+                                pattern_id,
+                                match &self.known_patterns.last().unwrap().operator {
+                                    Operator::Dictionary { word_id } => word_id,
+                                    _ => &0,
+                                }
+                            );
+                            println!(
+                                "  📚 PatternBank: {}/{} mallia muistissa",
+                                self.known_patterns.len(),
+                                self.pattern_bank_capacity
+                            );
                             self.forget_if_needed();
                         } else if let Some(patch) = self.explore(world) {
                             // Jos Dictionary ei löydy, yritä muita malleja
@@ -231,7 +254,7 @@ impl Solver {
                         quota_cost = 10;
                         self.stats.record_explore(quota_cost, 0);
                     }
-                },
+                }
 
                 crate::scheduler::Action::ShiftWindow => {
                     self.advance_window(world);
@@ -245,7 +268,7 @@ impl Solver {
                         window.end,
                         window.len()
                     );
-                },
+                }
 
                 crate::scheduler::Action::MetaLearn => {
                     // Meta-oppiminen on kallista
@@ -255,7 +278,10 @@ impl Solver {
                         self.meta_learn();
                         self.stats.record_meta(quota_cost, 0);
                     } else {
-                        println!("  🧠 MetaLearn: Ei tarpeeksi quotaa (tarvitaan {})", quota_cost);
+                        println!(
+                            "  🧠 MetaLearn: Ei tarpeeksi quotaa (tarvitaan {})",
+                            quota_cost
+                        );
                     }
                 }
             }
@@ -275,15 +301,18 @@ impl Solver {
 
         self.adjust_window_size_after_cycle(world);
         self.refresh_focus_window(world);
-        
+
         // REKURSIIVINEN PAKKAUS: Etsi malleja jo pakatusta datasta
         let world_pressure = world.data.len() as f64 / world.memory_limit as f64;
-        
+
         // AGGRESSIVE CASCADE REPACK vain kun world lähes täynnä (>92%)
         if world_pressure > 0.92 && world.data.len() >= 500 {
-            println!("  ⚠️ World lähes täynnä ({:.1}%) - cascade repack!", world_pressure * 100.0);
+            println!(
+                "  ⚠️ World lähes täynnä ({:.1}%) - cascade repack!",
+                world_pressure * 100.0
+            );
             self.repack_compressed_data(world, evaluator);
-        } 
+        }
         // NORMAL REPACK HARVEMMIN - anna datan kasvaa ensin!
         else {
             let should_repack = if self.cycle_count <= 60 {
@@ -296,13 +325,15 @@ impl Solver {
                 // Loppuvaiheessa kerran per 50 sykliä
                 self.cycle_count % 50 == 0
             };
-            
+
             if should_repack && world.data.len() >= 500 {
                 self.repack_compressed_data(world, evaluator);
             }
         }
-        
+
         self.update_cost_breakdown(world, evaluator);
+        let adjusted_world_pressure = world.data.len() as f64 / world.memory_limit as f64;
+        self.prune_stale_patterns(adjusted_world_pressure);
     }
 
     /// Päivitä tarkennusikkuna systemaattiseen rullaustilaan
@@ -346,7 +377,8 @@ impl Solver {
         };
 
         self.current_window_start = adjusted_start;
-        world.window = adjusted_start..(adjusted_start + self.window_size.min(data_len - adjusted_start));
+        world.window =
+            adjusted_start..(adjusted_start + self.window_size.min(data_len - adjusted_start));
     }
 
     /// Siirrä ikkunaa eteenpäin systemaattisesti
@@ -375,7 +407,8 @@ impl Solver {
         const ZERO_STREAK_THRESHOLD: u32 = 3;
         const GROWTH_FACTOR: f64 = 1.5;
 
-        let mut max_allowed = ((world.memory_limit as f64) * self.window_cap_fraction).round() as usize;
+        let mut max_allowed =
+            ((world.memory_limit as f64) * self.window_cap_fraction).round() as usize;
         max_allowed = max_allowed.max(BASE_WINDOW_SIZE);
 
         if self.zero_gain_streak >= ZERO_STREAK_THRESHOLD && self.window_size < max_allowed {
@@ -389,10 +422,7 @@ impl Solver {
         }
 
         if world.data.len() < self.window_size {
-            self.window_size = world
-                .data
-                .len()
-                .max(BASE_WINDOW_SIZE.min(world.data.len()));
+            self.window_size = world.data.len().max(BASE_WINDOW_SIZE.min(world.data.len()));
             self.window_stride = (self.window_size / 2).max(32);
             self.current_window_start = self
                 .current_window_start
@@ -418,10 +448,11 @@ impl Solver {
         let mut run_length_groups: HashMap<usize, Vec<(u32, f64, u8)>> = HashMap::new();
         for pattern in &self.known_patterns {
             if let Operator::RunLength(byte, min_len) = pattern.operator {
-                run_length_groups
-                    .entry(min_len)
-                    .or_default()
-                    .push((pattern.id, pattern.recent_gain, byte));
+                run_length_groups.entry(min_len).or_default().push((
+                    pattern.id,
+                    pattern.recent_gain,
+                    byte,
+                ));
             }
         }
 
@@ -467,12 +498,18 @@ impl Solver {
 
             if !has_general {
                 let meta_id = self.next_pattern_id;
-                let mut meta_pattern = Pattern::new(meta_id, Operator::GeneralizedRunLength { min_len });
+                let mut meta_pattern = Pattern::new(
+                    meta_id,
+                    Operator::GeneralizedRunLength { min_len },
+                    self.cycle_count,
+                );
                 if total_count > 0 {
-                    let avg_recent = entries.iter().map(|(_, gain, _)| *gain).sum::<f64>() / total_count as f64;
+                    let avg_recent =
+                        entries.iter().map(|(_, gain, _)| *gain).sum::<f64>() / total_count as f64;
                     meta_pattern.recent_gain = avg_recent;
                 }
                 meta_pattern.last_used = std::time::SystemTime::now();
+                meta_pattern.last_used_cycle = self.cycle_count;
                 self.next_pattern_id += 1;
                 self.known_patterns.push(meta_pattern);
                 println!(
@@ -480,7 +517,10 @@ impl Solver {
                     meta_id, min_len
                 );
             } else {
-                println!("  🧠 MetaLearn: Yleistetty RunLength(min_len={}) on jo olemassa.", min_len);
+                println!(
+                    "  🧠 MetaLearn: Yleistetty RunLength(min_len={}) on jo olemassa.",
+                    min_len
+                );
             }
 
             if total_count > 3 {
@@ -512,55 +552,107 @@ impl Solver {
         self.forget_if_needed();
     }
 
-    /// Poista huonoin malli, jos PatternBank on täynnä
+    /// Poista huonoimmat mallit, jos PatternBank on täynnä
     fn forget_if_needed(&mut self) {
-        if self.known_patterns.len() > self.pattern_bank_capacity {
-            use std::time::SystemTime;
-            let now = SystemTime::now();
+        if self.known_patterns.len() <= self.pattern_bank_capacity {
+            return;
+        }
 
-            // Palkitse mallia, jota on käytetty *äskettäin* (viimeisen 60s aikana)
-            // Tämä on paljon tärkeämpää kuin ikäpenalty.
-            let recency_bonus = 60.0; 
-            
-            // Vanha historiallinen paino oli liian suuri ja tukki muistin.
-            // Asetetaan se nollaan tai hyvin pieneksi.
-            let legacy_weight = 0.0; // TAI 0.00001
+        while self.known_patterns.len() > self.pattern_bank_capacity {
+            let current_cycle = self.cycle_count;
+            let mut worst: Option<(usize, u32, f64)> = None; // (index, idle_cycles, score)
 
-            let mut worst_index = 0usize;
-            let mut worst_score = f64::INFINITY;
-
-            for (i, p) in self.known_patterns.iter().enumerate() {
-                let age_secs = now.duration_since(p.last_used).unwrap_or_default().as_secs_f64();
-                
-                // UUSI LASKENTA:
-                // Perustuu ensisijaisesti VIIMEAIKAISEEN hyötyyn.
-                let mut score = p.recent_gain;
-
-                // Anna pieni bonus, jos mallia on juuri käytetty, jotta se ei heti poistu
-                if age_secs < recency_bonus {
-                    score += p.recent_gain * 0.5; // Lisäbonus aktiivisesta käytöstä
+            for (i, pattern) in self.known_patterns.iter().enumerate() {
+                let baseline_cycle = if pattern.last_used_cycle != 0 {
+                    pattern.last_used_cycle
+                } else if pattern.creation_cycle != 0 {
+                    pattern.creation_cycle
                 } else {
-                    // Rankaise vain vanhoja, käyttämättömiä malleja
-                    score -= (age_secs - recency_bonus) * 0.01; // Kevyt ikäpenalty
-                }
+                    current_cycle
+                };
 
-                // Lisää (nyt merkityksetön) historiallinen paino
-                score += (p.total_bytes_saved as f64) * legacy_weight;
-                
-                if score < worst_score {
-                    worst_score = score;
-                    worst_index = i;
+                let idle_cycles = current_cycle.saturating_sub(baseline_cycle);
+
+                // Painota viimeaikaista hyötyä, historiallista säästöä ja käyttötiheyttä.
+                let usage_bonus = (pattern.usage_count as f64).sqrt() * 0.5;
+                let historical_bonus = (pattern.total_bytes_saved.max(0) as f64).sqrt() * 0.15;
+                let recent = pattern.recent_gain;
+                let idle_penalty = idle_cycles as f64 * 0.35;
+                let score = recent + usage_bonus + historical_bonus - idle_penalty;
+
+                match &mut worst {
+                    None => worst = Some((i, idle_cycles, score)),
+                    Some((_, _, current_score)) if score < *current_score => {
+                        worst = Some((i, idle_cycles, score));
+                    }
+                    _ => {}
                 }
             }
 
-            let removed = self.known_patterns.remove(worst_index);
+            if let Some((index, idle_cycles, score)) = worst {
+                let removed = self.known_patterns.remove(index);
+                println!(
+                    "  🗑️ Forget: PatternBank täynnä. Poistettiin malli #{} (score {:.2}, recent {:.2}, usage {}, idle {} sykliä).",
+                    removed.id, score, removed.recent_gain, removed.usage_count, idle_cycles
+                );
+            } else {
+                break;
+            }
+        }
+    }
+
+    /// Aggressiivinen siivous: poista pitkään käyttämättömät mallit, vaikka kapasiteettia olisi
+    fn prune_stale_patterns(&mut self, world_pressure: f64) {
+        if self.known_patterns.is_empty() {
+            return;
+        }
+
+        // Anna järjestelmän lämmetä ennen kuin aloitetaan aggressiivinen siivous
+        if self.cycle_count < 30 {
+            return;
+        }
+
+        let current_cycle = self.cycle_count;
+        // Kovempi paine maailman ollessa täynnä tai gainien sakatessa
+        let high_pressure = world_pressure > 0.88 || self.zero_gain_streak >= 4;
+        let idle_limit = if high_pressure { 30 } else { 60 };
+        let cold_limit = if high_pressure { 12 } else { 25 };
+
+        let mut removed = 0u32;
+        self.known_patterns.retain(|pattern| {
+            // Historiallisten mallien tiedot voivat olla puutteellisia -> anna armoa boot-vaiheessa
+            if pattern.last_used_cycle == 0 && pattern.creation_cycle == 0 {
+                return current_cycle < idle_limit;
+            }
+
+            let baseline_cycle = if pattern.last_used_cycle != 0 {
+                pattern.last_used_cycle
+            } else {
+                pattern.creation_cycle
+            };
+
+            let idle_cycles = current_cycle.saturating_sub(baseline_cycle);
+            let stale_recent = pattern.recent_gain < 0.5;
+            let cold = pattern.usage_count <= 1;
+            let negative_recent = pattern.recent_gain <= 0.0;
+
+            let should_drop = (stale_recent && idle_cycles > idle_limit)
+                || (cold && idle_cycles > cold_limit)
+                || (negative_recent && idle_cycles > cold_limit);
+
+            if should_drop {
+                removed += 1;
+                false
+            } else {
+                true
+            }
+        });
+
+        if removed > 0 {
             println!(
-                "  🗑️ Forget: PatternBank täynnä. Poistettiin malli #{} (score: {:.2}, recent_gain {:.2}, ikä {:?}, käyttöjä {}).",
-                removed.id,
-                worst_score,
-                removed.recent_gain,
-                now.duration_since(removed.last_used).unwrap_or_default(),
-                removed.usage_count
+                "  🧹 Forget: Puhdistettiin {} vanhaa mallia ({} jäljellä).",
+                removed,
+                self.known_patterns.len()
             );
         }
     }
@@ -607,39 +699,53 @@ impl Solver {
     }
 
     /// Käsittele explore-patchin soveltaminen ja oppiminen
-    fn handle_explore_patch(&mut self, world: &mut World, evaluator: &crate::evaluator::Evaluator, 
-                            patch: Patch) -> u32 {
+    fn handle_explore_patch(
+        &mut self,
+        world: &mut World,
+        evaluator: &crate::evaluator::Evaluator,
+        patch: Patch,
+    ) -> u32 {
         // Muunna paikallinen patch globaaliksi
         let global_patch = patch.clone_with_offset(world.window.start);
 
         let cost_before = evaluator.calculate_total_cost(world);
         let original_data = world.get_data_in_range(global_patch.range.clone());
-        
+
         // Tunnista operaattori patchistä
         let operator = self.identify_operator(&global_patch);
-        
+
         world.apply_patch(&global_patch);
         let cost_after = evaluator.calculate_total_cost(world);
         let gain = evaluator.calculate_gain(cost_before, cost_after);
-        
+
         if gain < Solver::MIN_ACCEPT_GAIN {
             world.rollback(&global_patch, original_data);
             let quota_cost = 10;
             self.stats.record_explore(quota_cost, 0);
-            println!("  ✗ Explore: Malli hylätty (liian pieni hyöty: {} tavua)", gain);
+            println!(
+                "  ✗ Explore: Malli hylätty (liian pieni hyöty: {} tavua)",
+                gain
+            );
             quota_cost
         } else {
             let quota_cost = 10;
             self.stats.record_explore(quota_cost, gain);
-            
+
             // OPI: Lisää PatternBankiin
-            let mut pattern = Pattern::new(self.next_pattern_id, operator);
-            pattern.record_usage(gain);
+            let mut pattern = Pattern::new(self.next_pattern_id, operator, self.cycle_count);
+            pattern.record_usage(gain, self.cycle_count);
             let pattern_id = self.next_pattern_id;
             self.next_pattern_id += 1;
             self.known_patterns.push(pattern);
-            println!("  ✓ Explore: Uusi malli #{} löydetty (säästö: {} tavua)", pattern_id, gain);
-            println!("  📚 PatternBank: {}/{} mallia muistissa", self.known_patterns.len(), self.pattern_bank_capacity);
+            println!(
+                "  ✓ Explore: Uusi malli #{} löydetty (säästö: {} tavua)",
+                pattern_id, gain
+            );
+            println!(
+                "  📚 PatternBank: {}/{} mallia muistissa",
+                self.known_patterns.len(),
+                self.pattern_bank_capacity
+            );
             // Muista unohtaa, jos täynnä
             self.forget_if_needed();
             quota_cost
@@ -659,40 +765,53 @@ impl Solver {
         // 1. Kerää ehdokkaat ja PRIORISOI DICTIONARY-MALLIT
         let mut dict_patterns: Vec<&Pattern> = Vec::new();
         let mut other_patterns: Vec<&Pattern> = Vec::new();
-        
+
         for pattern in &self.known_patterns {
             match pattern.operator {
                 Operator::Dictionary { .. } => dict_patterns.push(pattern),
                 _ => other_patterns.push(pattern),
             }
         }
-        
+
         // Lajittele Dictionary-mallit estimated_gain mukaan (suurempi ensin)
-        dict_patterns.sort_by(|a, b| b.recent_gain.partial_cmp(&a.recent_gain).unwrap_or(Ordering::Equal));
-        
+        dict_patterns.sort_by(|a, b| {
+            b.recent_gain
+                .partial_cmp(&a.recent_gain)
+                .unwrap_or(Ordering::Equal)
+        });
+
         // Lajittele muut mallit normaalisti
-        other_patterns.sort_by(|a, b| b.recent_gain.partial_cmp(&a.recent_gain).unwrap_or(Ordering::Equal));
+        other_patterns.sort_by(|a, b| {
+            b.recent_gain
+                .partial_cmp(&a.recent_gain)
+                .unwrap_or(Ordering::Equal)
+        });
 
         // 2. KAIKKI Dictionary-mallit ensin, sitten muut beam widthiin asti
         let dict_count = dict_patterns.len();
         if dict_count > 0 {
-            println!("  🔎 Exploit: {} Dictionary-mallia, {} muuta mallia", dict_count, other_patterns.len());
+            println!(
+                "  🔎 Exploit: {} Dictionary-mallia, {} muuta mallia",
+                dict_count,
+                other_patterns.len()
+            );
         }
-        let patterns_to_check = dict_patterns.into_iter()
-            .chain(other_patterns.into_iter().take(EXPLOIT_BEAM_WIDTH.saturating_sub(dict_count)));
+        let patterns_to_check = dict_patterns.into_iter().chain(
+            other_patterns
+                .into_iter()
+                .take(EXPLOIT_BEAM_WIDTH.saturating_sub(dict_count)),
+        );
         // --- UUSI OSA LOPPUU ---
 
         // Käy läpi VAIN PARHAAT tunnetut mallit ja löydä paras
         for pattern in patterns_to_check {
             let candidate = match &pattern.operator {
-                Operator::RunLength(byte, min_count) => {
-                    self.find_run_length(data_slice, *byte, *min_count)
-                        .map(|p| (p, pattern.id))
-                }
-                Operator::GeneralizedRunLength { min_len } => {
-                    self.find_any_run_length(data_slice, *min_len)
-                        .map(|p| (p, pattern.id))
-                }
+                Operator::RunLength(byte, min_count) => self
+                    .find_run_length(data_slice, *byte, *min_count)
+                    .map(|p| (p, pattern.id)),
+                Operator::GeneralizedRunLength { min_len } => self
+                    .find_any_run_length(data_slice, *min_len)
+                    .map(|p| (p, pattern.id)),
                 Operator::BackRef(distance, length) => {
                     let dist = *distance;
                     let len = (*length).min(255);
@@ -700,17 +819,24 @@ impl Solver {
                     if data_slice.len() >= len && dist > 0 {
                         let max_start = data_slice.len().saturating_sub(len);
                         for i in 0..=max_start {
-                            if i < dist { continue; }
+                            if i < dist {
+                                continue;
+                            }
                             let src = i - dist;
-                            if src + len > data_slice.len() { continue; }
-                            if &data_slice[i..i+len] == &data_slice[src..src+len] {
+                            if src + len > data_slice.len() {
+                                continue;
+                            }
+                            if &data_slice[i..i + len] == &data_slice[src..src + len] {
                                 let new_data = vec![
                                     OP_LZ,
                                     (dist & 0xFF) as u8,
                                     ((dist >> 8) & 0xFF) as u8,
                                     len as u8,
                                 ];
-                                let patch = Patch { range: i..(i + len), new_data };
+                                let patch = Patch {
+                                    range: i..(i + len),
+                                    new_data,
+                                };
                                 result = Some((patch, pattern.id));
                                 break;
                             }
@@ -722,18 +848,15 @@ impl Solver {
                     // Meta-operaattori: varsinainen backrefin valinta tapahtuu exploratiossa
                     None
                 }
-                Operator::DeltaSequence { start, delta, len } => {
-                    self.find_delta_sequence_exact(data_slice, *start, *delta, *len)
-                        .map(|p| (p, pattern.id))
-                }
-                Operator::XorMask { key, base, len } => {
-                    self.find_xor_mask_exact(data_slice, key, *base, *len)
-                        .map(|p| (p, pattern.id))
-                }
-                Operator::Dictionary { word_id } => {
-                    self.find_dictionary_word(data_slice, *word_id)
-                        .map(|p| (p, pattern.id))
-                }
+                Operator::DeltaSequence { start, delta, len } => self
+                    .find_delta_sequence_exact(data_slice, *start, *delta, *len)
+                    .map(|p| (p, pattern.id)),
+                Operator::XorMask { key, base, len } => self
+                    .find_xor_mask_exact(data_slice, key, *base, *len)
+                    .map(|p| (p, pattern.id)),
+                Operator::Dictionary { word_id } => self
+                    .find_dictionary_word(data_slice, *word_id)
+                    .map(|p| (p, pattern.id)),
                 Operator::GrammarRule { .. } => {
                     // Grammar-operaattorit eivät vielä ole käytössä eksploitatiossa
                     None
@@ -744,7 +867,7 @@ impl Solver {
                 let original_len = patch.range.len();
                 let encoded_len = patch.new_data.len();
                 let saved = original_len.saturating_sub(encoded_len);
-                
+
                 match &best_match {
                     None => best_match = Some((patch, pid, saved)),
                     Some((_, _, best_saved)) if saved > *best_saved => {
@@ -779,22 +902,26 @@ impl Solver {
         }
 
         // 1. Pidemmät n-grammit (sanat, lauseet)
-        if let Some(p) = self.find_ngram_reference(slice, 4, 20) { // 4-20 tavua (sanat)
+        if let Some(p) = self.find_ngram_reference(slice, 4, 20) {
+            // 4-20 tavua (sanat)
             consider(p);
         }
-        
+
         // 1b. Lyhyemmät n-grammit (3-byte patterns jotka toistuvat usein)
-        if let Some(p) = self.find_ngram_reference(slice, 3, 6) { // 3-6 tavua (lyhyet toistot)
+        if let Some(p) = self.find_ngram_reference(slice, 3, 6) {
+            // 3-6 tavua (lyhyet toistot)
             consider(p);
         }
 
         // 2. Backref (LZ-viittaukset)
-        if let Some(p) = self.find_backref(world, 3, 16384) { // min len 3 (aiemmin 4), max distance 16KB
+        if let Some(p) = self.find_backref(world, 3, 16384) {
+            // min len 3 (aiemmin 4), max distance 16KB
             consider(p);
         }
 
         // 3. Delta-sekvenssit
-        if let Some(p) = self.find_delta_sequence(slice, 5) { // 5 tavua (aiemmin 6) - salli lyhyemmät sekvenssit
+        if let Some(p) = self.find_delta_sequence(slice, 5) {
+            // 5 tavua (aiemmin 6) - salli lyhyemmät sekvenssit
             consider(p);
         }
 
@@ -807,7 +934,7 @@ impl Solver {
         if let Some(p) = self.find_any_run_length(slice, 3) {
             consider(p);
         }
-        
+
         // 6. Lyhyet run-lengthit (2-byte runs voivat olla hyödyllisiä)
         if let Some(p) = self.find_any_run_length(slice, 2) {
             consider(p);
@@ -883,7 +1010,9 @@ impl Solver {
         let data = &world.data;
         let ws = world.window.start;
         let we = world.window.end.min(data.len());
-        if we - ws < min_len + 1 { return None; }
+        if we - ws < min_len + 1 {
+            return None;
+        }
 
         let mut best_target = 0usize;
         let mut best_src = 0usize;
@@ -891,7 +1020,8 @@ impl Solver {
 
         // Tutki muutama kohde ikkunassa (alku, 1/4, 1/2, 3/4)
         let span = we - ws;
-        let candidates = [ws + 1, ws + span/4, ws + span/2, ws + (3*span/4)].into_iter()
+        let candidates = [ws + 1, ws + span / 4, ws + span / 2, ws + (3 * span / 4)]
+            .into_iter()
             .filter(|&t| t > ws && t + min_len <= we);
 
         for target in candidates {
@@ -907,7 +1037,9 @@ impl Solver {
                     best_len = l;
                     best_src = src;
                     best_target = target;
-                    if l == max_len_possible { break; }
+                    if l == max_len_possible {
+                        break;
+                    }
                 }
             }
         }
@@ -915,10 +1047,18 @@ impl Solver {
         if best_len >= min_len {
             let distance = best_target - best_src;
             let enc_len = best_len.min(255);
-            let new_data = vec![OP_LZ, (distance & 0xFF) as u8, ((distance >> 8) & 0xFF) as u8, enc_len as u8];
+            let new_data = vec![
+                OP_LZ,
+                (distance & 0xFF) as u8,
+                ((distance >> 8) & 0xFF) as u8,
+                enc_len as u8,
+            ];
             // Paikallinen range offset = best_target - ws
             let local_start = best_target - ws;
-            return Some(Patch { range: local_start..(local_start + enc_len), new_data });
+            return Some(Patch {
+                range: local_start..(local_start + enc_len),
+                new_data,
+            });
         }
         None
     }
@@ -940,7 +1080,7 @@ impl Solver {
             if len > 255 {
                 continue;
             }
-            
+
             for i in 0..data.len().saturating_sub(len) {
                 let key = data[i..i + len].to_vec();
                 match first_occurrence.entry(key) {
@@ -972,7 +1112,7 @@ impl Solver {
                     }
                 }
             }
-            
+
             // Jos löytyi hyvä pitkä osuma, käytä sitä
             if let Some((_, _, found_len)) = best {
                 if found_len >= len {
@@ -1053,7 +1193,13 @@ impl Solver {
     }
 
     /// Tarkastele onko data-alueella valmiiksi tunnettu delta-jono
-    fn find_delta_sequence_exact(&self, data: &[u8], start_byte: u8, delta: i8, len: usize) -> Option<Patch> {
+    fn find_delta_sequence_exact(
+        &self,
+        data: &[u8],
+        start_byte: u8,
+        delta: i8,
+        len: usize,
+    ) -> Option<Patch> {
         if len < 2 || len > 255 || data.len() < len {
             return None;
         }
@@ -1085,7 +1231,13 @@ impl Solver {
     }
 
     /// Etsi XOR-naamioituja jaksoja, joissa pohja on vakio
-    fn find_xor_mask(&self, data: &[u8], key_min: usize, key_max: usize, min_repeats: usize) -> Option<Patch> {
+    fn find_xor_mask(
+        &self,
+        data: &[u8],
+        key_min: usize,
+        key_max: usize,
+        min_repeats: usize,
+    ) -> Option<Patch> {
         if data.len() < key_min * min_repeats {
             return None;
         }
@@ -1196,7 +1348,7 @@ impl Solver {
     fn find_dictionary_word(&self, data: &[u8], word_id: u32) -> Option<Patch> {
         let word = self.dictionary_words.get(&word_id)?;
         let word_len = word.bytes.len();
-        
+
         if word_len == 0 || word_len > data.len() {
             return None;
         }
@@ -1221,7 +1373,12 @@ impl Solver {
 
     /// Rakenna uusi Dictionary-entry: etsi toistuva 4-20 tavun sekvenssi (sana),
     /// lisää sanakirjaan ja luo Pattern
-    fn build_dictionary_entry(&mut self, _data: &[u8], _min_len: usize, _max_len: usize) -> Option<Pattern> {
+    fn build_dictionary_entry(
+        &mut self,
+        _data: &[u8],
+        _min_len: usize,
+        _max_len: usize,
+    ) -> Option<Pattern> {
         // Vanha logiikka korvataan Dictionary 2.0 -virralla; jätetään paluu None, jotta satunnaiset kutsut eivät riko logiikkaa.
         None
     }
@@ -1252,7 +1409,7 @@ impl Solver {
             .into_iter()
             .filter_map(|(word, mut stats)| {
                 let len = word.len();
-                
+
                 // Dynaaminen kynnys: ALHAISEMPI (löytää enemmän)
                 let min_count = if len >= 15 {
                     2 // Pitkät lauseet (15+ tavua): 2 kertaa riittää
@@ -1263,15 +1420,22 @@ impl Solver {
                 } else {
                     4 // Hyvin lyhyet (3-4): 4 kertaa
                 };
-                
+
                 if stats.count < min_count {
                     return None;
                 }
-                
+
                 // Bonusta pidemmille sekvensseille
-                let length_bonus = if len >= 20 { 2.0 } else if len >= 10 { 1.5 } else { 1.0 };
-                let estimated_gain = (len.saturating_sub(3) as f64) * (stats.count as f64 - 1.0) * length_bonus;
-                
+                let length_bonus = if len >= 20 {
+                    2.0
+                } else if len >= 10 {
+                    1.5
+                } else {
+                    1.0
+                };
+                let estimated_gain =
+                    (len.saturating_sub(3) as f64) * (stats.count as f64 - 1.0) * length_bonus;
+
                 if estimated_gain <= 0.0 {
                     return None;
                 }
@@ -1292,21 +1456,32 @@ impl Solver {
                 return len_cmp;
             }
             // 2. Jos samanpituisia, vertaile estimated_gain
-            b.1
-                .estimated_gain
+            b.1.estimated_gain
                 .partial_cmp(&a.1.estimated_gain)
                 .unwrap_or(Ordering::Equal)
         });
 
-        let top_candidates: Vec<_> = candidates.into_iter().take(Self::DICTIONARY_CAPACITY).collect();
-        
+        let top_candidates: Vec<_> = candidates
+            .into_iter()
+            .take(Self::DICTIONARY_CAPACITY)
+            .collect();
+
         if !top_candidates.is_empty() {
-            let longest = top_candidates.iter().map(|(w, _)| w.len()).max().unwrap_or(0);
-            let avg_len = top_candidates.iter().map(|(w, _)| w.len()).sum::<usize>() / top_candidates.len();
-            println!("  📖 Sanakirja: {} ehdokasta, pisin: {} tavua, keskim: {} tavua", 
-                     top_candidates.len(), longest, avg_len);
+            let longest = top_candidates
+                .iter()
+                .map(|(w, _)| w.len())
+                .max()
+                .unwrap_or(0);
+            let avg_len =
+                top_candidates.iter().map(|(w, _)| w.len()).sum::<usize>() / top_candidates.len();
+            println!(
+                "  📖 Sanakirja: {} ehdokasta, pisin: {} tavua, keskim: {} tavua",
+                top_candidates.len(),
+                longest,
+                avg_len
+            );
         }
-        
+
         for (word, stats) in top_candidates {
             self.ensure_dictionary_word(word, stats);
         }
@@ -1346,18 +1521,28 @@ impl Solver {
 
         let pattern_id = self.next_pattern_id;
         self.next_pattern_id += 1;
-        let mut pattern = Pattern::new(pattern_id, Operator::Dictionary { word_id });
+        let mut pattern = Pattern::new(
+            pattern_id,
+            Operator::Dictionary { word_id },
+            self.cycle_count,
+        );
         pattern.recent_gain = stats.estimated_gain;
-        
+
         // Debug: näytä lisätty sana
         let word_preview = if word.len() <= 20 {
             String::from_utf8_lossy(&word).to_string()
         } else {
             format!("{}...", String::from_utf8_lossy(&word[..20]))
         };
-        println!("    + Sana #{}: \"{}\" ({} tavua, {} krt, gain: {:.1})", 
-                 word_id, word_preview, word.len(), stats.count, stats.estimated_gain);
-        
+        println!(
+            "    + Sana #{}: \"{}\" ({} tavua, {} krt, gain: {:.1})",
+            word_id,
+            word_preview,
+            word.len(),
+            stats.count,
+            stats.estimated_gain
+        );
+
         self.known_patterns.push(pattern);
         self.forget_if_needed();
     }
@@ -1437,7 +1622,11 @@ impl Solver {
     }
 
     /// REKURSIIVINEN PAKKAUS: Etsi toistuvia sekvenssejä JO PAKATUSTA datasta
-    fn repack_compressed_data(&mut self, world: &mut World, evaluator: &crate::evaluator::Evaluator) {
+    fn repack_compressed_data(
+        &mut self,
+        world: &mut World,
+        evaluator: &crate::evaluator::Evaluator,
+    ) {
         if world.data.len() < 10 {
             return;
         }
@@ -1448,19 +1637,26 @@ impl Solver {
         let mut total_used_quota = 0;
         let mut total_applied = 0;
         let mut pass_number = 1;
-        
+
         // MULTI-PASS: Jatka repackaamista kunnes ei löydy enää mitään tai quota loppuu
         loop {
             if total_used_quota >= total_quota_budget {
-                println!("    ⏱ Quota-budjetti käytetty ({} operaatiota)", total_quota_budget);
+                println!(
+                    "    ⏱ Quota-budjetti käytetty ({} operaatiota)",
+                    total_quota_budget
+                );
                 break;
             }
-            
-            println!("    🔍 Pass #{}: Skannataan world.data ({} tavua)...", pass_number, world.data.len());
-            
+
+            println!(
+                "    🔍 Pass #{}: Skannataan world.data ({} tavua)...",
+                pass_number,
+                world.data.len()
+            );
+
             // Skannaa koko world.data ja etsi toistuvia byte-sekvenssejä
             let mut counts: HashMap<Vec<u8>, usize> = HashMap::new();
-            
+
             // Etsi 4-48 tavun sekvenssejä
             for len in 4..=48 {
                 if len > world.data.len() {
@@ -1468,11 +1664,11 @@ impl Solver {
                 }
                 for start in 0..=world.data.len().saturating_sub(len) {
                     let slice = world.data[start..start + len].to_vec();
-                    
+
                     // BONUS: Jos sekvenssi sisältää OP_DICT operaattoreita, se on meta-pattern!
                     let dict_ops_count = slice.iter().filter(|&&b| b == OP_DICT).count();
                     let bonus = if dict_ops_count > 0 { 2 } else { 1 };
-                    
+
                     *counts.entry(slice).or_insert(0) += bonus;
                 }
             }
@@ -1482,9 +1678,12 @@ impl Solver {
                 .into_iter()
                 .filter(|(_seq, count)| *count >= 2)
                 .collect();
-            
+
             if candidates.is_empty() {
-                println!("    ✓ Pass #{}: Ei löytynyt uusia toistuvia sekvenssejä - valmis!", pass_number);
+                println!(
+                    "    ✓ Pass #{}: Ei löytynyt uusia toistuvia sekvenssejä - valmis!",
+                    pass_number
+                );
                 break;
             }
 
@@ -1535,8 +1734,10 @@ impl Solver {
                                 (word_id & 0xFF) as u8,
                                 ((word_id >> 8) & 0xFF) as u8,
                             ];
-                            
-                            world.data.splice(i..i + seq.len(), new_data.iter().cloned());
+
+                            world
+                                .data
+                                .splice(i..i + seq.len(), new_data.iter().cloned());
                             changed = true;
                             pass_applied += 1;
                             i += 3; // Hyppää uuden viittauksen yli
@@ -1551,9 +1752,13 @@ impl Solver {
                 if changed {
                     let cost_after = evaluator.calculate_total_cost(world);
                     let gain = evaluator.calculate_gain(cost_before, cost_after);
-                    println!("      ✓ Meta-malli: {} tavua, {} krt → {} tavua säästetty", 
-                             seq.len(), count, gain);
-                    
+                    println!(
+                        "      ✓ Meta-malli: {} tavua, {} krt → {} tavua säästetty",
+                        seq.len(),
+                        count,
+                        gain
+                    );
+
                     // Päivitä recent_gain jotta exploit käyttää tätä mallia
                     if let Some(&word_id) = self.dictionary_lookup.get(&seq) {
                         for pattern in &mut self.known_patterns {
@@ -1572,14 +1777,20 @@ impl Solver {
 
             total_applied += pass_applied;
             total_used_quota += pass_used_quota;
-            
+
             if pass_applied == 0 {
-                println!("    ✓ Pass #{}: Ei sovellettu uusia malleja - valmis!", pass_number);
+                println!(
+                    "    ✓ Pass #{}: Ei sovellettu uusia malleja - valmis!",
+                    pass_number
+                );
                 break;
             } else {
-                println!("    ✓ Pass #{}: {} mallia sovellettu, jatketaan...", pass_number, pass_applied);
+                println!(
+                    "    ✓ Pass #{}: {} mallia sovellettu, jatketaan...",
+                    pass_number, pass_applied
+                );
                 pass_number += 1;
-                
+
                 // Rajoita kierrosten määrää
                 if pass_number > 10 {
                     println!("    ⚠ Maksimi 10 passia saavutettu");
@@ -1589,50 +1800,58 @@ impl Solver {
         }
 
         if total_applied > 0 {
-            println!("  ✅ Multi-pass repack valmis: {} mallia sovellettu {} passissa", total_applied, pass_number - 1);
+            println!(
+                "  ✅ Multi-pass repack valmis: {} mallia sovellettu {} passissa",
+                total_applied,
+                pass_number - 1
+            );
         }
     }
 }
 
-    #[derive(Clone)]
-    struct DictionaryWord {
-        bytes: Vec<u8>,
-        frequency: usize,
-        recent_gain: f64,
-    }
+#[derive(Clone)]
+struct DictionaryWord {
+    bytes: Vec<u8>,
+    frequency: usize,
+    recent_gain: f64,
+}
 
-    impl DictionaryWord {
-        fn len(&self) -> usize {
-            self.bytes.len()
-        }
+impl DictionaryWord {
+    fn len(&self) -> usize {
+        self.bytes.len()
     }
+}
 
-    #[derive(Default, Clone)]
-    struct WordStats {
-        count: usize,
-        estimated_gain: f64,
-    }
+#[derive(Default, Clone)]
+struct WordStats {
+    count: usize,
+    estimated_gain: f64,
+}
 
-    #[derive(Clone)]
+#[derive(Clone)]
+#[allow(dead_code)]
+struct GrammarRule {
     #[allow(dead_code)]
-    struct GrammarRule {
-        #[allow(dead_code)]
-        id: u32,
-        #[allow(dead_code)]
-        sequence: Vec<OperatorKey>,
-        #[allow(dead_code)]
-        encoded_len: usize,
-    }
-
-    #[derive(Hash, Eq, PartialEq, Clone)]
+    id: u32,
     #[allow(dead_code)]
-    enum OperatorKey {
-        RunLength(u8, usize),
-        GeneralizedRunLength(usize),
-        BackRef(usize, usize),
-        BackRefRange { min_distance: usize, max_distance: usize, len: usize },
-        Delta(u8, i8, usize),
-        Xor(Vec<u8>, u8, usize),
-        Dictionary(u32),
-        Grammar(u32),
-    }
+    sequence: Vec<OperatorKey>,
+    #[allow(dead_code)]
+    encoded_len: usize,
+}
+
+#[derive(Hash, Eq, PartialEq, Clone)]
+#[allow(dead_code)]
+enum OperatorKey {
+    RunLength(u8, usize),
+    GeneralizedRunLength(usize),
+    BackRef(usize, usize),
+    BackRefRange {
+        min_distance: usize,
+        max_distance: usize,
+        len: usize,
+    },
+    Delta(u8, i8, usize),
+    Xor(Vec<u8>, u8, usize),
+    Dictionary(u32),
+    Grammar(u32),
+}

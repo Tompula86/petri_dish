@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// Operator (Operaattori): toimintauskomalli, joka muuntaa dataa ja 
+/// Operator (Operaattori): toimintauskomalli, joka muuntaa dataa ja
 /// jolla on kuvauskustannus ja hyödynnettävyyden mitta.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Operator {
@@ -14,7 +14,11 @@ pub enum Operator {
     /// Koodaus: [OP_LZ, dist_lo, dist_hi, length]
     BackRef(usize, usize),
     /// BackRefRange: sallii etäisyyden vaihteluvälin (meta-operaattori)
-    BackRefRange { min_distance: usize, max_distance: usize, len: usize },
+    BackRefRange {
+        min_distance: usize,
+        max_distance: usize,
+        len: usize,
+    },
     /// DeltaSequence(start, delta, len): kuvaa aritmeettista jonoa
     /// Koodaus: [OP_DELTA, len, start, delta]
     DeltaSequence { start: u8, delta: i8, len: usize },
@@ -31,7 +35,7 @@ pub enum Operator {
 
 /// Operaattorikoodit binäärimuodossa
 pub const OP_RLE: u8 = 0xFF; // RunLength-operaattorin tunniste
-pub const OP_LZ: u8  = 0xFE; // BackRef-operaattorin tunniste
+pub const OP_LZ: u8 = 0xFE; // BackRef-operaattorin tunniste
 pub const OP_DELTA: u8 = 0xFD; // DeltaSequence-operaattorin tunniste
 pub const OP_XOR: u8 = 0xFC; // XorMask-operaattorin tunniste
 pub const OP_DICT: u8 = 0xFB; // Dictionary-operaattorin tunniste

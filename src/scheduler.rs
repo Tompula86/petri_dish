@@ -21,14 +21,14 @@ pub struct Scheduler {
 }
 
 impl Scheduler {
-    pub fn new() -> Self { 
-        Scheduler { 
+    pub fn new() -> Self {
+        Scheduler {
             exploit_threshold: 1.0,
             exploit_bias_prob: 0.7,
             meta_prob: 0.01,
             risk_budget_ratio: 0.1,
             shift_base_prob: 0.2,
-        } 
+        }
     }
 
     /// Päättää seuraavan toimenpiteen tilastojen perusteella
@@ -47,7 +47,7 @@ impl Scheduler {
             return Action::Explore;
         }
 
-        // Satunnaisesti meta-oppiminen  
+        // Satunnaisesti meta-oppiminen
         let roll = rng.gen_range(0.0..1.0);
         if roll < self.meta_prob {
             return Action::MetaLearn;
@@ -56,12 +56,16 @@ impl Scheduler {
         let stagnating = stats.total_gain() <= 0;
         let shift_pressure = (self.shift_base_prob + world_pressure * 0.3).clamp(0.05, 0.9);
         // ÄLÄ loukussa ShiftWindow:ssa jos world on tyhjä tai hyvin pieni
-        if world_pressure > 0.05 && (stagnating || (remaining_quota >= 5 && rng.gen_range(0.0..1.0) < shift_pressure)) {
+        if world_pressure > 0.05
+            && (stagnating || (remaining_quota >= 5 && rng.gen_range(0.0..1.0) < shift_pressure))
+        {
             return Action::ShiftWindow;
         }
 
         // Jos exploit on tuottavaa, käytä sitä aggressiivisemmin (0.7 -> 0.85)
-        if stats.gain_per_quota_exploit > 0.0 && stats.gain_per_quota_exploit >= stats.gain_per_quota_explore {
+        if stats.gain_per_quota_exploit > 0.0
+            && stats.gain_per_quota_exploit >= stats.gain_per_quota_explore
+        {
             if rng.gen_range(0.0..1.0) < 0.85 {
                 return Action::Exploit;
             }

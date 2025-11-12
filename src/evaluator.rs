@@ -1,7 +1,7 @@
-use crate::world::World;
 use crate::operator::{OP_DELTA, OP_DICT, OP_LZ, OP_RLE, OP_XOR};
+use crate::world::World;
 
-/// Evaluator (Arvioija): mittaa kokonaiskustannuksen ja hyväksyy vain muutokset, 
+/// Evaluator (Arvioija): mittaa kokonaiskustannuksen ja hyväksyy vain muutokset,
 /// jotka parantavat nettoa.
 pub struct Evaluator {}
 

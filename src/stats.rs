@@ -75,16 +75,15 @@ impl Stats {
     /// Laske gain/quota-suhde
     fn update_gain_per_quota(&mut self) {
         if self.quota_spent_exploit > 0 {
-            self.gain_per_quota_exploit = 
+            self.gain_per_quota_exploit =
                 self.bytes_saved_exploit as f64 / self.quota_spent_exploit as f64;
         }
         if self.quota_spent_explore > 0 {
-            self.gain_per_quota_explore = 
+            self.gain_per_quota_explore =
                 self.bytes_saved_explore as f64 / self.quota_spent_explore as f64;
         }
         if self.quota_spent_meta > 0 {
-            self.gain_per_quota_meta = 
-                self.bytes_saved_meta as f64 / self.quota_spent_meta as f64;
+            self.gain_per_quota_meta = self.bytes_saved_meta as f64 / self.quota_spent_meta as f64;
         }
     }
 
@@ -106,6 +105,9 @@ impl Stats {
 
     /// Kokonaisquota käytetty tässä syklissä
     pub fn total_quota_spent(&self) -> u32 {
-        self.quota_spent_exploit + self.quota_spent_explore + self.quota_spent_meta + self.quota_spent_seek
+        self.quota_spent_exploit
+            + self.quota_spent_explore
+            + self.quota_spent_meta
+            + self.quota_spent_seek
     }
 }

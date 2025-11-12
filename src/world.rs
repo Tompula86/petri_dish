@@ -78,7 +78,8 @@ impl World {
     /// Sovella Patch: korvaa range-alue new_data:lla
     pub fn apply_patch(&mut self, patch: &Patch) {
         // Poista vanha alue ja korvaa uudella
-        self.data.splice(patch.range.clone(), patch.new_data.iter().cloned());
+        self.data
+            .splice(patch.range.clone(), patch.new_data.iter().cloned());
     }
 
     /// Kumoa Patch: palauta alkuperäinen data
@@ -86,8 +87,9 @@ impl World {
         // Laske nykyisen datan koko patch-alueella
         let current_len = patch.range.start + patch.new_data.len();
         let rollback_range = patch.range.start..current_len;
-        
-        self.data.splice(rollback_range, original_data.iter().cloned());
+
+        self.data
+            .splice(rollback_range, original_data.iter().cloned());
     }
 
     /// Palauttaa viipaleen dataa nykyisen ikkunan kohdalta

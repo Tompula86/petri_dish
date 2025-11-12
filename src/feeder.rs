@@ -1,24 +1,27 @@
 // src/feeder.rs
 use crate::world::World;
 use std::fs::{self, File};
-use std::io::{self, Read};
 use std::io::BufReader;
+use std::io::{self, Read};
 use std::path::PathBuf;
 
 /// Feeder: "Striimaa" dataa kaikista .txt-tiedostoista annetussa kansiossa.
 pub struct Feeder {
     pub feed_rate: usize,
     base_feed_rate: usize,
-    file_paths: Vec<PathBuf>, // Lista kaikista .txt-tiedostoista
+    file_paths: Vec<PathBuf>,  // Lista kaikista .txt-tiedostoista
     current_file_index: usize, // Monesko tiedosto menossa
     current_file: Option<BufReader<File>>, // Kahva auki olevaan tiedostoon
-    is_depleted: bool, // Onko kaikki tiedostot luettu?
+    is_depleted: bool,         // Onko kaikki tiedostot luettu?
 }
 
 impl Feeder {
     /// Luo uuden Feederin, joka etsii kaikki .txt-tiedostot data_dir_path-kansiosta
     pub fn new(feed_rate: usize, data_dir_path: &str) -> io::Result<Self> {
-        println!("  📥 Feeder: Etsitään datatiedostoja kansiosta '{}'...", data_dir_path);
+        println!(
+            "  📥 Feeder: Etsitään datatiedostoja kansiosta '{}'...",
+            data_dir_path
+        );
 
         let mut file_paths = Vec::new();
         // Lue kansion sisältö
@@ -37,7 +40,10 @@ impl Feeder {
 
         file_paths.sort(); // Varmistetaan johdonmukainen lukujärjestys
 
-        println!("  📥 Feeder: Löydettiin {} .txt-tiedostoa.", file_paths.len());
+        println!(
+            "  📥 Feeder: Löydettiin {} .txt-tiedostoa.",
+            file_paths.len()
+        );
         for (i, path) in file_paths.iter().enumerate() {
             println!("     {}: {}", i + 1, path.display());
         }
@@ -88,7 +94,10 @@ impl Feeder {
             // Sovita syötteen koko nykyiseen vapaaseen tilaan
             let free_space = world.free_space();
             if free_space == 0 {
-                return Err("OVERFLOW: World täynnä! Solver ei vapauta tilaa tarpeeksi nopeasti.".to_string());
+                return Err(
+                    "OVERFLOW: World täynnä! Solver ei vapauta tilaa tarpeeksi nopeasti."
+                        .to_string(),
+                );
             }
 
             let adaptive_cap = (free_space / 2).max(1);
@@ -96,18 +105,20 @@ impl Feeder {
             if self.feed_rate != self.base_feed_rate {
                 println!(
                     "  📥 Feeder: hidastetaan syöttöä {} tavuun (vapaa tila: {})",
-                    self.feed_rate,
-                    free_space
+                    self.feed_rate, free_space
                 );
             }
 
             // Luodaan puskuri *vain* tarvittavalle määrälle
             let mut buffer = vec![0u8; self.feed_rate];
-            
+
             match file.read(&mut buffer) {
                 Ok(0) => {
                     // 0 tavua luettu = tiedosto loppui.
-                    println!("  📥 Feeder: Tiedosto '{}' luettu loppuun.", self.file_paths[self.current_file_index - 1].display());
+                    println!(
+                        "  📥 Feeder: Tiedosto '{}' luettu loppuun.",
+                        self.file_paths[self.current_file_index - 1].display()
+                    );
                     self.current_file = None; // Sulje tiedosto
                     // Kutsu feed() uudestaan *tämän saman syklin aikana*
                     // avataksesi seuraavan tiedoston heti.
@@ -116,9 +127,11 @@ impl Feeder {
                 Ok(bytes_read) => {
                     // Dataa luettu. Tarkista World-rajoitus.
                     if world.data.len() + bytes_read > world.memory_limit {
-                        return Err("OVERFLOW: World täynnä! Feeder nopeampi kuin Solver.".to_string());
+                        return Err(
+                            "OVERFLOW: World täynnä! Feeder nopeampi kuin Solver.".to_string()
+                        );
                     }
-                    
+
                     // HUOM: buffer on 'feed_rate' kokoinen, mutta luimme vain 'bytes_read'
                     world.data.extend_from_slice(&buffer[..bytes_read]);
                     Ok(bytes_read)

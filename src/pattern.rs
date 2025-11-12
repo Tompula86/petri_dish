@@ -1,5 +1,5 @@
 use crate::operator::Operator;
-use serde::{Deserialize, Serialize, Deserializer, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 mod systemtime_as_secs {
@@ -22,7 +22,7 @@ mod systemtime_as_secs {
     }
 }
 
-/// Pattern (Malli): esitys tavasta kuvata jokin datan rakenne lyhyemmin 
+/// Pattern (Malli): esitys tavasta kuvata jokin datan rakenne lyhyemmin
 /// (esim. toisto, sanakirja, säännöllinen rakenne tai meta-sääntö).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Pattern {
@@ -37,10 +37,16 @@ pub struct Pattern {
     pub last_used: SystemTime,
     /// Viimeaikainen hyöty (exponentiaalinen keskiarvo)
     pub recent_gain: f64,
+    /// Viimeisin sykli, jossa mallia käytettiin (0 = ei tietoa)
+    #[serde(default)]
+    pub last_used_cycle: u32,
+    /// Sykli, jossa malli syntyi (0 = ennen käynnistystä / historiadata)
+    #[serde(default)]
+    pub creation_cycle: u32,
 }
 
 impl Pattern {
-    pub fn new(id: u32, operator: Operator) -> Self {
+    pub fn new(id: u32, operator: Operator, creation_cycle: u32) -> Self {
         Pattern {
             id,
             operator,
@@ -48,20 +54,24 @@ impl Pattern {
             total_bytes_saved: 0,
             last_used: SystemTime::UNIX_EPOCH,
             recent_gain: 0.0,
+            last_used_cycle: creation_cycle,
+            creation_cycle,
         }
     }
 
     /// Päivitä tilastot onnistuneen sovelluksen jälkeen
-    pub fn record_usage(&mut self, bytes_saved: i32) {
+    pub fn record_usage(&mut self, bytes_saved: i32, cycle: u32) {
         const RECENT_GAIN_ALPHA: f64 = 0.25;
         self.usage_count += 1;
         self.total_bytes_saved += bytes_saved;
         self.last_used = SystemTime::now();
+        self.last_used_cycle = cycle;
         let gain = bytes_saved as f64;
         if self.usage_count == 1 {
             self.recent_gain = gain;
         } else {
-            self.recent_gain = (1.0 - RECENT_GAIN_ALPHA) * self.recent_gain + RECENT_GAIN_ALPHA * gain;
+            self.recent_gain =
+                (1.0 - RECENT_GAIN_ALPHA) * self.recent_gain + RECENT_GAIN_ALPHA * gain;
         }
     }
 }
