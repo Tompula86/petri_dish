@@ -23,8 +23,8 @@ struct Config {
 }
 
 impl Config {
-    const DEFAULT_WORLD_LIMIT: usize = 10_000;
-    const DEFAULT_FEED_RATE: usize = 200;
+    const DEFAULT_WORLD_LIMIT: usize = 1_000;
+    const DEFAULT_FEED_RATE: usize = 400;
     const DEFAULT_WINDOW_FRACTION: f64 = 0.8;
 
     fn load() -> Self {
