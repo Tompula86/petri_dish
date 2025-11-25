@@ -4,6 +4,7 @@ data/*.txt
 
 # Pattern bank persistence (may be large / generated)
 pattern_bank.json
+brain.json
 
 # Generated results
 results.csv

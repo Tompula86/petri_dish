@@ -11,7 +11,11 @@
 
 use crate::operator::Operator;
 use crate::pattern::Pattern;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::{BufReader, BufWriter};
+use std::path::Path;
 
 // ============================================================================
 // CONFIGURABLE CONSTANTS
@@ -24,7 +28,8 @@ const MAX_TOP_PAIRS: usize = 10;
 const STRENGTHEN_SCALE_FACTOR: f64 = 10.0;
 
 /// Capacity threshold (percentage) at which forgetting kicks in
-const FORGET_CAPACITY_THRESHOLD: usize = 80;
+/// Petri Dish 2.0: Nostettu 80% -> 90%, jotta oppiminen jatkuu pidempään
+const FORGET_CAPACITY_THRESHOLD: usize = 90;
 
 /// Percentage of patterns to remove when capacity is exceeded
 const FORGET_REMOVAL_PERCENTAGE: usize = 10;
@@ -35,6 +40,15 @@ const DEFAULT_DECAY_RATE: f64 = 0.01;
 // ============================================================================
 // PATTERN BANK
 // ============================================================================
+
+/// Serialisoitava versio pair_lookup:ista
+/// JSON ei tue tuple-avaimia HashMapissa, joten serialisoidaan Veciksi
+#[derive(Serialize, Deserialize)]
+struct PairLookupEntry {
+    left: u32,
+    right: u32,
+    pattern_id: u32,
+}
 
 /// PatternBank: Mallien muisti.
 /// 
@@ -53,6 +67,15 @@ pub struct PatternBank {
     next_id: u32,
     
     /// Maksimi mallien määrä (evoluutiopaine)
+    pub capacity: usize,
+}
+
+/// Serialisoitava versio PatternBankista
+#[derive(Serialize, Deserialize)]
+struct PatternBankData {
+    patterns: HashMap<u32, Pattern>,
+    pair_lookup: Vec<PairLookupEntry>,
+    next_id: u32,
     capacity: usize,
 }
 
@@ -126,15 +149,32 @@ impl PatternBank {
         self.patterns.insert(id, pattern);
         self.pair_lookup.insert((left, right), id);
         
+        // Kasvata vasemman ja oikean osan ref_count +1
+        if let Some(left_pattern) = self.patterns.get_mut(&left) {
+            left_pattern.ref_count += 1;
+        }
+        if let Some(right_pattern) = self.patterns.get_mut(&right) {
+            right_pattern.ref_count += 1;
+        }
+        
         Some(id)
     }
     
     /// Poista malli (unohtaminen)
+    /// Huom: Vähentää myös lasten ref_count arvoja
     pub fn remove(&mut self, id: u32) -> Option<Pattern> {
         if let Some(pattern) = self.patterns.remove(&id) {
             // Poista myös pair_lookup:ista jos kyseessä on Combine
             if let Operator::Combine(left, right) = pattern.op {
                 self.pair_lookup.remove(&(left, right));
+                
+                // Vähennä lasten ref_count -1
+                if let Some(left_pattern) = self.patterns.get_mut(&left) {
+                    left_pattern.ref_count = left_pattern.ref_count.saturating_sub(1);
+                }
+                if let Some(right_pattern) = self.patterns.get_mut(&right) {
+                    right_pattern.ref_count = right_pattern.ref_count.saturating_sub(1);
+                }
             }
             Some(pattern)
         } else {
@@ -142,11 +182,12 @@ impl PatternBank {
         }
     }
     
-    /// Hae heikoimmat mallit (paitsi Literaalit)
+    /// Hae heikoimmat mallit (paitsi Literaalit ja mallit joihin viitataan)
+    /// Vain "orvot" ylätason mallit (ref_count == 0) voidaan poistaa
     pub fn get_weakest(&self, count: usize) -> Vec<u32> {
         let mut combines: Vec<(u32, f64)> = self.patterns
             .iter()
-            .filter(|(_, p)| !p.is_literal())
+            .filter(|(_, p)| !p.is_literal() && p.ref_count == 0)
             .map(|(id, p)| (*id, p.strength))
             .collect();
         
@@ -206,6 +247,53 @@ impl PatternBank {
         } else {
             0
         }
+    }
+    
+    /// Tallenna PatternBank JSON-tiedostoon
+    pub fn save(&self, path: &Path) -> Result<(), String> {
+        // Muunna PatternBank serialisoitavaan muotoon
+        let pair_lookup_vec: Vec<PairLookupEntry> = self.pair_lookup
+            .iter()
+            .map(|((left, right), pattern_id)| PairLookupEntry {
+                left: *left,
+                right: *right,
+                pattern_id: *pattern_id,
+            })
+            .collect();
+        
+        let data = PatternBankData {
+            patterns: self.patterns.clone(),
+            pair_lookup: pair_lookup_vec,
+            next_id: self.next_id,
+            capacity: self.capacity,
+        };
+        
+        let file = File::create(path).map_err(|e| format!("Tiedoston luonti epäonnistui: {}", e))?;
+        let writer = BufWriter::new(file);
+        serde_json::to_writer_pretty(writer, &data)
+            .map_err(|e| format!("JSON-serialisointi epäonnistui: {}", e))?;
+        Ok(())
+    }
+    
+    /// Lataa PatternBank JSON-tiedostosta
+    pub fn load(path: &Path) -> Result<Self, String> {
+        let file = File::open(path).map_err(|e| format!("Tiedoston avaus epäonnistui: {}", e))?;
+        let reader = BufReader::new(file);
+        let data: PatternBankData = serde_json::from_reader(reader)
+            .map_err(|e| format!("JSON-deserialisointi epäonnistui: {}", e))?;
+        
+        // Muunna takaisin PatternBank-muotoon
+        let pair_lookup: HashMap<(u32, u32), u32> = data.pair_lookup
+            .into_iter()
+            .map(|entry| ((entry.left, entry.right), entry.pattern_id))
+            .collect();
+        
+        Ok(PatternBank {
+            patterns: data.patterns,
+            pair_lookup,
+            next_id: data.next_id,
+            capacity: data.capacity,
+        })
     }
 }
 
@@ -293,6 +381,20 @@ impl Builder {
             cycle: 0,
             pair_threshold: 2,    // Pari pitää esiintyä vähintään 2 kertaa
             death_threshold: 0.1, // Alle 0.1 strength -> kuolema
+            strengthen_amount: 0.1,
+            weaken_amount: 0.05,
+        }
+    }
+    
+    /// Luo Builder olemassa olevalla PatternBankilla (pysyvä muisti)
+    pub fn with_bank(bank: PatternBank) -> Self {
+        Builder {
+            bank,
+            token_stream: Vec::new(),
+            pair_stats: PairStats::new(),
+            cycle: 0,
+            pair_threshold: 2,
+            death_threshold: 0.1,
             strengthen_amount: 0.1,
             weaken_amount: 0.05,
         }
@@ -479,20 +581,27 @@ impl Builder {
     
     /// Pääsilmukka: Yksi sykli oppimista
     /// 
-    /// 1. Explore: Etsi uusia pareja
-    /// 2. Collapse: Tiivistä virta
-    /// 3. Forget: Unohda heikot
-    /// 4. Decay: Vanhenna malleja
+    /// Uusi järjestys (Petri Dish 2.0):
+    /// 1. Decay: Vähennä kaikkien mallien vahvuutta hieman
+    /// 2. Prune: Jos pankki on >90% täynnä, poista heikoimmat mallit (joilla ref_count == 0)
+    /// 3. Explore: Etsi uusia yhteyksiä (nyt tilaa on varmasti)
+    /// 4. Collapse: Tiivistä dataa
     pub fn live(&mut self) -> BuilderStats {
         self.cycle += 1;
         
         let stream_before = self.token_stream.len();
         let patterns_before = self.bank.combine_count();
         
-        // 1. Explore
+        // 1. Decay: Vähennä kaikkien mallien vahvuutta
+        self.decay(DEFAULT_DECAY_RATE);
+        
+        // 2. Prune: Siivoa ennen oppimista (tilaa uusille malleille)
+        let forgotten = self.forget(0);
+        
+        // 3. Explore: Etsi uusia pareja
         let created = self.explore();
         
-        // 2. Collapse (useita kierroksia kunnes ei enää tiivisty)
+        // 4. Collapse (useita kierroksia kunnes ei enää tiivisty)
         let mut total_collapsed = 0;
         loop {
             let collapsed = self.collapse();
@@ -501,12 +610,6 @@ impl Builder {
             }
             total_collapsed += collapsed;
         }
-        
-        // 3. Forget (jos tarpeen)
-        let forgotten = self.forget(0);
-        
-        // 4. Decay
-        self.decay(DEFAULT_DECAY_RATE);
         
         let stream_after = self.token_stream.len();
         let patterns_after = self.bank.combine_count();
@@ -713,5 +816,124 @@ mod tests {
         
         // Decode pitäisi silti palauttaa alkuperäinen
         assert_eq!(builder.decode_stream(), b"aabbaabbaabb");
+    }
+    
+    #[test]
+    fn test_ref_count_on_combine_creation() {
+        let mut bank = PatternBank::new(100);
+        
+        let a_id = bank.literal_id(b'a');
+        let b_id = bank.literal_id(b'b');
+        
+        // Tarkista että literaalien ref_count on aluksi 0
+        assert_eq!(bank.get(a_id).unwrap().ref_count, 0);
+        assert_eq!(bank.get(b_id).unwrap().ref_count, 0);
+        
+        // Luo yhdistelmä
+        let ab_id = bank.create_combine(a_id, b_id, 1).unwrap();
+        
+        // Tarkista että literaalien ref_count kasvoi
+        assert_eq!(bank.get(a_id).unwrap().ref_count, 1);
+        assert_eq!(bank.get(b_id).unwrap().ref_count, 1);
+        
+        // Luo toinen yhdistelmä joka käyttää ab:ta
+        let c_id = bank.literal_id(b'c');
+        let abc_id = bank.create_combine(ab_id, c_id, 2).unwrap();
+        
+        // ab:n ref_count pitäisi olla 1 (abc viittaa siihen)
+        assert_eq!(bank.get(ab_id).unwrap().ref_count, 1);
+        assert_eq!(bank.get(c_id).unwrap().ref_count, 1);
+        
+        // abc:n ref_count pitäisi olla 0 (kukaan ei viittaa siihen)
+        assert_eq!(bank.get(abc_id).unwrap().ref_count, 0);
+    }
+    
+    #[test]
+    fn test_ref_count_on_remove() {
+        let mut bank = PatternBank::new(100);
+        
+        let a_id = bank.literal_id(b'a');
+        let b_id = bank.literal_id(b'b');
+        
+        // Luo yhdistelmä
+        let ab_id = bank.create_combine(a_id, b_id, 1).unwrap();
+        
+        // Tarkista ref_countit
+        assert_eq!(bank.get(a_id).unwrap().ref_count, 1);
+        assert_eq!(bank.get(b_id).unwrap().ref_count, 1);
+        
+        // Poista yhdistelmä
+        bank.remove(ab_id);
+        
+        // ref_countien pitäisi vähentyä
+        assert_eq!(bank.get(a_id).unwrap().ref_count, 0);
+        assert_eq!(bank.get(b_id).unwrap().ref_count, 0);
+    }
+    
+    #[test]
+    fn test_get_weakest_respects_ref_count() {
+        let mut bank = PatternBank::new(100);
+        
+        let a_id = bank.literal_id(b'a');
+        let b_id = bank.literal_id(b'b');
+        let c_id = bank.literal_id(b'c');
+        
+        // Luo kaksi yhdistelmää
+        let ab_id = bank.create_combine(a_id, b_id, 1).unwrap();
+        let _bc_id = bank.create_combine(b_id, c_id, 1).unwrap();
+        
+        // Luo kolmas yhdistelmä joka viittaa ensimmäiseen
+        let _abc_id = bank.create_combine(ab_id, c_id, 2).unwrap();
+        
+        // ab:lla on ref_count == 1, bc:lla ref_count == 0
+        // get_weakest pitäisi palauttaa vain bc (ref_count == 0)
+        let weakest = bank.get_weakest(10);
+        
+        // ab ei saa olla mukana koska siihen viitataan
+        assert!(!weakest.contains(&ab_id), "ab:ta ei pitäisi poistaa koska siihen viitataan");
+        
+        // bc voi olla mukana koska siihen ei viitata
+        // (jos sen strength on tarpeeksi heikko)
+    }
+    
+    #[test]
+    fn test_persistence_save_load() {
+        let mut bank = PatternBank::new(100);
+        
+        // Luo muutama yhdistelmä
+        let a_id = bank.literal_id(b'a');
+        let b_id = bank.literal_id(b'b');
+        let ab_id = bank.create_combine(a_id, b_id, 1).unwrap();
+        
+        // Vahvista mallia
+        if let Some(p) = bank.get_mut(ab_id) {
+            p.strength = 0.8;
+            p.usage_count = 5;
+        }
+        
+        // Tallenna käyttäen järjestelmän temp-hakemistoa
+        let test_path = std::env::temp_dir().join("test_brain.json");
+        bank.save(&test_path).expect("Tallentaminen epäonnistui");
+        
+        // Lataa uuteen pankkiin
+        let loaded_bank = PatternBank::load(&test_path).expect("Lataaminen epäonnistui");
+        
+        // Tarkista että data säilyi
+        assert_eq!(loaded_bank.len(), bank.len());
+        assert!(loaded_bank.has_pair(a_id, b_id));
+        
+        let loaded_ab = loaded_bank.get(ab_id).unwrap();
+        assert_eq!(loaded_ab.strength, 0.8);
+        assert_eq!(loaded_ab.usage_count, 5);
+        // ab:hen ei viitata (kukaan muu malli ei käytä ab:ta osanaan)
+        assert_eq!(loaded_ab.ref_count, 0);
+        
+        // Tarkista lasten ref_count: a ja b ovat ab:n osat, 
+        // joten niiden ref_count on 1 (ab viittaa niihin)
+        assert_eq!(loaded_bank.get(a_id).unwrap().ref_count, 1);
+        assert_eq!(loaded_bank.get(b_id).unwrap().ref_count, 1);
+        
+        // Siivoa testitiedosto
+        std::fs::remove_file(test_path).ok();
     }
 }
