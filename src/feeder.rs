@@ -1,18 +1,23 @@
 // src/feeder.rs
-use crate::world::World;
+use crate::builder::Builder;
 use std::fs::{self, File};
 use std::io::BufReader;
 use std::io::{self, Read};
 use std::path::PathBuf;
 
 /// Feeder: "Striimaa" dataa kaikista .txt-tiedostoista annetussa kansiossa.
+/// 
+/// Uudessa arkkitehtuurissa Feeder syöttää dataa suoraan Builderiin,
+/// joka tokenisoi sen.
 pub struct Feeder {
     pub feed_rate: usize,
     base_feed_rate: usize,
-    file_paths: Vec<PathBuf>,  // Lista kaikista .txt-tiedostoista
-    current_file_index: usize, // Monesko tiedosto menossa
-    current_file: Option<BufReader<File>>, // Kahva auki olevaan tiedostoon
-    is_depleted: bool,         // Onko kaikki tiedostot luettu?
+    file_paths: Vec<PathBuf>,
+    current_file_index: usize,
+    current_file: Option<BufReader<File>>,
+    is_depleted: bool,
+    /// Yhteensä syötetty tavumäärä
+    pub total_fed: usize,
 }
 
 impl Feeder {
@@ -24,21 +29,11 @@ impl Feeder {
         );
 
         let mut file_paths = Vec::new();
-        // Lue kansion sisältö
-        for entry in fs::read_dir(data_dir_path)? {
-            let entry = entry?;
-            let path = entry.path();
-            // Hyväksy vain tiedostot, joiden pääte on .txt
-            if path.is_file() {
-                if let Some(ext) = path.extension() {
-                    if ext == "txt" {
-                        file_paths.push(path);
-                    }
-                }
-            }
-        }
+        
+        // Rekursiivinen haku: etsii myös alikansioista
+        Self::find_txt_files(data_dir_path, &mut file_paths)?;
 
-        file_paths.sort(); // Varmistetaan johdonmukainen lukujärjestys
+        file_paths.sort();
 
         println!(
             "  📥 Feeder: Löydettiin {} .txt-tiedostoa.",
@@ -53,9 +48,32 @@ impl Feeder {
             base_feed_rate: feed_rate,
             file_paths,
             current_file_index: 0,
-            current_file: None, // Avataan tiedosto vasta kun 'feed' kutsutaan
+            current_file: None,
             is_depleted: false,
+            total_fed: 0,
         })
+    }
+    
+    /// Rekursiivinen .txt-tiedostojen etsintä
+    fn find_txt_files(dir_path: &str, file_paths: &mut Vec<PathBuf>) -> io::Result<()> {
+        for entry in fs::read_dir(dir_path)? {
+            let entry = entry?;
+            let path = entry.path();
+            
+            if path.is_dir() {
+                // Rekursiivisesti alikansioihin
+                if let Some(path_str) = path.to_str() {
+                    Self::find_txt_files(path_str, file_paths)?;
+                }
+            } else if path.is_file() {
+                if let Some(ext) = path.extension() {
+                    if ext == "txt" {
+                        file_paths.push(path);
+                    }
+                }
+            }
+        }
+        Ok(())
     }
 
     /// Apufunktio, joka avaa seuraavan tiedoston listalta
@@ -66,7 +84,6 @@ impl Feeder {
             self.current_file = Some(BufReader::new(file));
             self.current_file_index += 1;
         } else {
-            // Ei enää tiedostoja. Kaikki data on syötetty.
             println!("  📥 Feeder: Kaikki datatiedostot käsitelty.");
             self.is_depleted = true;
             self.current_file = None;
@@ -74,75 +91,40 @@ impl Feeder {
         Ok(())
     }
 
-    /// Syötä seuraava pala dataa Worldiin
-    pub fn feed(&mut self, world: &mut World) -> Result<usize, String> {
+    /// Syötä seuraava pala dataa suoraan Builderiin (tokenisoi samalla)
+    pub fn feed_to_builder(&mut self, builder: &mut Builder) -> Result<usize, String> {
         if self.is_depleted {
             return Ok(0);
         }
 
-        // Jos tiedosto ei ole auki (tai edellinen loppui), yritä avata seuraava
         if self.current_file.is_none() {
             self.open_next_file().map_err(|e| e.to_string())?;
-            // Jos se on edelleen 'None', kaikki tiedostot on luettu
             if self.is_depleted {
                 return Ok(0);
             }
         }
 
-        // Nyt meillä pitäisi olla tiedosto auki. Luetaan siitä.
         if let Some(ref mut file) = self.current_file {
-            // Sovita syötteen koko nykyiseen vapaaseen tilaan
-            let free_space = world.free_space();
-            if free_space == 0 {
-                return Err(
-                    "OVERFLOW: World täynnä! Solver ei vapauta tilaa tarpeeksi nopeasti."
-                        .to_string(),
-                );
-            }
-
-            let adaptive_cap = (free_space / 2).max(1);
-            self.feed_rate = self.base_feed_rate.min(free_space).min(adaptive_cap);
-            if self.feed_rate != self.base_feed_rate {
-                println!(
-                    "  📥 Feeder: hidastetaan syöttöä {} tavuun (vapaa tila: {})",
-                    self.feed_rate, free_space
-                );
-            }
-
-            // Luodaan puskuri *vain* tarvittavalle määrälle
             let mut buffer = vec![0u8; self.feed_rate];
 
             match file.read(&mut buffer) {
                 Ok(0) => {
-                    // 0 tavua luettu = tiedosto loppui.
                     println!(
                         "  📥 Feeder: Tiedosto '{}' luettu loppuun.",
                         self.file_paths[self.current_file_index - 1].display()
                     );
-                    self.current_file = None; // Sulje tiedosto
-                    // Kutsu feed() uudestaan *tämän saman syklin aikana*
-                    // avataksesi seuraavan tiedoston heti.
-                    self.feed(world)
+                    self.current_file = None;
+                    self.feed_to_builder(builder)
                 }
                 Ok(bytes_read) => {
-                    // Dataa luettu. Tarkista World-rajoitus.
-                    if world.data.len() + bytes_read > world.memory_limit {
-                        return Err(
-                            "OVERFLOW: World täynnä! Feeder nopeampi kuin Solver.".to_string()
-                        );
-                    }
-
-                    // HUOM: buffer on 'feed_rate' kokoinen, mutta luimme vain 'bytes_read'
-                    world.data.extend_from_slice(&buffer[..bytes_read]);
+                    // Tokenisoi suoraan Builderiin
+                    builder.tokenize(&buffer[..bytes_read]);
+                    self.total_fed += bytes_read;
                     Ok(bytes_read)
                 }
-                Err(e) => {
-                    // Jokin meni pieleen tiedostoa lukiessa
-                    Err(e.to_string())
-                }
+                Err(e) => Err(e.to_string()),
             }
         } else {
-            // Tänne ei pitäisi päätyä, mutta varmuuden vuoksi
             self.is_depleted = true;
             Ok(0)
         }
@@ -151,5 +133,15 @@ impl Feeder {
     /// Tarkista, onko kaikki data syötetty
     pub fn is_depleted(&self) -> bool {
         self.is_depleted
+    }
+    
+    /// Aseta syöttönopeus
+    pub fn set_feed_rate(&mut self, rate: usize) {
+        self.feed_rate = rate.max(1);
+    }
+    
+    /// Palauta perusnopeus
+    pub fn reset_feed_rate(&mut self) {
+        self.feed_rate = self.base_feed_rate;
     }
 }

@@ -1,8 +1,11 @@
-use crate::operator::{OP_DELTA, OP_DICT, OP_LZ, OP_RLE, OP_XOR};
-use crate::world::World;
+use crate::builder::Builder;
 
-/// Evaluator (Arvioija): mittaa kokonaiskustannuksen ja hyväksyy vain muutokset,
-/// jotka parantavat nettoa.
+/// Evaluator (Arvioija): Mittaa hierarkkisen oppimisen tehokkuutta.
+/// 
+/// Uudessa arkkitehtuurissa kustannus lasketaan:
+/// - C(tokens): Token-virran pituus (kuinka monta symbolia)
+/// - C(patterns): Mallien muistikustannus
+/// - Tiivistyssuhde: alkuperäinen tavumäärä / token-määrä
 pub struct Evaluator {}
 
 impl Evaluator {
@@ -10,61 +13,54 @@ impl Evaluator {
         Evaluator {}
     }
 
-    /// Kustannusfunktio: C_total = C(models) + C(residual)
-    /// - C(models): operaattoreiden koodauskustannus
-    /// - C(residual): "raaka" datan kustannus (tavut jotka eivät ole operaattoreita)
-    pub fn calculate_total_cost(&self, world: &World) -> usize {
-        let (c_models, c_residual) = self.calculate_cost_breakdown(world);
-        c_models + c_residual
+    /// Laske kokonaiskustannus Builder-tilasta
+    /// 
+    /// Kustannus = token-virran pituus + mallien määrä / 10
+    /// (mallien kustannus on pienempi koska ne ovat uudelleenkäytettäviä)
+    pub fn calculate_cost(&self, builder: &Builder) -> usize {
+        let token_cost = builder.stream_len();
+        let pattern_cost = builder.bank.combine_count() / 10;
+        token_cost + pattern_cost
     }
-
-    /// Palauttaa (C(models), C(residual)) erikseen
-    pub fn calculate_cost_breakdown(&self, world: &World) -> (usize, usize) {
-        let mut c_models = 0;
-        let mut c_residual = 0;
-        let data = &world.data;
-        let mut i = 0;
-
-        while i < data.len() {
-            if data[i] == OP_RLE && i + 2 < data.len() {
-                c_models += 3; // [OP_RLE, byte, count]
-                i += 3;
-            } else if data[i] == OP_LZ && i + 3 < data.len() {
-                // [OP_LZ, dist_lo, dist_hi, len]
-                c_models += 4;
-                i += 4;
-            } else if data[i] == OP_DELTA && i + 3 < data.len() {
-                // [OP_DELTA, len, start, delta]
-                c_models += 4;
-                i += 4;
-            } else if data[i] == OP_XOR && i + 4 < data.len() {
-                let key_len = data[i + 3] as usize;
-                let op_len = 5 + key_len; // [OP_XOR, len_lo, len_hi, key_len, base, key_bytes...]
-                if i + op_len <= data.len() {
-                    c_models += op_len;
-                    i += op_len;
-                } else {
-                    // Virheellinen op-koodi tulkitaan residuaaliksi
-                    c_residual += 1;
-                    i += 1;
-                }
-            } else if data[i] == OP_DICT && i + 2 < data.len() {
-                // [OP_DICT, word_id_lo, word_id_hi]
-                c_models += 3;
-                i += 3;
-            } else {
-                // Raaka data: kustannus = 1 tavu
-                c_residual += 1;
-                i += 1;
-            }
+    
+    /// Laske tiivistyssuhde
+    pub fn compression_ratio(&self, builder: &Builder) -> f64 {
+        let original = builder.original_len();
+        let compressed = builder.stream_len();
+        
+        if original == 0 {
+            return 0.0;
         }
-
-        (c_models, c_residual)
+        
+        1.0 - (compressed as f64 / original as f64)
     }
-
-    /// Laskee kuinka monta tavua hyödetään muutoksesta
-    /// Positiivinen arvo = säästö, negatiivinen = tappio
-    pub fn calculate_gain(&self, cost_before: usize, cost_after: usize) -> i32 {
-        cost_before as i32 - cost_after as i32
+    
+    /// Laske "bittikustannus" - teoreettinen minimikoodaus
+    /// 
+    /// Jokaiselle tokenille: log2(mallien_määrä) bittiä
+    pub fn bit_cost(&self, builder: &Builder) -> f64 {
+        let pattern_count = builder.bank.len();
+        if pattern_count <= 1 {
+            return 0.0;
+        }
+        
+        let bits_per_token = (pattern_count as f64).log2();
+        bits_per_token * builder.stream_len() as f64
+    }
+    
+    /// Tulosta kustannusanalyysi
+    pub fn print_analysis(&self, builder: &Builder) {
+        let original_bytes = builder.original_len();
+        let tokens = builder.stream_len();
+        let patterns = builder.bank.combine_count();
+        let ratio = self.compression_ratio(builder);
+        let bits = self.bit_cost(builder);
+        
+        println!("  📊 Kustannusanalyysi:");
+        println!("     Alkuperäinen: {} tavua", original_bytes);
+        println!("     Token-virta: {} tokenia", tokens);
+        println!("     Combine-malleja: {}", patterns);
+        println!("     Tiivistyssuhde: {:.1}%", ratio * 100.0);
+        println!("     Bittikustannus: {:.1} bittiä ({:.1} tavua)", bits, bits / 8.0);
     }
 }

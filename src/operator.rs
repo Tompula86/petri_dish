@@ -1,82 +1,61 @@
 use serde::{Deserialize, Serialize};
 
-/// Operator (Operaattori): toimintauskomalli, joka muuntaa dataa ja
-/// jolla on kuvauskustannus ja hyödynnettävyyden mitta.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+/// Operator (Operaattori): Hierarkkinen "Lego-torni" arkkitehtuuri.
+/// 
+/// Ydinfilosofia: "Totuus on pysyvä yhteys kahden asian välillä."
+/// 
+/// Järjestelmä oppii kuten lapsi oppii kielen:
+/// - Kirjaimista tavuihin
+/// - Tavuista sanoihin
+/// - Sanoista lauseisiin
+/// - Lauseista ideoihin
+#[derive(Debug, Clone, PartialEq, Hash, Eq, Serialize, Deserialize)]
 pub enum Operator {
-    /// RunLength(tavu, määrä): kuvaa toiston esim. "AAAAA" -> RunLength('A', 5)
-    /// Koodaus: [OP_RLE, tavu, määrä]
-    RunLength(u8, usize),
-    /// GeneralizedRunLength(min_len): meta-malli, joka etsii minkä tahansa tavun
-    /// vähintään min_len-mittaisia toistoja
-    GeneralizedRunLength { min_len: usize },
-    /// BackRef(distance, length): LZ-tyylinen viittaus aiempaan dataan
-    /// Koodaus: [OP_LZ, dist_lo, dist_hi, length]
-    BackRef(usize, usize),
-    /// BackRefRange: sallii etäisyyden vaihteluvälin (meta-operaattori)
-    BackRefRange {
-        min_distance: usize,
-        max_distance: usize,
-        len: usize,
-    },
-    /// DeltaSequence(start, delta, len): kuvaa aritmeettista jonoa
-    /// Koodaus: [OP_DELTA, len, start, delta]
-    DeltaSequence { start: u8, delta: i8, len: usize },
-    /// XorMask(key, base, len): kuvaa XOR-naamioitua vakiosekvenssiä
-    /// Koodaus: [OP_XOR, len_lo, len_hi, key_len, base, key_bytes...]
-    XorMask { key: Vec<u8>, base: u8, len: usize },
-    /// Dictionary(word_id): viittaa sanakirjassa olevaan sanaan/lausekkeeseen
-    /// Koodaus: [OP_DICT, word_id_lo, word_id_hi] = 3 tavua vs täysi sana
-    Dictionary { word_id: u32 },
-    /// GrammarRule(rule_id): viittaa aiemmin opittuun operaattorijonon sääntöön
-    /// Koodaus: [OP_GRAMMAR, rule_id_lo, rule_id_hi]
-    GrammarRule { rule_id: u32 },
+    /// Taso 0: Perusyksikkö (tavu/merkki), joka on annettu.
+    /// Esim: 'a' = Literal(97)
+    Literal(u8),
+    
+    /// Taso N: Yhdistää kaksi olemassa olevaa "totuutta" uudeksi,
+    /// korkeamman tason totuudeksi.
+    /// Esim: "t" + "a" = "ta" -> Combine(P_t, P_a)
+    /// 
+    /// PatternID:t viittaavat PatternBankissa oleviin malleihin.
+    Combine(u32, u32),
 }
 
-/// Operaattorikoodit binäärimuodossa
-pub const OP_RLE: u8 = 0xFF; // RunLength-operaattorin tunniste
-pub const OP_LZ: u8 = 0xFE; // BackRef-operaattorin tunniste
-pub const OP_DELTA: u8 = 0xFD; // DeltaSequence-operaattorin tunniste
-pub const OP_XOR: u8 = 0xFC; // XorMask-operaattorin tunniste
-pub const OP_DICT: u8 = 0xFB; // Dictionary-operaattorin tunniste
-pub const OP_GRAMMAR: u8 = 0xFA; // GrammarRule-operaattorin tunniste
-
 impl Operator {
-    /// Laske operaattorin koodauskustannus tavuina
-    #[allow(dead_code)]
-    pub fn encoding_cost(&self) -> usize {
+    /// Palauttaa hierarkiatason (complexity).
+    /// - Literal = 0
+    /// - Combine kahdesta Literalista = 1
+    /// - Combine jossa toinen on Combine = max(left, right) + 1
+    /// 
+    /// Huom: Täydellinen kompleksisuuslaskenta vaatii pääsyn PatternBankiin,
+    /// joten tämä on yksinkertaistettu versio.
+    pub fn base_complexity(&self) -> u8 {
         match self {
-            // OP_RLE + tavu + määrä = 3 tavua (yksinkertaistettu)
-            Operator::RunLength(_, _) => 3,
-            Operator::GeneralizedRunLength { .. } => 3,
-            // OP_LZ + 2B distance + 1B length = 4 tavua
-            Operator::BackRef(_, _) => 4,
-            Operator::BackRefRange { .. } => 4,
-            // OP_DELTA + len + start + delta = 4 tavua
-            Operator::DeltaSequence { .. } => 4,
-            // OP_XOR + 2B len + 1B key_len + 1B base + key_len tavua
-            Operator::XorMask { key, .. } => 5 + key.len(),
-            // OP_DICT + word_id (2 tavua) = 3 tavua
-            Operator::Dictionary { .. } => 3,
-            // OP_GRAMMAR + rule_id = 3 tavua
-            Operator::GrammarRule { .. } => 3,
+            Operator::Literal(_) => 0,
+            Operator::Combine(_, _) => 1, // Minimikompleksisuus yhdistelmälle
         }
     }
-
-    /// Kuinka monta tavua alkuperäistä dataa tämä operaattori korvaa
-    #[allow(dead_code)]
-    pub fn replaced_bytes(&self) -> usize {
+    
+    /// Tarkistaa onko tämä Literal-operaattori
+    pub fn is_literal(&self) -> bool {
+        matches!(self, Operator::Literal(_))
+    }
+    
+    /// Palauttaa Literal-tavun jos kyseessä on Literal
+    pub fn as_literal(&self) -> Option<u8> {
         match self {
-            Operator::RunLength(_, count) => *count,
-            Operator::GeneralizedRunLength { min_len } => *min_len,
-            Operator::BackRef(_, len) => *len,
-            Operator::BackRefRange { len, .. } => *len,
-            Operator::DeltaSequence { len, .. } => *len,
-            Operator::XorMask { len, .. } => *len,
-            // Dictionary palauttaa 0 koska korvattavien tavujen määrä riippuu sanakirjasta
-            // Tämä määritetään solver.rs:ssä kun haetaan varsinainen sana
-            Operator::Dictionary { .. } => 0,
-            Operator::GrammarRule { .. } => 0,
+            Operator::Literal(b) => Some(*b),
+            _ => None,
+        }
+    }
+    
+    /// Palauttaa Combine-parin jos kyseessä on Combine
+    pub fn as_combine(&self) -> Option<(u32, u32)> {
+        match self {
+            Operator::Combine(left, right) => Some((*left, *right)),
+            _ => None,
         }
     }
 }

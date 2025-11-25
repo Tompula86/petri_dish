@@ -1,0 +1,26 @@
+Funktio on matemaattinen käsite, joka kuvaa säännönmukaista riippuvuutta kahden joukon välillä.
+Funktio on usein merkitty f:llä, ja sen arvoa pisteessä x merkitään f(x).
+Funktio on määritelty, kun jokaiselle määrittelyjoukon alkiolle on olemassa täsmälleen yksi arvo.
+
+Matemaattinen funktio on keskeinen käsite analyysissä, algebrassa ja lukuteoriassa.
+Funktio voidaan esittää kaavana, taulukkona, graafisena kuvaajana tai sanallisena kuvauksena.
+
+Lineaarinen funktio on muotoa f(x) = ax + b, missä a on kulmakerroin ja b on vakiotermi.
+Toisen asteen funktio on muotoa f(x) = ax² + bx + c, missä a ≠ 0.
+Eksponenttifunktio on muotoa f(x) = aˣ, missä a > 0 ja a ≠ 1.
+
+Funktio on injektio, jos eri lähtöjoukon alkioilla on eri kuvat.
+Funktio on surjektio, jos jokainen maalijoukon alkio on jonkin lähtöjoukon alkion kuva.
+Funktio on bijektio, jos se on sekä injektio että surjektio.
+
+Derivaatta kuvaa funktion muutosnopeutta. Funktion f derivaatta pisteessä x on
+lim (h→0) [f(x+h) - f(x)] / h, jos raja-arvo on olemassa.
+
+Integraali on derivaatan käänteisoperaatio. Funktion f määrätty integraali välillä [a,b] on
+∫[a,b] f(x) dx, joka antaa funktion ja x-akselin väliin jäävän alueen pinta-alan.
+
+Funktio on jatkuva pisteessä x₀, jos lim (x→x₀) f(x) = f(x₀).
+Funktio on derivoituva pisteessä x₀, jos derivaatta on olemassa tuossa pisteessä.
+
+Matemaattinen analyysi tutkii funktioiden ominaisuuksia kuten jatkuvuutta, derivoituvuutta ja integroituvuutta.
+Funktio on keskeinen työkalu luonnontieteissä ja tekniikassa mallintamaan ilmiöitä.
