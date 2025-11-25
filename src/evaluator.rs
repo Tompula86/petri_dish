@@ -17,6 +17,7 @@ impl Evaluator {
     /// 
     /// Kustannus = token-virran pituus + mallien määrä / 10
     /// (mallien kustannus on pienempi koska ne ovat uudelleenkäytettäviä)
+    #[allow(dead_code)]
     pub fn calculate_cost(&self, builder: &Builder) -> usize {
         let token_cost = builder.stream_len();
         let pattern_cost = builder.bank.combine_count() / 10;

@@ -13,6 +13,29 @@ use crate::operator::Operator;
 use crate::pattern::Pattern;
 use std::collections::HashMap;
 
+// ============================================================================
+// CONFIGURABLE CONSTANTS
+// ============================================================================
+
+/// Maximum number of top pairs to consider in each explore cycle
+const MAX_TOP_PAIRS: usize = 10;
+
+/// Scaling factor for strengthening patterns based on occurrence count
+const STRENGTHEN_SCALE_FACTOR: f64 = 10.0;
+
+/// Capacity threshold (percentage) at which forgetting kicks in
+const FORGET_CAPACITY_THRESHOLD: usize = 80;
+
+/// Percentage of patterns to remove when capacity is exceeded
+const FORGET_REMOVAL_PERCENTAGE: usize = 10;
+
+/// Default decay rate for pattern strength per cycle
+const DEFAULT_DECAY_RATE: f64 = 0.01;
+
+// ============================================================================
+// PATTERN BANK
+// ============================================================================
+
 /// PatternBank: Mallien muisti.
 /// 
 /// Tukee nopeaa hakua:
@@ -249,12 +272,14 @@ pub struct Builder {
     pub pair_threshold: u32,
     
     /// Kynnys mallin "kuolemalle" (liian heikko strength)
+    #[allow(dead_code)]
     pub death_threshold: f64,
     
     /// Vahvistuksen määrä onnistuneesta ennustuksesta
     pub strengthen_amount: f64,
     
     /// Heikennyksen määrä epäonnistuneesta ennustuksesta
+    #[allow(dead_code)]
     pub weaken_amount: f64,
 }
 
@@ -301,7 +326,7 @@ impl Builder {
         self.compute_pair_stats();
         
         // Hae parhaat parit
-        let top_pairs = self.pair_stats.get_top_pairs(self.pair_threshold, 10);
+        let top_pairs = self.pair_stats.get_top_pairs(self.pair_threshold, MAX_TOP_PAIRS);
         
         let mut created = 0;
         
@@ -311,7 +336,7 @@ impl Builder {
                 // Vahvista olemassa olevaa mallia
                 if let Some(id) = self.bank.get_pair_id(left, right) {
                     if let Some(pattern) = self.bank.get_mut(id) {
-                        pattern.strengthen(self.strengthen_amount * (count as f64 / 10.0), self.cycle);
+                        pattern.strengthen(self.strengthen_amount * (count as f64 / STRENGTHEN_SCALE_FACTOR), self.cycle);
                     }
                 }
                 continue;
@@ -395,11 +420,11 @@ impl Builder {
     pub fn forget(&mut self, force_count: usize) -> usize {
         let combine_count = self.bank.combine_count();
         
-        // Poista vain jos yli 80% kapasiteetista käytössä tai pakotettu
+        // Poista vain jos yli FORGET_CAPACITY_THRESHOLD% kapasiteetista käytössä tai pakotettu
         let to_remove = if force_count > 0 {
             force_count
-        } else if combine_count > (self.bank.capacity * 80 / 100) {
-            combine_count / 10 // Poista 10% kerralla
+        } else if combine_count > (self.bank.capacity * FORGET_CAPACITY_THRESHOLD / 100) {
+            combine_count * FORGET_REMOVAL_PERCENTAGE / 100 // Poista FORGET_REMOVAL_PERCENTAGE% kerralla
         } else {
             0
         };
@@ -481,7 +506,7 @@ impl Builder {
         let forgotten = self.forget(0);
         
         // 4. Decay
-        self.decay(0.01);
+        self.decay(DEFAULT_DECAY_RATE);
         
         let stream_after = self.token_stream.len();
         let patterns_after = self.bank.combine_count();
@@ -504,6 +529,7 @@ impl Builder {
     }
     
     /// Dekoodaa koko token-virta takaisin tavuiksi
+    #[allow(dead_code)]
     pub fn decode_stream(&self) -> Vec<u8> {
         let mut result = Vec::new();
         for &id in &self.token_stream {
@@ -562,6 +588,7 @@ pub struct BuilderStats {
     pub patterns_forgotten: usize,
     pub patterns_total: usize,
     pub compression_ratio: f64,
+    #[allow(dead_code)]
     pub patterns_before: usize,
 }
 

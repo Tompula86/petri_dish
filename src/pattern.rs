@@ -52,7 +52,22 @@ impl Pattern {
     /// Luo uusi Combine-malli (taso N)
     /// 
     /// Kompleksisuus lasketaan: max(left_complexity, right_complexity) + 1
-    pub fn new_combine(id: u32, left_id: u32, right_id: u32, left_complexity: u8, right_complexity: u8, cycle: u64) -> Self {
+    /// 
+    /// # Arguments
+    /// * `id` - Uniikki tunniste mallille
+    /// * `left_id` - Vasemman osan Pattern ID
+    /// * `right_id` - Oikean osan Pattern ID
+    /// * `left_complexity` - Vasemman osan hierarkiataso
+    /// * `right_complexity` - Oikean osan hierarkiataso
+    /// * `cycle` - Luontisykli
+    pub fn new_combine(
+        id: u32, 
+        left_id: u32, 
+        right_id: u32, 
+        left_complexity: u8, 
+        right_complexity: u8, 
+        cycle: u64
+    ) -> Self {
         let complexity = left_complexity.max(right_complexity).saturating_add(1);
         Pattern {
             id,
@@ -77,6 +92,7 @@ impl Pattern {
     }
     
     /// Tarkista onko malli "kuollut" (liian heikko)
+    #[allow(dead_code)]
     pub fn is_dead(&self, threshold: f64) -> bool {
         self.strength < threshold
     }
@@ -87,6 +103,7 @@ impl Pattern {
     }
     
     /// Palauttaa Combine-parin jos kyseessä on Combine
+    #[allow(dead_code)]
     pub fn as_combine(&self) -> Option<(u32, u32)> {
         self.op.as_combine()
     }

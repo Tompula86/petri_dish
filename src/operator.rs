@@ -31,6 +31,7 @@ impl Operator {
     /// 
     /// Huom: Täydellinen kompleksisuuslaskenta vaatii pääsyn PatternBankiin,
     /// joten tämä on yksinkertaistettu versio.
+    #[allow(dead_code)]
     pub fn base_complexity(&self) -> u8 {
         match self {
             Operator::Literal(_) => 0,
@@ -44,6 +45,7 @@ impl Operator {
     }
     
     /// Palauttaa Literal-tavun jos kyseessä on Literal
+    #[allow(dead_code)]
     pub fn as_literal(&self) -> Option<u8> {
         match self {
             Operator::Literal(b) => Some(*b),
@@ -52,6 +54,7 @@ impl Operator {
     }
     
     /// Palauttaa Combine-parin jos kyseessä on Combine
+    #[allow(dead_code)]
     pub fn as_combine(&self) -> Option<(u32, u32)> {
         match self {
             Operator::Combine(left, right) => Some((*left, *right)),

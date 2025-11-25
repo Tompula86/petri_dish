@@ -11,6 +11,7 @@ use std::path::PathBuf;
 /// joka tokenisoi sen.
 pub struct Feeder {
     pub feed_rate: usize,
+    #[allow(dead_code)]
     base_feed_rate: usize,
     file_paths: Vec<PathBuf>,
     current_file_index: usize,
@@ -136,11 +137,13 @@ impl Feeder {
     }
     
     /// Aseta syöttönopeus
+    #[allow(dead_code)]
     pub fn set_feed_rate(&mut self, rate: usize) {
         self.feed_rate = rate.max(1);
     }
     
     /// Palauta perusnopeus
+    #[allow(dead_code)]
     pub fn reset_feed_rate(&mut self) {
         self.feed_rate = self.base_feed_rate;
     }
