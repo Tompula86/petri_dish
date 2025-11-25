@@ -1,207 +1,267 @@
+mod builder;
 mod evaluator;
 mod feeder;
 mod operator;
 mod pattern;
-mod scheduler;
-mod solver;
-mod stats;
-mod world;
 
+use builder::Builder;
 use evaluator::Evaluator;
 use feeder::Feeder;
-use solver::Solver;
-use world::World;
 
 use std::env;
 use std::fs::File;
 use std::io::Write;
 
 struct Config {
-    world_limit: usize,
+    /// Maksimi mallien määrä PatternBankissa (paitsi 256 literaalia)
+    pattern_capacity: usize,
+    /// Syöttönopeus tavuina per sykli
     feed_rate: usize,
-    window_fraction: f64,
+    /// Parin esiintymiskynnys (montako kertaa pitää esiintyä)
+    pair_threshold: u32,
+    /// Maksimi syklien määrä
+    max_cycles: usize,
 }
 
 impl Config {
-    const DEFAULT_WORLD_LIMIT: usize = 1_000;
-    const DEFAULT_FEED_RATE: usize = 400;
-    const DEFAULT_WINDOW_FRACTION: f64 = 0.8;
+    const DEFAULT_PATTERN_CAPACITY: usize = 1000;
+    const DEFAULT_FEED_RATE: usize = 500;
+    const DEFAULT_PAIR_THRESHOLD: u32 = 2;
+    const DEFAULT_MAX_CYCLES: usize = 200;
 
     fn load() -> Self {
-        let world_limit = env::var("PETRI_WORLD_LIMIT")
+        let pattern_capacity = env::var("PETRI_PATTERN_CAPACITY")
             .ok()
             .and_then(|v| v.parse().ok())
-            .unwrap_or(Self::DEFAULT_WORLD_LIMIT);
+            .unwrap_or(Self::DEFAULT_PATTERN_CAPACITY);
 
         let feed_rate = env::var("PETRI_FEED_RATE")
             .ok()
             .and_then(|v| v.parse().ok())
             .unwrap_or(Self::DEFAULT_FEED_RATE);
 
-        let window_fraction = env::var("PETRI_WINDOW_FRACTION")
+        let pair_threshold = env::var("PETRI_PAIR_THRESHOLD")
             .ok()
-            .and_then(|v| v.parse::<f64>().ok())
-            .map(|f| f.clamp(0.1, 1.0))
-            .unwrap_or(Self::DEFAULT_WINDOW_FRACTION);
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(Self::DEFAULT_PAIR_THRESHOLD);
+
+        let max_cycles = env::var("PETRI_MAX_CYCLES")
+            .ok()
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(Self::DEFAULT_MAX_CYCLES);
 
         Config {
-            world_limit,
+            pattern_capacity,
             feed_rate,
-            window_fraction,
+            pair_threshold,
+            max_cycles,
         }
     }
 }
 
 fn main() {
-    println!("=== Petrimalja Älykkyyelle: VAIHE 6 - Striimaava Data ===\n");
+    println!("=== Petrimalja Älykkyyelle: HIERARKKINEN TIEDONRAKENNUSKONE ===\n");
+    println!("Ydinfilosofia: \"Totuus on pysyvä yhteys kahden asian välillä.\"\n");
 
     let config = Config::load();
 
-    // Luo World (rajoitettu, oletus 10 kB)
-    let mut world = World::new(config.world_limit);
+    // Luo Builder (hierarkkinen tiedonrakennuskone)
+    let mut builder = Builder::new(config.pattern_capacity);
+    builder.pair_threshold = config.pair_threshold;
 
-    // Luo Feeder, joka lukee "./data"-kansiosta
-    let mut feeder = Feeder::new(config.feed_rate, "./data")
-        .expect("Datakansion lukeminen epäonnistui. Varmista, että kansio './data' on olemassa.");
+    // Luo Feeder
+    let feeder_result = Feeder::new(config.feed_rate, "./data");
+    
+    let mut feeder = match feeder_result {
+        Ok(f) => f,
+        Err(e) => {
+            println!("⚠️  Datakansio './data' ei löydy tai on tyhjä: {}", e);
+            println!("    Luodaan esimerkkidata demonstraatiota varten...\n");
+            
+            // Luo esimerkkidata suoraan Builderiin
+            let sample_text = b"funktio on joka funktio on joka funktio on joka \
+                               tama on esimerkki tama on esimerkki tama on esimerkki \
+                               alku alku alku loppu loppu loppu \
+                               aabbaabbaabb ccddccddccdd";
+            
+            builder.tokenize(sample_text);
+            
+            println!("Aloitustilanne (esimerkkidata):");
+            println!("  Syötetty: {} tavua", sample_text.len());
+            println!("  Token-virta: {} tokenia", builder.stream_len());
+            println!("  PatternBank: {} mallia (256 literaalia)", builder.bank.len());
+            println!("\n--- Aloitetaan hierarkkinen oppiminen ---\n");
+            
+            // Aja oppimissyklit
+            let evaluator = Evaluator::new();
+            
+            for _ in 0..config.max_cycles {
+                let stats = builder.live();
+                
+                if stats.patterns_created > 0 || stats.patterns_collapsed > 0 {
+                    stats.print();
+                }
+                
+                // Lopeta jos virta ei enää tiivisty
+                if stats.stream_before == stats.stream_after && stats.patterns_created == 0 {
+                    break;
+                }
+            }
+            
+            println!("\n=== LOPPUTILANNE ===");
+            evaluator.print_analysis(&builder);
+            
+            // Tulosta muutama esimerkki opituista malleista
+            println!("\n  🧬 Opitut hierarkkiset mallit:");
+            let mut patterns: Vec<_> = builder.bank.iter()
+                .filter(|(_, p)| !p.is_literal() && p.strength >= 0.5)
+                .collect();
+            patterns.sort_by(|a, b| b.1.usage_count.cmp(&a.1.usage_count));
+            
+            for (id, pattern) in patterns.iter().take(10) {
+                let decoded = builder.bank.decode(**id);
+                let decoded_str = String::from_utf8_lossy(&decoded);
+                println!(
+                    "     P_{}: \"{}\" [taso {}, käyttö {}, vahvuus {:.2}]",
+                    id, decoded_str, pattern.complexity, pattern.usage_count, pattern.strength
+                );
+            }
+            
+            println!("\n✅ Demonstraatio valmis!");
+            return;
+        }
+    };
 
-    // Luo Evaluator ja Solver
+    // Luo Evaluator
     let evaluator = Evaluator::new();
-    let mut solver = Solver::load_or_new(1500, 300, config.window_fraction); // 300 patternin kapasiteetti (aiemmin 150) + enemmän quotaa (1500)
 
     println!("\nAloitustilanne:");
-    println!("  World kapasiteetti: {} tavua", world.memory_limit);
-    println!("  Feeder perusnopeus: {} tavua/sykli", config.feed_rate);
-    println!(
-        "  Ikkunan maks. osuus worldista: {:.0}%",
-        config.window_fraction * 100.0
-    );
-    println!(
-        "  Solver: {} mallia ladattu muistista",
-        solver.known_patterns.len()
-    );
+    println!("  PatternBank kapasiteetti: {} mallia", config.pattern_capacity);
+    println!("  Feeder nopeus: {} tavua/sykli", config.feed_rate);
+    println!("  Parin kynnys: {} esiintymää", config.pair_threshold);
+    println!("  Maksimi syklit: {}", config.max_cycles);
 
     // Avaa CSV-tiedosto
     let mut csv_file = File::create("results.csv").expect("CSV-tiedoston luonti epäonnistui");
-    writeln!(csv_file, "cycle,world_size,c_models,c_residual,c_total,gain_per_quota_exploit,gain_per_quota_explore,patterns_count")
-        .expect("CSV-otsikkojen kirjoitus epäonnistui");
+    writeln!(
+        csv_file,
+        "cycle,stream_len,original_len,patterns_count,compression_ratio,patterns_created,patterns_collapsed"
+    )
+    .expect("CSV-otsikkojen kirjoitus epäonnistui");
 
-    // Pääsilmukka: Solver vs Feeder
+    println!("\n--- Aloitetaan hierarkkinen oppiminen ---\n");
+
+    // Pääsilmukka
     let mut cycle = 0;
-    let mut overflow_detected = false;
+    let mut last_stream_len = 0;
+    let mut stagnant_cycles = 0;
 
-    // Aja rajatussa testissä 1000 sykliä tällä kierroksella
-    while cycle < 1000 {
+    while cycle < config.max_cycles {
         cycle += 1;
-        let world_size = world.data.len();
 
-        println!("\n=== SYKLI {} ===", cycle);
-
-        // Progress bar
-        let progress = (world_size * 100) / world.memory_limit;
-        let filled = progress / 10;
-        let empty = 10 - filled;
-        let bar = format!("[{}{}]", "█".repeat(filled), "░".repeat(empty));
-
-        println!(
-            "  {} {}% ({}/{} tavua)",
-            bar, progress, world_size, world.memory_limit
-        );
-
-        // Solver yrittää tiivistää
-        solver.live(&mut world, &evaluator);
-
-        // Kojelauta: Tilastot
-        let stats = &solver.stats;
-        if stats.total_quota_spent() > 0 {
-            println!(
-                "  📊 C(models): {} | C(res): {} | Total: {}",
-                stats.c_models,
-                stats.c_residual,
-                stats.c_models + stats.c_residual
-            );
-            println!(
-                "  📈 Exploit G/Q: {:.2} | Explore G/Q: {:.2}",
-                stats.gain_per_quota_exploit, stats.gain_per_quota_explore
-            );
+        // Syötä uutta dataa
+        match feeder.feed_to_builder(&mut builder) {
+            Ok(fed) => {
+                if fed > 0 {
+                    println!("  📥 Sykli {}: +{} tavua syötetty", cycle, fed);
+                }
+            }
+            Err(e) => {
+                println!("❌ Virhe: {}", e);
+                break;
+            }
         }
+
+        // Aja oppimissykli
+        let stats = builder.live();
+        stats.print();
 
         // Kirjoita CSV
         writeln!(
             csv_file,
-            "{},{},{},{},{},{:.2},{:.2},{}",
+            "{},{},{},{},{:.4},{},{}",
             cycle,
-            world.data.len(),
-            stats.c_models,
-            stats.c_residual,
-            stats.c_models + stats.c_residual,
-            stats.gain_per_quota_exploit,
-            stats.gain_per_quota_explore,
-            solver.known_patterns.len()
+            builder.stream_len(),
+            builder.original_len(),
+            builder.bank.combine_count(),
+            evaluator.compression_ratio(&builder),
+            stats.patterns_created,
+            stats.patterns_collapsed
         )
         .expect("CSV-rivin kirjoitus epäonnistui");
 
-        // Feeder työntää uutta dataa
-        match feeder.feed(&mut world) {
-            Ok(fed) => {
-                if fed > 0 {
-                    println!("  📥 Feeder: +{} tavua", fed);
-                }
-            }
-            Err(e) => {
-                println!("\n💥 {} 💥 (Sykli {})", e, cycle);
-                overflow_detected = true;
-                break;
-            }
+        // Tarkista stagnaatio
+        if builder.stream_len() == last_stream_len {
+            stagnant_cycles += 1;
+        } else {
+            stagnant_cycles = 0;
         }
-    }
+        last_stream_len = builder.stream_len();
 
-    // Tallenna oppiminen ennen loppua
-    if let Err(e) = solver.save_patterns() {
-        println!("⚠️  Mallien tallennus epäonnistui: {}", e);
+        // Lopeta jos feeder on tyhjä ja stagnaatio jatkuu
+        if feeder.is_depleted() && stagnant_cycles >= 5 {
+            println!("\n  ✓ Oppiminen saturoitunut ({} sykliä ilman muutosta)", stagnant_cycles);
+            break;
+        }
     }
 
     // Loppuraportti
     println!("\n=== LOPPUTILANNE ===");
-    if overflow_detected {
-        println!("❌ EPÄONNISTUI: World täyttyi. Solver ei pysynyt Feederin tahdissa.");
-    } else if feeder.is_depleted() {
-        println!("✅ ONNISTUI: Kaikki data käsitelty ilman overflowia!");
+    
+    if feeder.is_depleted() {
+        println!("✅ Kaikki data käsitelty!");
     } else {
-        println!("⚠️  Keskeytettiin syklien maksimirajalla.");
+        println!("⚠️  Keskeytettiin syklien maksimirajalla ({}).", config.max_cycles);
     }
 
-    println!("\nTilastot:");
-    println!("  Lopullinen koko: {} tavua", world.data.len());
-    println!(
-        "  Lopullinen kustannus: {}",
-        evaluator.calculate_total_cost(&world)
-    );
-    println!("  PatternBank: {} mallia", solver.known_patterns.len());
+    evaluator.print_analysis(&builder);
 
-    for pattern in &solver.known_patterns {
+    println!("\n  📊 Tilastot:");
+    println!("     Syklit: {}", cycle);
+    println!("     Syötetty: {} tavua", feeder.total_fed);
+    println!("     Token-virta: {} tokenia", builder.stream_len());
+    println!("     Combine-malleja: {}", builder.bank.combine_count());
+
+    // Tulosta hierarkkiset mallit
+    println!("\n  🧬 Opitut hierarkkiset mallit (TOP 20):");
+    let mut patterns: Vec<_> = builder.bank.iter()
+        .filter(|(_, p)| !p.is_literal())
+        .collect();
+    patterns.sort_by(|a, b| {
+        // Lajittele: ensin tason mukaan (korkein ensin), sitten käytön mukaan
+        let level_cmp = b.1.complexity.cmp(&a.1.complexity);
+        if level_cmp == std::cmp::Ordering::Equal {
+            b.1.usage_count.cmp(&a.1.usage_count)
+        } else {
+            level_cmp
+        }
+    });
+
+    for (id, pattern) in patterns.iter().take(20) {
+        let decoded = builder.bank.decode(**id);
+        let decoded_str = String::from_utf8_lossy(&decoded);
+        let preview = if decoded_str.len() > 30 {
+            format!("{}...", &decoded_str[..30])
+        } else {
+            decoded_str.to_string()
+        };
         println!(
-            "    - Pattern #{}: {} käyttöä, {} tavua säästetty",
-            pattern.id, pattern.usage_count, pattern.total_bytes_saved
+            "     P_{}: \"{}\" [L{}, käyttö {}, str {:.2}]",
+            id, preview, pattern.complexity, pattern.usage_count, pattern.strength
         );
     }
 
-    println!("\n=== VAIHE 5 VALMIS: Sopeutumisnopeus todistettu! ===");
-    println!("\n📊 ANALYYSI:");
+    // Tulosta hierarkiaesimerkki korkeimman tason mallista
+    if let Some((id, _)) = patterns.first() {
+        println!("\n  🌳 Hierarkiaesimerkki (P_{}):", id);
+        builder.print_hierarchy(**id, 2);
+    }
+
+    println!("\n=== HIERARKKINEN TIEDONRAKENNUSKONE VALMIS ===");
+    println!("\n📊 Analyysi:");
     println!("  • CSV tallennettu: results.csv");
-    println!("  • Syklit: {}", cycle);
-    println!("  • Alkuperäinen koko: 60 000 tavua");
-    println!("  • Lopullinen koko: {} tavua", world.data.len());
-    println!(
-        "  • Pakkaussuhde: {:.1}%",
-        100.0 - (world.data.len() as f64 / 60000.0 * 100.0)
-    );
-    println!("\n✅ Järjestelmä:");
-    println!("  ✓ Oppii malleja dynaamisesti (explore)");
-    println!("  ✓ Käyttää opittuja tehokkaasti (exploit)");
-    println!("  ✓ Sopeutuu muuttuvaan dataan");
-    println!("  ✓ Selviää paineesta ilman overflowia");
-    println!("  ✓ Mittaa suorituskykyä (gain/quota)");
-    println!("\n📈 Voit analysoida tuloksia:");
-    println!("  Python: import pandas as pd; df = pd.read_csv('results.csv')");
-    println!("  Excel: Avaa results.csv");
+    println!("  • Järjestelmä oppi kielen rakenteita hierarkkisesti");
+    println!("  • Kirjaimista → tavuihin → sanoihin → lauseisiin");
+    println!("\n✅ \"Totuus on pysyvä yhteys kahden asian välillä.\"");
 }
+

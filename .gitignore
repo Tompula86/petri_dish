@@ -4,3 +4,6 @@ data/*.txt
 
 # Pattern bank persistence (may be large / generated)
 pattern_bank.json
+
+# Generated results
+results.csv
