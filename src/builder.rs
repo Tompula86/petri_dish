@@ -104,15 +104,19 @@ impl PatternBank {
     
     /// Luo uusi Combine-malli parille (left, right)
     /// Palauttaa uuden mallin ID:n
+    /// 
+    /// Jos kapasiteetti on täynnä, palauttaa None.
+    /// Kutsujan (Builder) vastuulla on kutsua forget() ensin.
     pub fn create_combine(&mut self, left: u32, right: u32, cycle: u64) -> Option<u32> {
         // Tarkista ettei pari ole jo olemassa
         if self.has_pair(left, right) {
             return self.get_pair_id(left, right);
         }
         
-        // Tarkista kapasiteetti
-        if self.patterns.len() >= self.capacity {
-            return None; // Täynnä, pitää ensin "unohtaa" jotain
+        // Tarkista kapasiteetti - jätä aina 5% tilaa uusille
+        let capacity_limit = self.capacity * 95 / 100;
+        if self.patterns.len() >= capacity_limit {
+            return None; // Lähes täynnä, forget() pitäisi ajaa
         }
         
         // Hae vanhempien kompleksisuudet
@@ -416,15 +420,26 @@ impl Builder {
     
     /// Forget: Poista heikoimmat mallit jos kapasiteetti on täynnä
     /// 
+    /// TÄRKEÄÄ: Tämä ajetaan ENNEN explorea, jotta tilaa on aina uusille.
+    /// 
     /// Palauttaa poistettujen mallien määrän
     pub fn forget(&mut self, force_count: usize) -> usize {
         let combine_count = self.bank.combine_count();
+        let capacity_without_literals = self.bank.capacity - 256; // 256 literaalia
         
-        // Poista vain jos yli FORGET_CAPACITY_THRESHOLD% kapasiteetista käytössä tai pakotettu
+        // Poista jos yli FORGET_CAPACITY_THRESHOLD% käytössä TAI pakotettu
+        // Mutta varmista että AINA on tilaa vähintään MAX_TOP_PAIRS uudelle mallille
+        let headroom_needed = MAX_TOP_PAIRS + 10; // Tarvitaan tilaa uusille malleille
+        let at_capacity = combine_count + headroom_needed > capacity_without_literals;
+        
         let to_remove = if force_count > 0 {
             force_count
-        } else if combine_count > (self.bank.capacity * FORGET_CAPACITY_THRESHOLD / 100) {
-            combine_count * FORGET_REMOVAL_PERCENTAGE / 100 // Poista FORGET_REMOVAL_PERCENTAGE% kerralla
+        } else if at_capacity || combine_count > (capacity_without_literals * FORGET_CAPACITY_THRESHOLD / 100) {
+            // Poista enemmän kerralla - varmista että tilaa riittää
+            std::cmp::max(
+                combine_count * FORGET_REMOVAL_PERCENTAGE / 100,
+                headroom_needed
+            )
         } else {
             0
         };
@@ -479,9 +494,10 @@ impl Builder {
     
     /// Pääsilmukka: Yksi sykli oppimista
     /// 
-    /// 1. Explore: Etsi uusia pareja
-    /// 2. Collapse: Tiivistä virta
-    /// 3. Forget: Unohda heikot
+    /// JÄRJESTYS ON KRIITTINEN:
+    /// 1. Forget ENSIN: Tee tilaa uusille malleille
+    /// 2. Explore: Etsi uusia pareja (nyt on tilaa!)
+    /// 3. Collapse: Tiivistä virta
     /// 4. Decay: Vanhenna malleja
     pub fn live(&mut self) -> BuilderStats {
         self.cycle += 1;
@@ -489,10 +505,14 @@ impl Builder {
         let stream_before = self.token_stream.len();
         let patterns_before = self.bank.combine_count();
         
-        // 1. Explore
+        // 1. FORGET ENSIN - tee tilaa uusille malleille!
+        // Tämä korjaa bugin jossa oppiminen pysähtyi kun muisti täyttyi.
+        let forgotten = self.forget(0);
+        
+        // 2. Explore (nyt on tilaa uusille malleille)
         let created = self.explore();
         
-        // 2. Collapse (useita kierroksia kunnes ei enää tiivisty)
+        // 3. Collapse (useita kierroksia kunnes ei enää tiivisty)
         let mut total_collapsed = 0;
         loop {
             let collapsed = self.collapse();
@@ -501,9 +521,6 @@ impl Builder {
             }
             total_collapsed += collapsed;
         }
-        
-        // 3. Forget (jos tarpeen)
-        let forgotten = self.forget(0);
         
         // 4. Decay
         self.decay(DEFAULT_DECAY_RATE);
