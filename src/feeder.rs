@@ -1,20 +1,33 @@
 // src/feeder.rs
 use crate::builder::Builder;
+use serde::{Deserialize, Serialize};
 use std::fs::{self, File};
 use std::io::BufReader;
-use std::io::{self, Read};
+use std::io::{self, Read, Seek, SeekFrom};
 use std::path::PathBuf;
 
+/// FeederState: Tämä tallennetaan levylle (kirjanmerkki)
+#[derive(Serialize, Deserialize)]
+pub struct FeederState {
+    pub current_file_index: usize,
+    pub current_file_pos: u64,
+    pub total_fed: usize,
+}
+
 /// Feeder: "Striimaa" dataa kaikista .txt-tiedostoista annetussa kansiossa.
-/// 
+///
 /// Uudessa arkkitehtuurissa Feeder syöttää dataa suoraan Builderiin,
 /// joka tokenisoi sen.
+///
+/// Tukee nyt tilallisuutta: muistaa missä kohtaa dataa ollaan ja voi
+/// jatkaa siitä mihin jäätiin (kirjanmerkki).
 pub struct Feeder {
     pub feed_rate: usize,
     #[allow(dead_code)]
     base_feed_rate: usize,
     file_paths: Vec<PathBuf>,
     current_file_index: usize,
+    current_file_pos: u64, // Missä tavussa mennään nykyisessä tiedostossa
     current_file: Option<BufReader<File>>,
     is_depleted: bool,
     /// Yhteensä syötetty tavumäärä
@@ -30,7 +43,7 @@ impl Feeder {
         );
 
         let mut file_paths = Vec::new();
-        
+
         // Rekursiivinen haku: etsii myös alikansioista
         Self::find_txt_files(data_dir_path, &mut file_paths)?;
 
@@ -49,18 +62,52 @@ impl Feeder {
             base_feed_rate: feed_rate,
             file_paths,
             current_file_index: 0,
+            current_file_pos: 0, // Alussa 0
             current_file: None,
             is_depleted: false,
             total_fed: 0,
         })
     }
-    
+
+    /// Tallenna Feederin tila (kirjanmerkki)
+    pub fn save_state(&self, path: &str) -> io::Result<()> {
+        let state = FeederState {
+            current_file_index: self.current_file_index,
+            current_file_pos: self.current_file_pos,
+            total_fed: self.total_fed,
+        };
+        let json = serde_json::to_string_pretty(&state)
+            .map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+        std::fs::write(path, json)?;
+        Ok(())
+    }
+
+    /// Lataa Feederin tila (kirjanmerkki)
+    pub fn load_state(&mut self, path: &str) {
+        if let Ok(content) = std::fs::read_to_string(path) {
+            if let Ok(state) = serde_json::from_str::<FeederState>(&content) {
+                println!("  🔖 Feeder: Ladattiin kirjanmerkki.");
+                println!(
+                    "     Jatketaan tiedostosta indeksi {} kohdasta {}.",
+                    state.current_file_index, state.current_file_pos
+                );
+
+                self.current_file_index = state.current_file_index;
+                self.current_file_pos = state.current_file_pos;
+                self.total_fed = state.total_fed;
+
+                // Nollaa nykyinen tiedostokahva jotta open_next_file avaa sen oikein
+                self.current_file = None;
+            }
+        }
+    }
+
     /// Rekursiivinen .txt-tiedostojen etsintä
     fn find_txt_files(dir_path: &str, file_paths: &mut Vec<PathBuf>) -> io::Result<()> {
         for entry in fs::read_dir(dir_path)? {
             let entry = entry?;
             let path = entry.path();
-            
+
             if path.is_dir() {
                 // Rekursiivisesti alikansioihin
                 if let Some(path_str) = path.to_str() {
@@ -77,13 +124,21 @@ impl Feeder {
         Ok(())
     }
 
-    /// Apufunktio, joka avaa seuraavan tiedoston listalta
+    /// Apufunktio, joka avaa seuraavan tiedoston listalta JA kelaa oikeaan kohtaan
     fn open_next_file(&mut self) -> io::Result<()> {
         if let Some(path) = self.file_paths.get(self.current_file_index) {
             println!("  📥 Feeder: Avataan tiedosto '{}'...", path.display());
-            let file = File::open(path)?;
+
+            let mut file = File::open(path)?;
+
+            // Jos meillä on offset (pos > 0), hypätään sinne!
+            if self.current_file_pos > 0 {
+                println!("     ⏩ Kelataan kohtaan {}...", self.current_file_pos);
+                file.seek(SeekFrom::Start(self.current_file_pos))?;
+            }
+
             self.current_file = Some(BufReader::new(file));
-            self.current_file_index += 1;
+            // HUOM: Älä kasvata indexiä tässä, se tehdään vasta kun tiedosto on loppu!
         } else {
             println!("  📥 Feeder: Kaikki datatiedostot käsitelty.");
             self.is_depleted = true;
@@ -110,17 +165,23 @@ impl Feeder {
 
             match file.read(&mut buffer) {
                 Ok(0) => {
+                    // Tiedosto loppui
                     println!(
                         "  📥 Feeder: Tiedosto '{}' luettu loppuun.",
-                        self.file_paths[self.current_file_index - 1].display()
+                        self.file_paths[self.current_file_index].display()
                     );
                     self.current_file = None;
+                    self.current_file_index += 1; // Siirry seuraavaan
+                    self.current_file_pos = 0; // Nollaa positio seuraavaa varten
+
+                    // Rekursiivinen kutsu jotta ei tule tyhjä sykli
                     self.feed_to_builder(builder)
                 }
                 Ok(bytes_read) => {
                     // Tokenisoi suoraan Builderiin
                     builder.tokenize(&buffer[..bytes_read]);
                     self.total_fed += bytes_read;
+                    self.current_file_pos += bytes_read as u64; // Päivitä positio
                     Ok(bytes_read)
                 }
                 Err(e) => Err(e.to_string()),
@@ -135,13 +196,13 @@ impl Feeder {
     pub fn is_depleted(&self) -> bool {
         self.is_depleted
     }
-    
+
     /// Aseta syöttönopeus
     #[allow(dead_code)]
     pub fn set_feed_rate(&mut self, rate: usize) {
         self.feed_rate = rate.max(1);
     }
-    
+
     /// Palauta perusnopeus
     #[allow(dead_code)]
     pub fn reset_feed_rate(&mut self) {

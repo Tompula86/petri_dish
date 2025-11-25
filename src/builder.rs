@@ -11,7 +11,11 @@
 
 use crate::operator::Operator;
 use crate::pattern::Pattern;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::{BufReader, BufWriter};
+use std::path::Path;
 
 // ============================================================================
 // CONFIGURABLE CONSTANTS
@@ -32,40 +36,89 @@ const FORGET_REMOVAL_PERCENTAGE: usize = 10;
 /// Default decay rate for pattern strength per cycle
 const DEFAULT_DECAY_RATE: f64 = 0.01;
 
+/// Luokkien kiinteät ID:t
+const CLASS_ID_DIGIT: u32 = 256;
+const CLASS_ID_WHITESPACE: u32 = 257;
+const CLASS_ID_ALPHA_LOWER: u32 = 258;
+const PRESEEDED_CLASS_COUNT: usize = 3;
+
 // ============================================================================
 // PATTERN BANK
 // ============================================================================
 
 /// PatternBank: Mallien muisti.
-/// 
+///
 /// Tukee nopeaa hakua:
 /// - id -> Pattern
 /// - (left_id, right_id) -> id (tiedämme onko pari jo olemassa)
+#[derive(Serialize, Deserialize)]
 pub struct PatternBank {
     /// Kaikki mallit: id -> Pattern
     patterns: HashMap<u32, Pattern>,
-    
+
     /// Käänteinen haku: (left_id, right_id) -> pattern_id
     /// Tiedämme nopeasti onko pari A+B jo olemassa.
+    /// Serialisoidaan String-avaimina JSON-yhteensopivuuden vuoksi.
+    #[serde(
+        serialize_with = "serialize_pair_lookup",
+        deserialize_with = "deserialize_pair_lookup"
+    )]
     pair_lookup: HashMap<(u32, u32), u32>,
-    
+
     /// Seuraava vapaa ID
     next_id: u32,
-    
+
     /// Maksimi mallien määrä (evoluutiopaine)
     capacity: usize,
+}
+
+/// Serialisoi pair_lookup HashMap String-avaimina
+fn serialize_pair_lookup<S>(
+    map: &HashMap<(u32, u32), u32>,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: serde::Serializer,
+{
+    use serde::ser::SerializeMap;
+    let mut ser_map = serializer.serialize_map(Some(map.len()))?;
+    for ((left, right), value) in map {
+        let key = format!("{}_{}", left, right);
+        ser_map.serialize_entry(&key, value)?;
+    }
+    ser_map.end()
+}
+
+/// Deserialisoi pair_lookup HashMap String-avaimista
+fn deserialize_pair_lookup<'de, D>(deserializer: D) -> Result<HashMap<(u32, u32), u32>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    use serde::de::Error;
+    let string_map: HashMap<String, u32> = HashMap::deserialize(deserializer)?;
+    let mut result = HashMap::with_capacity(string_map.len());
+    for (key, value) in string_map {
+        let parts: Vec<&str> = key.split('_').collect();
+        if parts.len() != 2 {
+            return Err(D::Error::custom(format!("Invalid pair key: {}", key)));
+        }
+        let left: u32 = parts[0].parse().map_err(D::Error::custom)?;
+        let right: u32 = parts[1].parse().map_err(D::Error::custom)?;
+        result.insert((left, right), value);
+    }
+    Ok(result)
 }
 
 impl PatternBank {
     /// Luo uusi PatternBank ja täytä se 256:lla Literal-patternilla
     pub fn new(capacity: usize) -> Self {
         let mut bank = PatternBank {
-            patterns: HashMap::with_capacity(256 + capacity),
+            patterns: HashMap::with_capacity(256 + PRESEEDED_CLASS_COUNT + capacity),
             pair_lookup: HashMap::new(),
             next_id: 0,
-            capacity: capacity + 256, // 256 literaalia + capacity yhdistelmiä
+            capacity: capacity + 300, // 256 literaalia + esiluokkia + hieman tilaa luokille
         };
-        
+
         // Alusta 256 Literal-patternia (tavut 0-255)
         for byte in 0u8..=255 {
             let id = bank.next_id;
@@ -73,38 +126,108 @@ impl PatternBank {
             let pattern = Pattern::new_literal(id, byte);
             bank.patterns.insert(id, pattern);
         }
-        
+
+        bank.initialize_classes();
+
         bank
     }
-    
+
+    fn initialize_classes(&mut self) {
+        if self.next_id <= CLASS_ID_ALPHA_LOWER {
+            self.next_id = CLASS_ID_ALPHA_LOWER + 1;
+        }
+
+        let eternal_refcount = 999_999;
+
+        let digit_pattern = Pattern {
+            id: CLASS_ID_DIGIT,
+            op: Operator::Class(CLASS_ID_DIGIT),
+            strength: 1.0,
+            last_used: 0,
+            complexity: 0,
+            usage_count: 0,
+            ref_count: eternal_refcount,
+        };
+        self.patterns.entry(CLASS_ID_DIGIT).or_insert(digit_pattern);
+
+        let whitespace_pattern = Pattern {
+            id: CLASS_ID_WHITESPACE,
+            op: Operator::Class(CLASS_ID_WHITESPACE),
+            strength: 1.0,
+            last_used: 0,
+            complexity: 0,
+            usage_count: 0,
+            ref_count: eternal_refcount,
+        };
+        self.patterns
+            .entry(CLASS_ID_WHITESPACE)
+            .or_insert(whitespace_pattern);
+
+        let alpha_lower_pattern = Pattern {
+            id: CLASS_ID_ALPHA_LOWER,
+            op: Operator::Class(CLASS_ID_ALPHA_LOWER),
+            strength: 1.0,
+            last_used: 0,
+            complexity: 0,
+            usage_count: 0,
+            ref_count: eternal_refcount,
+        };
+        self.patterns
+            .entry(CLASS_ID_ALPHA_LOWER)
+            .or_insert(alpha_lower_pattern);
+    }
+
+    pub fn get_class_for_token(&self, id: u32) -> Option<u32> {
+        if let Some(pattern) = self.patterns.get(&id) {
+            match pattern.op {
+                Operator::Literal(byte) => {
+                    if byte.is_ascii_digit() {
+                        return Some(CLASS_ID_DIGIT);
+                    }
+                    if byte.is_ascii_whitespace() {
+                        return Some(CLASS_ID_WHITESPACE);
+                    }
+                    if byte.is_ascii_lowercase() {
+                        return Some(CLASS_ID_ALPHA_LOWER);
+                    }
+                }
+                Operator::Class(class_id) => {
+                    return Some(class_id);
+                }
+                Operator::Combine(_, _) => {}
+            }
+        }
+        None
+    }
+
     /// Hae malli ID:llä
     pub fn get(&self, id: u32) -> Option<&Pattern> {
         self.patterns.get(&id)
     }
-    
+
     /// Hae malli ID:llä (mut)
     pub fn get_mut(&mut self, id: u32) -> Option<&mut Pattern> {
         self.patterns.get_mut(&id)
     }
-    
+
     /// Hae Literal-mallin ID tavulle
     pub fn literal_id(&self, byte: u8) -> u32 {
         byte as u32
     }
-    
+
     /// Tarkista onko pari (left, right) jo olemassa
     pub fn has_pair(&self, left: u32, right: u32) -> bool {
         self.pair_lookup.contains_key(&(left, right))
     }
-    
+
     /// Hae parin (left, right) ID jos se on olemassa
     pub fn get_pair_id(&self, left: u32, right: u32) -> Option<u32> {
         self.pair_lookup.get(&(left, right)).copied()
     }
-    
+
     /// Luo uusi Combine-malli parille (left, right)
     /// Palauttaa uuden mallin ID:n
-    /// 
+    ///
     /// Jos kapasiteetti on täynnä, palauttaa None.
     /// Kutsujan (Builder) vastuulla on kutsua forget() ensin.
     pub fn create_combine(&mut self, left: u32, right: u32, cycle: u64) -> Option<u32> {
@@ -112,27 +235,28 @@ impl PatternBank {
         if self.has_pair(left, right) {
             return self.get_pair_id(left, right);
         }
-        
+
         // Tarkista kapasiteetti - jätä aina 5% tilaa uusille
         let capacity_limit = self.capacity * 95 / 100;
         if self.patterns.len() >= capacity_limit {
             return None; // Lähes täynnä, forget() pitäisi ajaa
         }
-        
+
         // Hae vanhempien kompleksisuudet
         let left_complexity = self.patterns.get(&left).map(|p| p.complexity).unwrap_or(0);
         let right_complexity = self.patterns.get(&right).map(|p| p.complexity).unwrap_or(0);
-        
+
         let id = self.next_id;
         self.next_id += 1;
-        
-        let pattern = Pattern::new_combine(id, left, right, left_complexity, right_complexity, cycle);
+
+        let pattern =
+            Pattern::new_combine(id, left, right, left_complexity, right_complexity, cycle);
         self.patterns.insert(id, pattern);
         self.pair_lookup.insert((left, right), id);
-        
+
         Some(id)
     }
-    
+
     /// Poista malli (unohtaminen)
     pub fn remove(&mut self, id: u32) -> Option<Pattern> {
         if let Some(pattern) = self.patterns.remove(&id) {
@@ -145,37 +269,46 @@ impl PatternBank {
             None
         }
     }
-    
+
     /// Hae heikoimmat mallit (paitsi Literaalit)
     pub fn get_weakest(&self, count: usize) -> Vec<u32> {
-        let mut combines: Vec<(u32, f64)> = self.patterns
+        let mut combines: Vec<(u32, f64)> = self
+            .patterns
             .iter()
-            .filter(|(_, p)| !p.is_literal())
+            .filter(|(_, p)| !p.is_literal() && !p.op.is_class())
             .map(|(id, p)| (*id, p.strength))
             .collect();
-        
+
         combines.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
-        
+
         combines.into_iter().take(count).map(|(id, _)| id).collect()
     }
-    
+
     /// Mallien määrä
     pub fn len(&self) -> usize {
         self.patterns.len()
     }
-    
+
+    /// Kapasiteetti
+    pub fn capacity(&self) -> usize {
+        self.capacity
+    }
+
     /// Combine-mallien määrä (ei Literaalit)
     pub fn combine_count(&self) -> usize {
-        self.patterns.values().filter(|p| !p.is_literal()).count()
+        self.patterns
+            .values()
+            .filter(|p| !p.is_literal() && !p.op.is_class())
+            .count()
     }
-    
+
     /// Iteroi kaikkien mallien yli
     pub fn iter(&self) -> impl Iterator<Item = (&u32, &Pattern)> {
         self.patterns.iter()
     }
-    
+
     /// Dekoodaa token-ID takaisin tavuiksi
-    /// 
+    ///
     /// Tämä on rekursiivinen: Combine hajotetaan osiinsa kunnes
     /// päästään Literal-tasolle.
     pub fn decode(&self, id: u32) -> Vec<u8> {
@@ -183,7 +316,7 @@ impl PatternBank {
         self.decode_into(id, &mut result);
         result
     }
-    
+
     fn decode_into(&self, id: u32, result: &mut Vec<u8>) {
         if let Some(pattern) = self.patterns.get(&id) {
             match &pattern.op {
@@ -194,10 +327,14 @@ impl PatternBank {
                     self.decode_into(*left, result);
                     self.decode_into(*right, result);
                 }
+                Operator::Class(class_id) => {
+                    let label = format!("[CLASS_{}]", class_id);
+                    result.extend_from_slice(label.as_bytes());
+                }
             }
         }
     }
-    
+
     /// Laske mallin "pituus" tavuina (dekoodattu muoto)
     pub fn pattern_length(&self, id: u32) -> usize {
         if let Some(pattern) = self.patterns.get(&id) {
@@ -206,10 +343,27 @@ impl PatternBank {
                 Operator::Combine(left, right) => {
                     self.pattern_length(*left) + self.pattern_length(*right)
                 }
+                Operator::Class(_) => 0,
             }
         } else {
             0
         }
+    }
+
+    /// Tallenna PatternBank JSON-tiedostoon
+    pub fn save(&self, path: &Path) -> std::io::Result<()> {
+        let file = File::create(path)?;
+        let writer = BufWriter::new(file);
+        serde_json::to_writer_pretty(writer, self)
+            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))
+    }
+
+    /// Lataa PatternBank JSON-tiedostosta
+    pub fn load(path: &Path) -> std::io::Result<Self> {
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        serde_json::from_reader(reader)
+            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))
     }
 }
 
@@ -226,25 +380,26 @@ impl PairStats {
             counts: HashMap::new(),
         }
     }
-    
+
     /// Lisää parin esiintymä
     pub fn record(&mut self, left: u32, right: u32) {
         *self.counts.entry((left, right)).or_insert(0) += 1;
     }
-    
+
     /// Nollaa tilastot
     pub fn clear(&mut self) {
         self.counts.clear();
     }
-    
+
     /// Hae parhaat parit (ylittävät kynnyksen)
     pub fn get_top_pairs(&self, threshold: u32, max_count: usize) -> Vec<((u32, u32), u32)> {
-        let mut pairs: Vec<_> = self.counts
+        let mut pairs: Vec<_> = self
+            .counts
             .iter()
             .filter(|&(_, count)| *count >= threshold)
             .map(|((l, r), count)| ((*l, *r), *count))
             .collect();
-        
+
         pairs.sort_by(|a, b| b.1.cmp(&a.1));
         pairs.truncate(max_count);
         pairs
@@ -252,7 +407,7 @@ impl PairStats {
 }
 
 /// Builder: Hierarkkinen tiedonrakennuskone
-/// 
+///
 /// Korvaa vanhan Solverin. Toimii token-virralla:
 /// 1. Tokenisoi syöte Literal-ID:iksi
 /// 2. Etsi usein toistuvia pareja (Matchmaker)
@@ -262,26 +417,26 @@ impl PairStats {
 pub struct Builder {
     /// PatternBank: mallien muisti
     pub bank: PatternBank,
-    
+
     /// Token-virta: nykyinen datan esitys Pattern-ID:inä
     pub token_stream: Vec<u32>,
-    
+
     /// Paritilastot nykyisestä virrasta
     pair_stats: PairStats,
-    
+
     /// Nykyinen sykli (aika)
     pub cycle: u64,
-    
+
     /// Kynnys parin luomiselle (kuinka monta kertaa pitää esiintyä)
     pub pair_threshold: u32,
-    
+
     /// Kynnys mallin "kuolemalle" (liian heikko strength)
     #[allow(dead_code)]
     pub death_threshold: f64,
-    
+
     /// Vahvistuksen määrä onnistuneesta ennustuksesta
     pub strengthen_amount: f64,
-    
+
     /// Heikennyksen määrä epäonnistuneesta ennustuksesta
     #[allow(dead_code)]
     pub weaken_amount: f64,
@@ -301,7 +456,21 @@ impl Builder {
             weaken_amount: 0.05,
         }
     }
-    
+
+    /// Luo Builder olemassa olevalla PatternBankilla (ladattu muistista)
+    pub fn with_bank(bank: PatternBank) -> Self {
+        Builder {
+            bank,
+            token_stream: Vec::new(),
+            pair_stats: PairStats::new(),
+            cycle: 0,
+            pair_threshold: 2,
+            death_threshold: 0.1,
+            strengthen_amount: 0.1,
+            weaken_amount: 0.05,
+        }
+    }
+
     /// Tokenisoi raaka data Literal-ID:iksi ja lisää virtaan
     pub fn tokenize(&mut self, data: &[u8]) {
         for &byte in data {
@@ -309,56 +478,61 @@ impl Builder {
             self.token_stream.push(id);
         }
     }
-    
+
     /// Laske paritilastot nykyisestä virrasta
     fn compute_pair_stats(&mut self) {
         self.pair_stats.clear();
-        
+
         if self.token_stream.len() < 2 {
             return;
         }
-        
+
         for window in self.token_stream.windows(2) {
             self.pair_stats.record(window[0], window[1]);
         }
     }
-    
+
     /// Matchmaker: Etsi usein toistuvia pareja ja luo uusia malleja
-    /// 
+    ///
     /// Palauttaa luotujen mallien määrän
     pub fn explore(&mut self) -> usize {
         self.compute_pair_stats();
-        
+
         // Hae parhaat parit
-        let top_pairs = self.pair_stats.get_top_pairs(self.pair_threshold, MAX_TOP_PAIRS);
-        
+        let top_pairs = self
+            .pair_stats
+            .get_top_pairs(self.pair_threshold, MAX_TOP_PAIRS);
+
         let mut created = 0;
-        
+
         for ((left, right), count) in top_pairs {
             // Tarkista ettei pari ole jo olemassa
             if self.bank.has_pair(left, right) {
                 // Vahvista olemassa olevaa mallia
                 if let Some(id) = self.bank.get_pair_id(left, right) {
                     if let Some(pattern) = self.bank.get_mut(id) {
-                        pattern.strengthen(self.strengthen_amount * (count as f64 / STRENGTHEN_SCALE_FACTOR), self.cycle);
+                        pattern.strengthen(
+                            self.strengthen_amount * (count as f64 / STRENGTHEN_SCALE_FACTOR),
+                            self.cycle,
+                        );
                     }
                 }
                 continue;
             }
-            
+
             // Yritä luoda uusi malli
             if let Some(new_id) = self.bank.create_combine(left, right, self.cycle) {
                 created += 1;
-                
+
                 // Tulosta löydös
                 let left_bytes = self.bank.decode(left);
                 let right_bytes = self.bank.decode(right);
                 let combined = self.bank.decode(new_id);
-                
+
                 let left_str = String::from_utf8_lossy(&left_bytes);
                 let right_str = String::from_utf8_lossy(&right_bytes);
                 let combined_str = String::from_utf8_lossy(&combined);
-                
+
                 println!(
                     "  🧬 Syntyi: P_{} = \"{}\" + \"{}\" = \"{}\" ({} krt, taso {})",
                     new_id,
@@ -370,27 +544,61 @@ impl Builder {
                 );
             }
         }
-        
+
+        if self.token_stream.len() < 2 {
+            return created;
+        }
+
+        let mut class_pairs: HashMap<(u32, u32), u32> = HashMap::new();
+
+        for window in self.token_stream.windows(2) {
+            let left_token = window[0];
+            let right_token = window[1];
+
+            let class_left = self.bank.get_class_for_token(left_token);
+            let class_right = self.bank.get_class_for_token(right_token);
+
+            if let (Some(cls_l), Some(cls_r)) = (class_left, class_right) {
+                *class_pairs.entry((cls_l, cls_r)).or_insert(0) += 1;
+            }
+        }
+
+        let class_threshold = self.pair_threshold.saturating_mul(2);
+
+        for ((cls_l, cls_r), count) in class_pairs {
+            if count >= class_threshold {
+                if !self.bank.has_pair(cls_l, cls_r) {
+                    if let Some(new_id) = self.bank.create_combine(cls_l, cls_r, self.cycle) {
+                        created += 1;
+                        println!(
+                            "  🧠 OIVALLUS: P_{} = CLASS_{} + CLASS_{} (Tunnistettu {} kertaa)",
+                            new_id, cls_l, cls_r, count
+                        );
+                    }
+                }
+            }
+        }
+
         created
     }
-    
+
     /// Parser: Korvaa kaikki tunnetut parit uusilla tokeneilla
-    /// 
+    ///
     /// Palauttaa korvattujen parien määrän (= tiivistys)
     pub fn collapse(&mut self) -> usize {
         if self.token_stream.len() < 2 {
             return 0;
         }
-        
+
         let mut collapsed = 0;
         let mut new_stream = Vec::with_capacity(self.token_stream.len());
         let mut i = 0;
-        
+
         while i < self.token_stream.len() {
             if i + 1 < self.token_stream.len() {
                 let left = self.token_stream[i];
                 let right = self.token_stream[i + 1];
-                
+
                 // Tarkista onko pari olemassa ja onko se tarpeeksi vahva
                 if let Some(combined_id) = self.bank.get_pair_id(left, right) {
                     if let Some(pattern) = self.bank.get(combined_id) {
@@ -399,7 +607,7 @@ impl Builder {
                             new_stream.push(combined_id);
                             collapsed += 1;
                             i += 2;
-                            
+
                             // Vahvista käytettyä mallia
                             if let Some(p) = self.bank.get_mut(combined_id) {
                                 p.strengthen(self.strengthen_amount, self.cycle);
@@ -409,48 +617,50 @@ impl Builder {
                     }
                 }
             }
-            
+
             new_stream.push(self.token_stream[i]);
             i += 1;
         }
-        
+
         self.token_stream = new_stream;
         collapsed
     }
-    
+
     /// Forget: Poista heikoimmat mallit jos kapasiteetti on täynnä
-    /// 
+    ///
     /// TÄRKEÄÄ: Tämä ajetaan ENNEN explorea, jotta tilaa on aina uusille.
-    /// 
+    ///
     /// Palauttaa poistettujen mallien määrän
     pub fn forget(&mut self, force_count: usize) -> usize {
         let combine_count = self.bank.combine_count();
-        let capacity_without_literals = self.bank.capacity - 256; // 256 literaalia
-        
+        let capacity_without_literals = self.bank.capacity - (256 + PRESEEDED_CLASS_COUNT);
+
         // Poista jos yli FORGET_CAPACITY_THRESHOLD% käytössä TAI pakotettu
         // Mutta varmista että AINA on tilaa vähintään MAX_TOP_PAIRS uudelle mallille
         let headroom_needed = MAX_TOP_PAIRS + 10; // Tarvitaan tilaa uusille malleille
         let at_capacity = combine_count + headroom_needed > capacity_without_literals;
-        
+
         let to_remove = if force_count > 0 {
             force_count
-        } else if at_capacity || combine_count > (capacity_without_literals * FORGET_CAPACITY_THRESHOLD / 100) {
+        } else if at_capacity
+            || combine_count > (capacity_without_literals * FORGET_CAPACITY_THRESHOLD / 100)
+        {
             // Poista enemmän kerralla - varmista että tilaa riittää
             std::cmp::max(
                 combine_count * FORGET_REMOVAL_PERCENTAGE / 100,
-                headroom_needed
+                headroom_needed,
             )
         } else {
             0
         };
-        
+
         if to_remove == 0 {
             return 0;
         }
-        
+
         let weak_ids = self.bank.get_weakest(to_remove);
         let mut removed = 0;
-        
+
         for id in weak_ids {
             // Ennen poistoa: hajota malli takaisin osiinsa virrassa
             if let Some(pattern) = self.bank.get(id) {
@@ -466,34 +676,65 @@ impl Builder {
                         }
                     }
                     self.token_stream = new_stream;
-                    
+
                     // Tulosta poisto
                     println!(
                         "  🗑️ Unohdettiin: P_{} (strength: {:.2})",
-                        id,
-                        pattern.strength
+                        id, pattern.strength
                     );
                 }
             }
-            
+
             self.bank.remove(id);
             removed += 1;
         }
-        
+
         removed
     }
-    
+
     /// Decay: Heikennä kaikkien Combine-mallien strength-arvoja ajan myötä
     pub fn decay(&mut self, amount: f64) {
         for (_, pattern) in self.bank.patterns.iter_mut() {
-            if !pattern.is_literal() {
+            if !pattern.is_literal() && !pattern.op.is_class() {
                 pattern.weaken(amount);
             }
         }
     }
-    
+
+    /// Arvioi kuinka "tuttua" viimeksi lisätty data oli.
+    /// Palauttaa arvon 0.0 (täysin uutta) - 1.0 (täysin tuttua/tiivistettyä).
+    ///
+    /// Katso vain virran loppupäätä (viimeisintä dataa) ja laske
+    /// kuinka hyvin se tiivistyi olemassa olevilla malleilla.
+    pub fn assess_familiarity(&self, lookback_amount: usize) -> f64 {
+        if self.token_stream.is_empty() {
+            return 0.0;
+        }
+
+        // Katso vain virran loppupäätä (viimeisintä dataa)
+        let check_len = lookback_amount.min(self.token_stream.len());
+        let start_idx = self.token_stream.len() - check_len;
+        let recent_slice = &self.token_stream[start_idx..];
+
+        // Laske "alkuperäinen" pituus tälle pätkälle
+        let original_bytes: usize = recent_slice
+            .iter()
+            .map(|&id| self.bank.pattern_length(id))
+            .sum();
+
+        let current_tokens = recent_slice.len();
+
+        if original_bytes == 0 {
+            return 0.0;
+        }
+
+        // Tiivistyssuhde kertoo tuttuuden
+        // 1.0 - (tokeneja / tavuja) = kuinka paljon tiivistyi
+        1.0 - (current_tokens as f64 / original_bytes as f64)
+    }
+
     /// Pääsilmukka: Yksi sykli oppimista
-    /// 
+    ///
     /// JÄRJESTYS ON KRIITTINEN:
     /// 1. Forget ENSIN: Tee tilaa uusille malleille
     /// 2. Explore: Etsi uusia pareja (nyt on tilaa!)
@@ -501,17 +742,17 @@ impl Builder {
     /// 4. Decay: Vanhenna malleja
     pub fn live(&mut self) -> BuilderStats {
         self.cycle += 1;
-        
+
         let stream_before = self.token_stream.len();
         let patterns_before = self.bank.combine_count();
-        
+
         // 1. FORGET ENSIN - tee tilaa uusille malleille!
         // Tämä korjaa bugin jossa oppiminen pysähtyi kun muisti täyttyi.
         let forgotten = self.forget(0);
-        
+
         // 2. Explore (nyt on tilaa uusille malleille)
         let created = self.explore();
-        
+
         // 3. Collapse (useita kierroksia kunnes ei enää tiivisty)
         let mut total_collapsed = 0;
         loop {
@@ -521,13 +762,13 @@ impl Builder {
             }
             total_collapsed += collapsed;
         }
-        
+
         // 4. Decay
         self.decay(DEFAULT_DECAY_RATE);
-        
+
         let stream_after = self.token_stream.len();
         let patterns_after = self.bank.combine_count();
-        
+
         BuilderStats {
             cycle: self.cycle,
             stream_before,
@@ -544,7 +785,7 @@ impl Builder {
             patterns_before,
         }
     }
-    
+
     /// Dekoodaa koko token-virta takaisin tavuiksi
     #[allow(dead_code)]
     pub fn decode_stream(&self) -> Vec<u8> {
@@ -554,21 +795,24 @@ impl Builder {
         }
         result
     }
-    
+
     /// Virran pituus tokeneina
     pub fn stream_len(&self) -> usize {
         self.token_stream.len()
     }
-    
+
     /// Virran "alkuperäinen" pituus tavuina (dekoodattuna)
     pub fn original_len(&self) -> usize {
-        self.token_stream.iter().map(|&id| self.bank.pattern_length(id)).sum()
+        self.token_stream
+            .iter()
+            .map(|&id| self.bank.pattern_length(id))
+            .sum()
     }
-    
+
     /// Tulosta hierarkia tietylle mallille
     pub fn print_hierarchy(&self, id: u32, indent: usize) {
         let prefix = "  ".repeat(indent);
-        
+
         if let Some(pattern) = self.bank.get(id) {
             match &pattern.op {
                 Operator::Literal(byte) => {
@@ -588,6 +832,12 @@ impl Builder {
                     );
                     self.print_hierarchy(*left, indent + 1);
                     self.print_hierarchy(*right, indent + 1);
+                }
+                Operator::Class(class_id) => {
+                    println!(
+                        "{}P_{}: Class(CLASS_{}) [L{}, str={:.2}]",
+                        prefix, id, class_id, pattern.complexity, pattern.strength
+                    );
                 }
             }
         }
@@ -627,107 +877,107 @@ impl BuilderStats {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_pattern_bank_literals() {
         let bank = PatternBank::new(100);
-        
-        // Tarkista että kaikki literaalit on luotu
-        assert_eq!(bank.len(), 256);
-        
+
+        // Tarkista että kaikki literaalit ja esiluokat on luotu
+        assert_eq!(bank.len(), 256 + 3);
+
         // Tarkista muutama literal
         assert_eq!(bank.literal_id(b'a'), 97);
         assert_eq!(bank.literal_id(b'A'), 65);
         assert_eq!(bank.literal_id(0), 0);
         assert_eq!(bank.literal_id(255), 255);
-        
+
         // Tarkista decode
         assert_eq!(bank.decode(97), vec![b'a']);
         assert_eq!(bank.decode(65), vec![b'A']);
     }
-    
+
     #[test]
     fn test_pattern_bank_combine() {
         let mut bank = PatternBank::new(100);
-        
+
         // Luo pari 'a' + 'b'
         let a_id = bank.literal_id(b'a');
         let b_id = bank.literal_id(b'b');
-        
+
         let ab_id = bank.create_combine(a_id, b_id, 1).unwrap();
-        
+
         assert!(bank.has_pair(a_id, b_id));
         assert_eq!(bank.get_pair_id(a_id, b_id), Some(ab_id));
         assert_eq!(bank.decode(ab_id), vec![b'a', b'b']);
-        
+
         // Yritä luoda sama pari uudestaan
         let ab_id2 = bank.create_combine(a_id, b_id, 2);
         assert_eq!(ab_id2, Some(ab_id)); // Palauttaa olemassa olevan
     }
-    
+
     #[test]
     fn test_builder_tokenize() {
         let mut builder = Builder::new(100);
-        
+
         builder.tokenize(b"abc");
-        
+
         assert_eq!(builder.token_stream.len(), 3);
         assert_eq!(builder.token_stream[0], 97); // 'a'
         assert_eq!(builder.token_stream[1], 98); // 'b'
         assert_eq!(builder.token_stream[2], 99); // 'c'
-        
+
         // Decode takaisin
         assert_eq!(builder.decode_stream(), b"abc");
     }
-    
+
     #[test]
     fn test_builder_explore_and_collapse() {
         let mut builder = Builder::new(100);
-        
+
         // Syötä "abab" - pari "ab" toistuu 2 kertaa
         builder.tokenize(b"abab");
-        
+
         // Explore: Pitäisi löytää pari "ab"
         let created = builder.explore();
         assert!(created > 0, "Pitäisi luoda ainakin yksi malli");
-        
+
         // Vahvista uusi malli jotta collapse toimii
         let ab_id = builder.bank.get_pair_id(97, 98).unwrap();
         if let Some(p) = builder.bank.get_mut(ab_id) {
             p.strength = 0.6; // Yli 0.5 kynnyksen
         }
-        
+
         // Collapse: Pitäisi tiivistää
         let collapsed = builder.collapse();
         assert!(collapsed > 0, "Pitäisi tiivistää ainakin kerran");
-        
+
         // Virta pitäisi olla lyhyempi
         assert!(builder.token_stream.len() < 4);
-        
+
         // Mutta decode pitäisi palauttaa alkuperäinen
         assert_eq!(builder.decode_stream(), b"abab");
     }
-    
+
     #[test]
     fn test_builder_hierarchical() {
         let mut builder = Builder::new(100);
-        
+
         // Syötä "aabb" useasti -> "aa" ja "bb" parit, sitten "aabb"
         builder.tokenize(b"aabbaabbaabb");
-        
+
         // Monta sykliä oppimista
         for _ in 0..5 {
             builder.live();
         }
-        
+
         // Tarkista että virta on tiivistynyt
         let original_len = 12;
         let current_len = builder.stream_len();
         println!("Alkuperäinen: {}, Nykyinen: {}", original_len, current_len);
-        
+
         // Pitäisi olla pienempi (hierarkkinen tiivistys)
         // Huom: ei välttämättä aina tiivisty jos kynnykset eivät täyty
-        
+
         // Decode pitäisi silti palauttaa alkuperäinen
         assert_eq!(builder.decode_stream(), b"aabbaabbaabb");
     }
