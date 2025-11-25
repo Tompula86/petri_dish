@@ -582,9 +582,8 @@ impl Builder {
         created
     }
 
-    /// Parser: Korvaa kaikki tunnetut parit uusilla tokeneilla
-    ///
-    /// Palauttaa korvattujen parien määrän (= tiivistys)
+    /// Parser: Korvaa kaikki tunnetut parit uusilla tokeneilla.
+    /// NYT MYÖS: Hyödyntää luokkia (Classes) uusien konkreettisten parien luomiseen.
     pub fn collapse(&mut self) -> usize {
         if self.token_stream.len() < 2 {
             return 0;
@@ -599,7 +598,7 @@ impl Builder {
                 let left = self.token_stream[i];
                 let right = self.token_stream[i + 1];
 
-                // Tarkista onko pari olemassa ja onko se tarpeeksi vahva
+                // 1. TARKISTA TÄSMÄLLINEN PARI (Kuten ennenkin)
                 if let Some(combined_id) = self.bank.get_pair_id(left, right) {
                     if let Some(pattern) = self.bank.get(combined_id) {
                         // Käytä vain jos strength ylittää "totuuskynnyksen"
@@ -613,6 +612,49 @@ impl Builder {
                                 p.strengthen(self.strengthen_amount, self.cycle);
                             }
                             continue;
+                        }
+                    }
+                }
+
+                // 2. TARKISTA LUOKKA-PARI (Uusi logiikka matematiikalle)
+                // Jos meillä on esim. "1" ja "2", tarkista onko olemassa sääntö "DIGIT + DIGIT"
+                let class_left = self.bank.get_class_for_token(left);
+                let class_right = self.bank.get_class_for_token(right);
+
+                if let (Some(cl), Some(cr)) = (class_left, class_right) {
+                    // Onko olemassa abstrakti sääntö (esim. CLASS_DIGIT + CLASS_DIGIT)?
+                    if let Some(abstract_id) = self.bank.get_pair_id(cl, cr) {
+                        // Tarkista onko abstrakti sääntö tarpeeksi vahva ("totta")
+                        let abstract_strength =
+                            self.bank.get(abstract_id).map(|p| p.strength).unwrap_or(0.0);
+
+                        if abstract_strength >= 0.5 {
+                            // HEUREKA! Löysimme kohdan, joka vastaa yleistä sääntöä.
+                            // Luodaan HETI konkreettinen pari (esim. 1 + 2) tästä kohdasta.
+
+                            // Huom: create_combine tarkistaa onko pari jo olemassa, joten tämä on turvallista.
+                            if let Some(new_concrete_id) =
+                                self.bank.create_combine(left, right, self.cycle)
+                            {
+                                // 1. Anna uudelle konkreettiselle mallille "lentävä lähtö", koska se perustuu sääntöön
+                                if let Some(p) = self.bank.get_mut(new_concrete_id) {
+                                    p.strength = 0.8; // Korkea luottamus luokan ansiosta!
+                                }
+
+                                // 2. Vahvista alkuperäistä ABSTRAKTIA sääntöä (koska se oli hyödyllinen!)
+                                if let Some(abstract_p) = self.bank.get_mut(abstract_id) {
+                                    abstract_p.strengthen(
+                                        self.strengthen_amount * 2.0,
+                                        self.cycle,
+                                    );
+                                }
+
+                                // 3. Käytä uutta mallia heti tiivistykseen
+                                new_stream.push(new_concrete_id);
+                                collapsed += 1;
+                                i += 2;
+                                continue;
+                            }
                         }
                     }
                 }
