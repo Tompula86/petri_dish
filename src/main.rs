@@ -4,13 +4,17 @@ mod feeder;
 mod operator;
 mod pattern;
 
-use builder::Builder;
+use builder::{Builder, PatternBank};
 use evaluator::Evaluator;
 use feeder::Feeder;
 
 use std::env;
 use std::fs::File;
 use std::io::Write;
+use std::path::Path;
+
+/// Oletuspolku aivojen (PatternBank) tallennustiedostolle
+const BRAIN_FILE_PATH: &str = "brain.json";
 
 struct Config {
     /// Maksimi mallien määrä PatternBankissa (paitsi 256 literaalia)
@@ -21,6 +25,8 @@ struct Config {
     pair_threshold: u32,
     /// Maksimi syklien määrä
     max_cycles: usize,
+    /// Polku aivojen tallennustiedostolle
+    brain_path: String,
 }
 
 impl Config {
@@ -50,23 +56,63 @@ impl Config {
             .and_then(|v| v.parse().ok())
             .unwrap_or(Self::DEFAULT_MAX_CYCLES);
 
+        let brain_path = env::var("PETRI_BRAIN_PATH")
+            .unwrap_or_else(|_| BRAIN_FILE_PATH.to_string());
+
         Config {
             pattern_capacity,
             feed_rate,
             pair_threshold,
             max_cycles,
+            brain_path,
         }
+    }
+}
+
+/// Lataa PatternBank tiedostosta tai luo uusi
+fn load_or_create_brain(config: &Config) -> PatternBank {
+    let path = Path::new(&config.brain_path);
+    
+    if path.exists() {
+        println!("  🧠 Ladataan aivot tiedostosta '{}'...", config.brain_path);
+        match PatternBank::load(path) {
+            Ok(bank) => {
+                println!("  ✅ Aivot ladattu! {} mallia muistissa.", bank.len());
+                return bank;
+            }
+            Err(e) => {
+                println!("  ⚠️  Aivojen lataus epäonnistui: {}", e);
+                println!("     Aloitetaan tyhjästä...");
+            }
+        }
+    } else {
+        println!("  🧠 Aivotiedostoa '{}' ei löytynyt, aloitetaan tyhjästä.", config.brain_path);
+    }
+    
+    PatternBank::new(config.pattern_capacity)
+}
+
+/// Tallenna PatternBank tiedostoon
+fn save_brain(bank: &PatternBank, path: &str) {
+    let path = Path::new(path);
+    match bank.save(path) {
+        Ok(()) => println!("  💾 Aivot tallennettu tiedostoon '{}'.", path.display()),
+        Err(e) => println!("  ⚠️  Aivojen tallennus epäonnistui: {}", e),
     }
 }
 
 fn main() {
     println!("=== Petrimalja Älykkyyelle: HIERARKKINEN TIEDONRAKENNUSKONE ===\n");
     println!("Ydinfilosofia: \"Totuus on pysyvä yhteys kahden asian välillä.\"\n");
+    println!("Petri Dish 2.0: \"Ikuinen Oppija\" - Pysyvä muisti käytössä.\n");
 
     let config = Config::load();
 
-    // Luo Builder (hierarkkinen tiedonrakennuskone)
-    let mut builder = Builder::new(config.pattern_capacity);
+    // Lataa olemassa olevat aivot tai luo uudet
+    let brain = load_or_create_brain(&config);
+    
+    // Luo Builder ladatulla PatternBankilla
+    let mut builder = Builder::with_bank(brain);
     builder.pair_threshold = config.pair_threshold;
 
     // Luo Feeder
@@ -122,10 +168,13 @@ fn main() {
                 let decoded = builder.bank.decode(**id);
                 let decoded_str = String::from_utf8_lossy(&decoded);
                 println!(
-                    "     P_{}: \"{}\" [taso {}, käyttö {}, vahvuus {:.2}]",
-                    id, decoded_str, pattern.complexity, pattern.usage_count, pattern.strength
+                    "     P_{}: \"{}\" [taso {}, käyttö {}, vahvuus {:.2}, viittauksia {}]",
+                    id, decoded_str, pattern.complexity, pattern.usage_count, pattern.strength, pattern.ref_count
                 );
             }
+            
+            // Tallenna aivot
+            save_brain(&builder.bank, &config.brain_path);
             
             println!("\n✅ Demonstraatio valmis!");
             return;
@@ -136,10 +185,12 @@ fn main() {
     let evaluator = Evaluator::new();
 
     println!("\nAloitustilanne:");
-    println!("  PatternBank kapasiteetti: {} mallia", config.pattern_capacity);
+    println!("  PatternBank kapasiteetti: {} mallia", builder.bank.capacity);
+    println!("  Olemassa olevia malleja: {} (256 literaalia + {} combine)", builder.bank.len(), builder.bank.combine_count());
     println!("  Feeder nopeus: {} tavua/sykli", config.feed_rate);
     println!("  Parin kynnys: {} esiintymää", config.pair_threshold);
     println!("  Maksimi syklit: {}", config.max_cycles);
+    println!("  Aivojen tallennuspolku: {}", config.brain_path);
 
     // Avaa CSV-tiedosto
     let mut csv_file = File::create("results.csv").expect("CSV-tiedoston luonti epäonnistui");
@@ -246,8 +297,8 @@ fn main() {
             decoded_str.to_string()
         };
         println!(
-            "     P_{}: \"{}\" [L{}, käyttö {}, str {:.2}]",
-            id, preview, pattern.complexity, pattern.usage_count, pattern.strength
+            "     P_{}: \"{}\" [L{}, käyttö {}, str {:.2}, refs {}]",
+            id, preview, pattern.complexity, pattern.usage_count, pattern.strength, pattern.ref_count
         );
     }
 
@@ -257,9 +308,13 @@ fn main() {
         builder.print_hierarchy(**id, 2);
     }
 
+    // Tallenna aivot
+    save_brain(&builder.bank, &config.brain_path);
+
     println!("\n=== HIERARKKINEN TIEDONRAKENNUSKONE VALMIS ===");
     println!("\n📊 Analyysi:");
     println!("  • CSV tallennettu: results.csv");
+    println!("  • Aivot tallennettu: {}", config.brain_path);
     println!("  • Järjestelmä oppi kielen rakenteita hierarkkisesti");
     println!("  • Kirjaimista → tavuihin → sanoihin → lauseisiin");
     println!("\n✅ \"Totuus on pysyvä yhteys kahden asian välillä.\"");
