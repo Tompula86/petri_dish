@@ -34,6 +34,10 @@ pub struct Pattern {
     
     /// Kuinka monta kertaa tätä mallia on käytetty onnistuneesti
     pub usage_count: u32,
+    
+    /// Viittauslaskuri: Kuinka moni muu malli viittaa tähän malliin.
+    /// Mallia ei saa poistaa jos ref_count > 0.
+    pub ref_count: u32,
 }
 
 impl Pattern {
@@ -46,6 +50,7 @@ impl Pattern {
             last_used: 0,
             complexity: 0,
             usage_count: 0,
+            ref_count: 0,
         }
     }
     
@@ -76,6 +81,7 @@ impl Pattern {
             last_used: cycle,
             complexity,
             usage_count: 0,
+            ref_count: 0,
         }
     }
     
