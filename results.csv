@@ -1,4 +1,0 @@
-cycle,stream_len,original_len,patterns_count,compression_ratio,patterns_created,patterns_collapsed
-1,197,500,236,0.6060,0,303
-2,374,1000,236,0.6260,0,323
-3,563,1500,237,0.6247,1,311

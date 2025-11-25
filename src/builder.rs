@@ -898,8 +898,6 @@ mod tests {
     
     #[test]
     fn test_persistence_save_load() {
-        use std::path::Path;
-        
         let mut bank = PatternBank::new(100);
         
         // Luo muutama yhdistelmä
@@ -913,12 +911,12 @@ mod tests {
             p.usage_count = 5;
         }
         
-        // Tallenna
-        let test_path = Path::new("/tmp/test_brain.json");
-        bank.save(test_path).expect("Tallentaminen epäonnistui");
+        // Tallenna käyttäen järjestelmän temp-hakemistoa
+        let test_path = std::env::temp_dir().join("test_brain.json");
+        bank.save(&test_path).expect("Tallentaminen epäonnistui");
         
         // Lataa uuteen pankkiin
-        let loaded_bank = PatternBank::load(test_path).expect("Lataaminen epäonnistui");
+        let loaded_bank = PatternBank::load(&test_path).expect("Lataaminen epäonnistui");
         
         // Tarkista että data säilyi
         assert_eq!(loaded_bank.len(), bank.len());
@@ -927,9 +925,11 @@ mod tests {
         let loaded_ab = loaded_bank.get(ab_id).unwrap();
         assert_eq!(loaded_ab.strength, 0.8);
         assert_eq!(loaded_ab.usage_count, 5);
-        assert_eq!(loaded_ab.ref_count, 0); // ab:hen ei viitata
+        // ab:hen ei viitata (kukaan muu malli ei käytä ab:ta osanaan)
+        assert_eq!(loaded_ab.ref_count, 0);
         
-        // Tarkista lasten ref_count
+        // Tarkista lasten ref_count: a ja b ovat ab:n osat, 
+        // joten niiden ref_count on 1 (ab viittaa niihin)
         assert_eq!(loaded_bank.get(a_id).unwrap().ref_count, 1);
         assert_eq!(loaded_bank.get(b_id).unwrap().ref_count, 1);
         
